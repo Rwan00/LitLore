@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import 'package:litlore/core/theme/fonts.dart';
 import 'package:litlore/core/utils/assets.dart';
+import 'package:litlore/core/utils/consts.dart';
+import 'package:litlore/features/home/presentation/views/home_view.dart';
 
 class SplashViewBody extends StatefulWidget {
   const SplashViewBody({super.key});
@@ -18,16 +21,8 @@ class _SplashViewBodyState extends State<SplashViewBody>
   @override
   void initState() {
     super.initState();
-    animationController = AnimationController(
-      vsync: this,
-      duration: const Duration(
-        seconds: 1,
-      ),
-    );
-    slideAnimation = Tween<Offset>(begin: const Offset(0, 4), end: Offset.zero)
-        .animate(animationController);
-
-    animationController.forward();
+    initSlidingAnimation();
+    navigateToHome();
   }
 
   @override
@@ -70,6 +65,34 @@ class _SplashViewBodyState extends State<SplashViewBody>
           ),
         ],
       ),
+    );
+  }
+
+  void initSlidingAnimation() {
+    animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(
+        seconds: 1,
+      ),
+    );
+    slideAnimation = Tween<Offset>(begin: const Offset(0, 4), end: Offset.zero)
+        .animate(animationController);
+
+    animationController.forward();
+  }
+
+  void navigateToHome() {
+    Future.delayed(
+      const Duration(
+        seconds: 2,
+      ),
+      () {
+        Get.to(
+          () => const HomeView(),
+          transition: Transition.cupertino,
+          duration: kTransitionDuration,
+        );
+      },
     );
   }
 }
