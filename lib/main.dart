@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:litlore/core/theme/colors.dart';
 import 'package:litlore/features/splash/presentation/views/splash_view.dart';
 
 void main() {
@@ -12,13 +13,14 @@ class LitLore extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-     
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Color.fromRGBO(111, 78, 55,1)),
+        scaffoldBackgroundColor: kScaffoldColor,
+        colorScheme:
+            ColorScheme.fromSeed(seedColor: kPrimaryColor),
         useMaterial3: true,
       ),
       home: const SplashView(),
     );
   }
 }
-
