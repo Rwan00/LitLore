@@ -11,6 +11,8 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        surfaceTintColor: Colors.white,
+        backgroundColor: Colors.transparent,
         leading: Image.asset(AssetsData.logo),
         title: Text(
           "LitLoRe",

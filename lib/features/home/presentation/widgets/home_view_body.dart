@@ -14,15 +14,30 @@ class HomeViewBody extends StatelessWidget {
       'https://www.creativindiecovers.com/wp-content/uploads/2012/02/9780718155209.jpg',
       "https://i.pinimg.com/564x/f7/c8/12/f7c812c9b0296cd9f119e33a06d9a256.jpg",
       "https://www.ebookconversion.com/wp-content/uploads/2015/12/0_Page_41.jpg",
+      "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/56d96263885635.5acd0047cf3e6.jpg",
+      "http://tesseraguild.com/wp-content/uploads/2018/06/Hobbit.jpg",
     ];
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
           TopSellingSlider(imgList: imgList),
           const CategoryTitle(title: "Recommended For You"),
-          BookItem(
-            imgUrl: imgList[0],
+          ...List.generate(
+            imgList.length,
+            (index) => BookItem(
+              imgUrl: imgList[index],
+            ),
           ),
+          /* Expanded(
+            child: ListView.builder(
+              itemCount: imgList.length,
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemBuilder: (context, index) => BookItem(
+                imgUrl: imgList[index],
+              ),
+            ),
+          ), */
         ],
       ),
     );
