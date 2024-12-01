@@ -17,3 +17,11 @@ TextStyle get splashSubStyle {
     fontSize: 22,
   );
 }
+
+TextStyle get titleStyle {
+  return GoogleFonts.margarine(
+    color: kPrimaryColor,
+    fontSize: 18,
+    fontWeight: FontWeight.bold,
+  );
+}
