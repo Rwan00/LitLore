@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:litlore/features/home/presentation/widgets/book_item.dart';
 import 'package:litlore/features/home/presentation/widgets/category_title.dart';
 
 import 'package:litlore/features/home/presentation/widgets/top_selling_slider.dart';
@@ -14,11 +15,16 @@ class HomeViewBody extends StatelessWidget {
       "https://i.pinimg.com/564x/f7/c8/12/f7c812c9b0296cd9f119e33a06d9a256.jpg",
       "https://www.ebookconversion.com/wp-content/uploads/2015/12/0_Page_41.jpg",
     ];
-    return Column(
-      children: <Widget>[
-        TopSellingSlider(imgList: imgList),
-        const CategoryTitle(title: "Recommended For You")
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        children: <Widget>[
+          TopSellingSlider(imgList: imgList),
+          const CategoryTitle(title: "Recommended For You"),
+          BookItem(
+            imgUrl: imgList[0],
+          ),
+        ],
+      ),
     );
   }
 }

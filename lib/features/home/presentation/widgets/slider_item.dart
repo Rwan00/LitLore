@@ -6,8 +6,8 @@ class SliderItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.3,
+    return Padding(
+      padding: const EdgeInsets.only(right: 2.0),
       child: AspectRatio(
         aspectRatio: 2.7 / 4,
         child: Container(

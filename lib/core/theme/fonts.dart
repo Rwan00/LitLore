@@ -9,16 +9,27 @@ abstract class MyFonts {
     fontWeight: FontWeight.bold,
     fontSize: 26,
   );
-  static final splashSubStyle  = GoogleFonts.lustria(
+  static final splashSubStyle = GoogleFonts.lustria(
     color: MyColors.kPrimaryColor,
     fontSize: 22,
   );
-  static final titleMediumStyle = GoogleFonts.margarine(
+  static final titleMediumStyle18 = GoogleFonts.margarine(
     color: MyColors.kPrimaryColor,
     fontSize: 18,
     fontWeight: FontWeight.bold,
   );
+  static const textStyleStyle16 = TextStyle(
+    color: MyColors.kPrimaryColor,
+    fontSize: 16,
+    fontWeight: FontWeight.bold,
+  );
+  static const subTiltleStyle14 = TextStyle(
+    color: Colors.grey,
+    fontSize: 14,
+    fontWeight: FontWeight.bold,
+  );
+  static const subTiltleStyle12 = TextStyle(
+    color: MyColors.kPrimaryColor,
+    fontSize: 12,
+  );
 }
-
-
-

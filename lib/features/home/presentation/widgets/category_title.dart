@@ -5,7 +5,8 @@ import '../../../../core/theme/fonts.dart';
 class CategoryTitle extends StatelessWidget {
   final String title;
   const CategoryTitle({
-    super.key, required this.title,
+    super.key,
+    required this.title,
   });
 
   @override
@@ -19,7 +20,7 @@ class CategoryTitle extends StatelessWidget {
         children: [
           Text(
             title,
-            style: MyFonts.titleMediumStyle,
+            style: MyFonts.titleMediumStyle18,
           ),
           const Spacer(),
           IconButton(

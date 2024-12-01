@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:litlore/core/theme/colors.dart';
 import 'package:litlore/features/splash/presentation/views/splash_view.dart';
 
@@ -19,6 +20,7 @@ class LitLore extends StatelessWidget {
         appBarTheme: const AppBarTheme(color: MyColors.kScaffoldColor),
         colorScheme: ColorScheme.fromSeed(seedColor: MyColors.kPrimaryColor),
         useMaterial3: true,
+        textTheme: GoogleFonts.nunitoTextTheme(),
       ),
       home: const SplashView(),
     );
