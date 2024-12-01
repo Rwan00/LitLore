@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:litlore/features/home/presentation/widgets/category_title.dart';
 
 import 'package:litlore/features/home/presentation/widgets/top_selling_slider.dart';
 
@@ -16,6 +17,7 @@ class HomeViewBody extends StatelessWidget {
     return Column(
       children: <Widget>[
         TopSellingSlider(imgList: imgList),
+        const CategoryTitle(title: "Recommended For You")
       ],
     );
   }

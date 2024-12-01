@@ -1,8 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
-import 'package:litlore/core/theme/fonts.dart';
-
+import 'category_title.dart';
 import 'slider_item.dart';
 
 class TopSellingSlider extends StatelessWidget {
@@ -14,26 +13,8 @@ class TopSellingSlider extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.only(
-            left: 12.0,
-            top: 12,
-          ),
-          child: Row(
-            children: [
-              Text(
-                "Top Selling",
-                style: MyFonts.titleMediumStyle,
-              ),
-              const Spacer(),
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.arrow_forward_ios,
-                ),
-              ),
-            ],
-          ),
+        const CategoryTitle(
+          title: "Top Selling",
         ),
         CarouselSlider(
           items: imgList.map((imgURL) {
@@ -44,6 +25,9 @@ class TopSellingSlider extends StatelessWidget {
             viewportFraction: 0.4,
             initialPage: 0,
             enlargeCenterPage: true,
+            pauseAutoPlayOnManualNavigate: true,
+            enlargeStrategy: CenterPageEnlargeStrategy.zoom,
+            disableCenter: true,
             autoPlay: true,
             autoPlayInterval: const Duration(seconds: 4),
           ),
