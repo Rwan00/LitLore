@@ -38,7 +38,7 @@ class _SplashViewBodyState extends State<SplashViewBody>
         alignment: AlignmentDirectional.bottomCenter,
         children: [
           Image.asset(
-            AssetsData.logo,
+            AssetsData.splash,
             width: 250,
             fit: BoxFit.cover,
           ),
@@ -53,7 +53,7 @@ class _SplashViewBodyState extends State<SplashViewBody>
                       position: slideAnimation,
                       child: Text(
                         "LitLoRe",
-                        style: splashStyle,
+                        style: logoStyle,
                       ),
                     );
                   }),

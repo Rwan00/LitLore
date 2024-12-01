@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'colors.dart';
 
-TextStyle get splashStyle {
+TextStyle get logoStyle {
   return GoogleFonts.cinzelDecorative(
     color: kPrimaryColor,
     fontWeight: FontWeight.bold,

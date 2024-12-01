@@ -16,8 +16,8 @@ class LitLore extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         scaffoldBackgroundColor: kScaffoldColor,
-        colorScheme:
-            ColorScheme.fromSeed(seedColor: kPrimaryColor),
+        appBarTheme: AppBarTheme(color: kScaffoldColor),
+        colorScheme: ColorScheme.fromSeed(seedColor: kPrimaryColor),
         useMaterial3: true,
       ),
       home: const SplashView(),
