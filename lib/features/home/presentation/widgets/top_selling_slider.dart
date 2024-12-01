@@ -23,7 +23,7 @@ class TopSellingSlider extends StatelessWidget {
             children: [
               Text(
                 "Top Selling",
-                style: titleStyle,
+                style: MyFonts.titleMediumStyle,
               ),
               const Spacer(),
               IconButton(

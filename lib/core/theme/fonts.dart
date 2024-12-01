@@ -3,25 +3,22 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'colors.dart';
 
-TextStyle get logoStyle {
-  return GoogleFonts.cinzelDecorative(
-    color: kPrimaryColor,
+abstract class MyFonts {
+  static final logoStyle = GoogleFonts.cinzelDecorative(
+    color: MyColors.kPrimaryColor,
     fontWeight: FontWeight.bold,
     fontSize: 26,
   );
-}
-
-TextStyle get splashSubStyle {
-  return GoogleFonts.lustria(
-    color: kPrimaryColor,
+  static final splashSubStyle  = GoogleFonts.lustria(
+    color: MyColors.kPrimaryColor,
     fontSize: 22,
   );
-}
-
-TextStyle get titleStyle {
-  return GoogleFonts.margarine(
-    color: kPrimaryColor,
+  static final titleMediumStyle = GoogleFonts.margarine(
+    color: MyColors.kPrimaryColor,
     fontSize: 18,
     fontWeight: FontWeight.bold,
   );
 }
+
+
+

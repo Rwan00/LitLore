@@ -14,7 +14,7 @@ class HomeView extends StatelessWidget {
         leading: Image.asset(AssetsData.logo),
         title: Text(
           "LitLoRe",
-          style: logoStyle.copyWith(fontSize: 16),
+          style: MyFonts.logoStyle.copyWith(fontSize: 16),
         ),
         actions: [
           const Icon(FontAwesomeIcons.hatWizard),

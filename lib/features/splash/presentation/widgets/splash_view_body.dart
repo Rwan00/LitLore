@@ -53,13 +53,13 @@ class _SplashViewBodyState extends State<SplashViewBody>
                       position: slideAnimation,
                       child: Text(
                         "LitLoRe",
-                        style: logoStyle,
+                        style: MyFonts.logoStyle,
                       ),
                     );
                   }),
               Text(
                 "Library",
-                style: splashSubStyle,
+                style: MyFonts.splashSubStyle,
               ),
             ],
           ),
