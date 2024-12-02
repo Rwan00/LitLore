@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:litlore/features/home/presentation/widgets/book_item.dart';
+
 import 'package:litlore/features/home/presentation/widgets/category_title.dart';
+import 'package:litlore/features/home/presentation/widgets/recommended_books_list.dart';
 
 import 'package:litlore/features/home/presentation/widgets/top_selling_slider.dart';
 
@@ -17,29 +18,21 @@ class HomeViewBody extends StatelessWidget {
       "https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/56d96263885635.5acd0047cf3e6.jpg",
       "http://tesseraguild.com/wp-content/uploads/2018/06/Hobbit.jpg",
     ];
-    return SingleChildScrollView(
-      child: Column(
-        children: <Widget>[
-          TopSellingSlider(imgList: imgList),
-          const CategoryTitle(title: "Recommended For You"),
-          ...List.generate(
-            imgList.length,
-            (index) => BookItem(
-              imgUrl: imgList[index],
-            ),
+    return CustomScrollView(
+      slivers: <Widget>[
+        SliverToBoxAdapter(
+          child: Column(
+            children: [
+              TopSellingSlider(imgList: imgList),
+              const CategoryTitle(title: "Recommended For You"),
+            ],
           ),
-          /* Expanded(
-            child: ListView.builder(
-              itemCount: imgList.length,
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index) => BookItem(
-                imgUrl: imgList[index],
-              ),
-            ),
-          ), */
-        ],
-      ),
+        ),
+        SliverFillRemaining(
+          child: RecommendedBooksList(imgList: imgList),
+        )
+       
+      ],
     );
   }
 }

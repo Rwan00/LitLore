@@ -12,7 +12,7 @@ class BookItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 2),
+      padding: const EdgeInsets.only(left: 12.0, right: 12, bottom: 2),
       child: Container(
         padding: const EdgeInsets.all(4),
         width: double.infinity,
