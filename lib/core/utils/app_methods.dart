@@ -1,17 +1,31 @@
 import 'package:flutter/material.dart';
 
-void goAndDelete({required BuildContext context, required String routeName}) {
-  Navigator.pushNamedAndRemoveUntil(
-    context,
-    routeName,
-    (Route<dynamic> route) => false,
-    
-  );
+void goToPage({
+  required BuildContext context,
+  required String routeName,
+  required bool delete,
+  Object? arguments,
+}) {
+  if (delete) {
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      routeName,
+      (Route<dynamic> route) => false,
+      arguments: arguments,
+    );
+  } else {
+    Navigator.pushNamed(
+      context,
+      routeName,
+      arguments: arguments,
+    );
+  }
 }
 
-double  height(context){
+double height(context) {
   return MediaQuery.of(context).size.height;
 }
-double width(context){
+
+double width(context) {
   return MediaQuery.of(context).size.width;
 }
