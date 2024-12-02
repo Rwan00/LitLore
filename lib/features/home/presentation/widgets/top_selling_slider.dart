@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
+
 import 'category_title.dart';
 import 'book_image.dart';
 
@@ -21,7 +22,7 @@ class TopSellingSlider extends StatelessWidget {
             return BookImage(imgUrl: imgURL);
           }).toList(),
           options: CarouselOptions(
-            aspectRatio: 1.9,
+            aspectRatio: 1.67,
             viewportFraction: 0.4,
             initialPage: 0,
             enlargeCenterPage: true,
