@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:litlore/core/theme/fonts.dart';
-import 'package:litlore/core/utils/assets.dart';
+import 'package:litlore/core/utils/app_assets.dart';
 import 'package:litlore/features/home/presentation/widgets/home_view_body.dart';
 
 class HomeView extends StatelessWidget {
+  static const routeName = "/HomeView";
   const HomeView({super.key});
 
   @override

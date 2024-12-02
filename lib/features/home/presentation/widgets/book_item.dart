@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:litlore/core/theme/colors.dart';
 import 'package:litlore/core/theme/fonts.dart';
+import 'package:litlore/core/utils/app_methods.dart';
 
 import 'book_rating.dart';
 
@@ -16,7 +17,7 @@ class BookItem extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(4),
         width: double.infinity,
-        height: MediaQuery.of(context).size.height * 0.15,
+        height: height(context) * 0.15,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(7),
           border: Border.all(
@@ -47,7 +48,7 @@ class BookItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.5,
+                    width: width(context) * 0.5,
                     child: const Text(
                       "The last four things",
                       style: MyFonts.textStyleStyle16,

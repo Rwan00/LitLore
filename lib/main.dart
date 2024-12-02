@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+
+
 import 'package:google_fonts/google_fonts.dart';
 import 'package:litlore/core/theme/colors.dart';
-import 'package:litlore/features/splash/presentation/views/splash_view.dart';
+import 'package:litlore/core/routes/app_routes.dart';
+
 
 void main() {
   runApp(const LitLore());
@@ -13,8 +15,10 @@ class LitLore extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
+     routes: routes,
+   
       theme: ThemeData(
         scaffoldBackgroundColor: MyColors.kScaffoldColor,
         appBarTheme: const AppBarTheme(color: MyColors.kScaffoldColor),
@@ -22,7 +26,9 @@ class LitLore extends StatelessWidget {
         useMaterial3: true,
         textTheme: GoogleFonts.nunitoTextTheme(),
       ),
-      home: const SplashView(),
+     
     );
   }
 }
+
+

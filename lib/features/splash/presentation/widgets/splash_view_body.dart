@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 import 'package:litlore/core/theme/fonts.dart';
-import 'package:litlore/core/utils/assets.dart';
-import 'package:litlore/core/utils/consts.dart';
+import 'package:litlore/core/utils/app_assets.dart';
+import 'package:litlore/core/utils/app_methods.dart';
+
 import 'package:litlore/features/home/presentation/views/home_view.dart';
 
 class SplashViewBody extends StatefulWidget {
@@ -87,11 +87,9 @@ class _SplashViewBodyState extends State<SplashViewBody>
         seconds: 2,
       ),
       () {
-        Get.to(
-          () => const HomeView(),
-          transition: Transition.cupertino,
-          duration: kTransitionDuration,
-        );
+        if (mounted) {
+          goAndDelete(context: context, routeName: HomeView.routeName);
+        }
       },
     );
   }
