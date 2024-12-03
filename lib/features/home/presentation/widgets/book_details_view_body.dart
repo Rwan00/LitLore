@@ -1,7 +1,9 @@
+
+
 import 'package:flutter/material.dart';
 
 
-
+import 'book_action_section.dart';
 import 'book_details_section.dart';
 
 import 'release_overview_section.dart';
@@ -30,7 +32,11 @@ class BookDetailsViewBody extends StatelessWidget {
           const SizedBox(
             height: 55,
           ),
-          const ReleaseOverViewSection()
+          const ReleaseOverViewSection(),
+          const SizedBox(
+            height: 45,
+          ),
+          const BookActionSection()
         ],
       ),
     );
