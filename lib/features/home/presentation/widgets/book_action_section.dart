@@ -25,7 +25,7 @@ class BookActionSection extends StatelessWidget {
               ),
             ),
           ),
-          child: const Text(
+          child: Text(
             "Buy For 11.11 L.E",
             style: MyFonts.subTiltleStyle14,
           ),

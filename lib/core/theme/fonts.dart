@@ -23,8 +23,8 @@ abstract class MyFonts {
     fontSize: 16,
     fontWeight: FontWeight.bold,
   );
-  static const subTiltleStyle14 = TextStyle(
-    color: Colors.grey,
+  static final subTiltleStyle14 = TextStyle(
+    color: Colors.black.withOpacity(0.6),
     fontSize: 14,
     fontWeight: FontWeight.bold,
   );

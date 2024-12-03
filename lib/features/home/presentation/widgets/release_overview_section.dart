@@ -29,7 +29,7 @@ class ReleaseOverViewSection extends StatelessWidget {
             Text(
               "English",
               style: MyFonts.subTiltleStyle12.copyWith(
-                color: Colors.grey,
+                color: Colors.black,
               ),
             ),
             const Text(
@@ -44,7 +44,7 @@ class ReleaseOverViewSection extends StatelessWidget {
             Text(
               "190",
               style: MyFonts.subTiltleStyle12.copyWith(
-                color: Colors.grey,
+                color: Colors.black,
               ),
             ),
             const Text(
@@ -59,7 +59,7 @@ class ReleaseOverViewSection extends StatelessWidget {
             Text(
               "US",
               style: MyFonts.subTiltleStyle12.copyWith(
-                color: Colors.grey,
+                color: Colors.black,
               ),
             ),
             const Text(
@@ -74,7 +74,7 @@ class ReleaseOverViewSection extends StatelessWidget {
             Text(
               "Arcadia",
               style: MyFonts.subTiltleStyle12.copyWith(
-                color: Colors.grey,
+                color: Colors.black,
               ),
             ),
             const Text(

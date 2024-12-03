@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 
 import '../../../../core/theme/colors.dart';
@@ -20,9 +21,9 @@ class BookBasicDetails extends StatelessWidget {
         children: [
           SizedBox(
             width: width(context) * 0.6,
-            child: const Text(
+            child: Text(
               "The last four things",
-              style: MyFonts.textStyleStyle16,
+              style: MyFonts.titleMediumStyle18,
               softWrap: true,
               maxLines: 5,
               overflow: TextOverflow.ellipsis,
@@ -31,7 +32,7 @@ class BookBasicDetails extends StatelessWidget {
           const SizedBox(
             height: 6,
           ),
-          const Text(
+           Text(
             "Paul Hoffman",
             style: MyFonts.subTiltleStyle14,
           ),
@@ -53,8 +54,8 @@ class BookBasicDetails extends StatelessWidget {
                 return Padding(
                   padding: const EdgeInsets.all(2.0),
                   child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 4, vertical: 2),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(7),
                       color: MyColors.kPrimaryColor.withOpacity(0.3),

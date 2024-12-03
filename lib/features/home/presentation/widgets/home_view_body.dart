@@ -35,6 +35,11 @@ class HomeViewBody extends StatelessWidget {
         ),
         SliverFillRemaining(
           child: RecommendedBooksList(imgList: imgList),
+        ),
+        const SliverToBoxAdapter(
+          child: SizedBox(
+            height: 4,
+          ),
         )
       ],
     );

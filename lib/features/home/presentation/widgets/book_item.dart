@@ -58,7 +58,7 @@ class BookItem extends StatelessWidget {
                     const SizedBox(
                       height: 6,
                     ),
-                    const Text(
+                     Text(
                       "Paul Hoffman",
                       style: MyFonts.subTiltleStyle14,
                     ),
