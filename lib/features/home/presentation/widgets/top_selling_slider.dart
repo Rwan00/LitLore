@@ -1,7 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
-
 import 'category_title.dart';
 import 'book_image.dart';
 
@@ -14,8 +13,13 @@ class TopSellingSlider extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const CategoryTitle(
-          title: "Top Selling",
+        const Padding(
+          padding: EdgeInsets.only(
+            left: 12,
+          ),
+          child: CategoryTitle(
+            title: "Top Selling",
+          ),
         ),
         CarouselSlider(
           items: imgList.map((imgURL) {

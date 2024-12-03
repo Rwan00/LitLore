@@ -11,26 +11,20 @@ class CategoryTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(
-        left: 12.0,
-        top: 12,
-      ),
-      child: Row(
-        children: [
-          Text(
-            title,
-            style: MyFonts.titleMediumStyle18,
+    return Row(
+      children: [
+        Text(
+          title,
+          style: MyFonts.titleMediumStyle18,
+        ),
+        const Spacer(),
+        IconButton(
+          onPressed: () {},
+          icon: const Icon(
+            Icons.arrow_forward_ios,
           ),
-          const Spacer(),
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.arrow_forward_ios,
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

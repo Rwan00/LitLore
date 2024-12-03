@@ -10,6 +10,8 @@ class BookDetailsView extends StatelessWidget {
     final imgUrl = ModalRoute.of(context)?.settings.arguments as String;
     return Scaffold(
       appBar: AppBar(
+        surfaceTintColor: Colors.white,
+        backgroundColor: Colors.transparent,
         leading: IconButton(
           onPressed: () {
             Navigator.of(context).pop();

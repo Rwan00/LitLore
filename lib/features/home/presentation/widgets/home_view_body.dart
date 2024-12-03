@@ -24,14 +24,18 @@ class HomeViewBody extends StatelessWidget {
           child: Column(
             children: [
               TopSellingSlider(imgList: imgList),
-              const CategoryTitle(title: "Recommended For You"),
+              const Padding(
+                padding: EdgeInsets.only(
+                  left: 12,
+                ),
+                child: CategoryTitle(title: "Recommended For You"),
+              ),
             ],
           ),
         ),
         SliverFillRemaining(
           child: RecommendedBooksList(imgList: imgList),
         )
-       
       ],
     );
   }
