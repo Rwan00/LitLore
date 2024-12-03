@@ -70,7 +70,7 @@ class BookItem extends StatelessWidget {
                     const Align(
                       alignment: AlignmentDirectional.bottomEnd,
                       child: Text(
-                        "19.99 L.E",
+                        "11.11 L.E",
                         style: MyFonts.textStyleStyle16,
                       ),
                     ),

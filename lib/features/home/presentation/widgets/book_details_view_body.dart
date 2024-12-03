@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'package:litlore/core/utils/app_methods.dart';
-import 'package:litlore/features/home/presentation/widgets/book_image.dart';
 
 
-import 'book_basic_details.dart';
+import 'book_details_section.dart';
+
+import 'release_overview_section.dart';
 
 class BookDetailsViewBody extends StatelessWidget {
   final String imgUrl;
@@ -26,24 +26,15 @@ class BookDetailsViewBody extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Hero(
-                tag: imgUrl,
-                child: SizedBox(
-                  width: width(context) * 0.3,
-                  child: BookImage(imgUrl: imgUrl),
-                ),
-              ),
-              const SizedBox(
-                width: 12,
-              ),
-              BookBasicDetails(categories: categories)
-            ],
+          BookDetailsSection(imgUrl: imgUrl, categories: categories),
+          const SizedBox(
+            height: 55,
           ),
+          const ReleaseOverViewSection()
         ],
       ),
     );
   }
 }
+
 

@@ -13,7 +13,7 @@ abstract class MyFonts {
     color: MyColors.kPrimaryColor,
     fontSize: 22,
   );
-  static final titleMediumStyle18 = GoogleFonts.margarine(
+  static final titleMediumStyle18 = GoogleFonts.abyssinicaSil(
     color: MyColors.kPrimaryColor,
     fontSize: 18,
     fontWeight: FontWeight.bold,
