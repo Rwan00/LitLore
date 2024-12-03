@@ -5,6 +5,7 @@ import 'book_action_section.dart';
 import 'book_details_section.dart';
 
 import 'release_overview_section.dart';
+import 'similar_books_list.dart';
 
 class BookDetailsViewBody extends StatelessWidget {
   final String imgUrl;
@@ -37,12 +38,14 @@ class BookDetailsViewBody extends StatelessWidget {
               height: 45,
             ),
             const BookActionSection(),
-            const AboutBookSection()
+            const AboutBookSection(),
+            const SizedBox(
+              height: 18,
+            ),
+            SimilarBooksList(imgUrl: imgUrl)
           ],
         ),
       ),
     );
   }
 }
-
-
