@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:litlore/core/utils/app_methods.dart';
-import 'package:litlore/features/home/presentation/widgets/book_details_view_body.dart';
+import 'package:litlore/features/search/presentation/widgets/search_view_body.dart';
 
-class BookDetailsView extends StatelessWidget {
-  static const routeName = "Book Details View";
-  const BookDetailsView({super.key});
+class SearchView extends StatelessWidget {
+  static const String routeName = "Search View";
+  const SearchView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final imgUrl = ModalRoute.of(context)?.settings.arguments as String;
     return Scaffold(
       appBar: AppBar(
         surfaceTintColor: Colors.white,
@@ -22,16 +22,11 @@ class BookDetailsView extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {},
-            icon: const Icon(
-              Icons.star_border_outlined,
-              size: 28,
-            ),
+            icon: const Icon(FontAwesomeIcons.hatWizard),
           ),
         ],
       ),
-      body: BookDetailsViewBody(
-        imgUrl: imgUrl,
-      ),
+      body: const SearchViewBody(),
     );
   }
 }

@@ -22,6 +22,10 @@ void goToPage({
   }
 }
 
+void viewPop(BuildContext context) {
+  Navigator.of(context).pop();
+}
+
 double height(context) {
   return MediaQuery.of(context).size.height;
 }

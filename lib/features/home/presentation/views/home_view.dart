@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:litlore/core/theme/fonts.dart';
 import 'package:litlore/core/utils/app_assets.dart';
+import 'package:litlore/core/utils/app_methods.dart';
 import 'package:litlore/features/home/presentation/widgets/home_view_body.dart';
+
+import '../../../search/presentation/views/search_view.dart';
 
 class HomeView extends StatelessWidget {
   static const routeName = "/HomeView";
@@ -22,7 +25,13 @@ class HomeView extends StatelessWidget {
         actions: [
           const Icon(FontAwesomeIcons.hatWizard),
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              goToPage(
+                context: context,
+                routeName: SearchView.routeName,
+                delete: false,
+              );
+            },
             icon: const Icon(FontAwesomeIcons.magnifyingGlass),
           ),
         ],
