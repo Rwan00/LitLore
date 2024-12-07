@@ -6,8 +6,8 @@ import 'package:litlore/features/search/presentation/views/search_view.dart';
 import 'package:litlore/features/splash/presentation/views/splash_view.dart';
 
 Map<String, WidgetBuilder> routes = {
-"/": (_) => const SplashView(),
-    HomeView.routeName: (_) => const HomeView(),
-    BookDetailsView.routeName:(_)=>const BookDetailsView(),
-    SearchView.routeName:(_)=>const SearchView(),
+  "/": (_) => const SplashView(),
+  HomeView.routeName: (_) => const HomeView(),
+  BookDetailsView.routeName: (_) => const BookDetailsView(),
+  SearchView.routeName: (_) => const SearchView(),
 };

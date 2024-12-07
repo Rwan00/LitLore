@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 import '../../../../core/theme/colors.dart';
@@ -32,7 +31,7 @@ class BookBasicDetails extends StatelessWidget {
           const SizedBox(
             height: 6,
           ),
-           Text(
+          Text(
             "Paul Hoffman",
             style: MyFonts.subTiltleStyle14,
           ),

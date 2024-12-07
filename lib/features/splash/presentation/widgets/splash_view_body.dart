@@ -88,7 +88,8 @@ class _SplashViewBodyState extends State<SplashViewBody>
       ),
       () {
         if (mounted) {
-          goToPage(context: context, routeName: HomeView.routeName,delete: true);
+          goToPage(
+              context: context, routeName: HomeView.routeName, delete: true);
         }
       },
     );
