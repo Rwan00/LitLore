@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:litlore/core/theme/colors.dart';
 import 'package:litlore/core/routes/app_routes.dart';
 
+
 void main() {
   runApp(const LitLore());
 }
@@ -16,6 +17,7 @@ class LitLore extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       routes: routes,
+      
       theme: ThemeData(
         scaffoldBackgroundColor: MyColors.kScaffoldColor,
         appBarTheme: const AppBarTheme(color: MyColors.kScaffoldColor),
