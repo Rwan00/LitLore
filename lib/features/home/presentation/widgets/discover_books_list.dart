@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'book_item.dart';
 
-class RecommendedBooksList extends StatelessWidget {
+class DiscoverBooksList extends StatelessWidget {
   final List imgList;
-  const RecommendedBooksList({super.key, required this.imgList});
+  const DiscoverBooksList({super.key, required this.imgList});
 
   @override
   Widget build(BuildContext context) {

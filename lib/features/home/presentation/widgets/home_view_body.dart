@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:litlore/features/home/presentation/widgets/category_title.dart';
-import 'package:litlore/features/home/presentation/widgets/recommended_books_list.dart';
+import 'package:litlore/features/home/presentation/widgets/discover_books_list.dart';
 
-import 'package:litlore/features/home/presentation/widgets/top_selling_slider.dart';
+import 'package:litlore/features/home/presentation/widgets/newest_books_slider.dart';
 
 class HomeViewBody extends StatelessWidget {
   const HomeViewBody({super.key});
@@ -23,18 +23,18 @@ class HomeViewBody extends StatelessWidget {
         SliverToBoxAdapter(
           child: Column(
             children: [
-              TopSellingSlider(imgList: imgList),
+              NewestBooksSlider(imgList: imgList),
               const Padding(
                 padding: EdgeInsets.only(
                   left: 12,
                 ),
-                child: CategoryTitle(title: "Recommended For You"),
+                child: CategoryTitle(title: "Discover Books"),
               ),
             ],
           ),
         ),
         SliverFillRemaining(
-          child: RecommendedBooksList(imgList: imgList),
+          child: DiscoverBooksList(imgList: imgList),
         ),
         const SliverToBoxAdapter(
           child: SizedBox(

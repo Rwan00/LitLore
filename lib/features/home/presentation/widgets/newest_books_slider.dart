@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'category_title.dart';
 import 'book_image.dart';
 
-class TopSellingSlider extends StatelessWidget {
+class NewestBooksSlider extends StatelessWidget {
   final List imgList;
-  const TopSellingSlider({super.key, required this.imgList});
+  const NewestBooksSlider({super.key, required this.imgList});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class TopSellingSlider extends StatelessWidget {
             left: 12,
           ),
           child: CategoryTitle(
-            title: "Top Selling",
+            title: "Newest Books",
           ),
         ),
         CarouselSlider(
