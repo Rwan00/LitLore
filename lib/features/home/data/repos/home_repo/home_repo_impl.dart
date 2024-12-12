@@ -5,17 +5,19 @@ import 'package:dio/dio.dart';
 import 'package:litlore/core/errors/failures.dart';
 import 'package:litlore/core/network/remote/api_service.dart';
 import 'package:litlore/features/home/data/models/book_model/book_model.dart';
-import 'package:litlore/features/home/data/repos/home_repo.dart';
+import 'package:litlore/features/home/data/repos/home_repo/home_endpoints.dart';
+import 'package:litlore/features/home/data/repos/home_repo/home_repo.dart';
 
 class HomeRepoImpl implements HomeRepo {
   final ApiService apiService;
 
   HomeRepoImpl({required this.apiService});
   @override
-  Future<Either<Failures, List<BookModel>>> fetchDiscoverBooks() async{
-   try {
+  Future<Either<Failures, List<BookModel>>> fetchDiscoverBooks() async {
+    try {
       var data = await apiService.get(
-          endPoint: "volumes?q=subject: drama");
+        endPoint: HomeEndpoints.discoverBookEndpoint,
+      );
       List<BookModel> books = [];
       for (var item in data["items"]) {
         books.add(BookModel.fromJson(item));
@@ -31,14 +33,14 @@ class HomeRepoImpl implements HomeRepo {
         ),
       );
     }
-  
   }
 
   @override
   Future<Either<Failures, List<BookModel>>> fetchNewestBooks() async {
     try {
       var data = await apiService.get(
-          endPoint: "volumes?q=subject: api&Sorting=newest");
+        endPoint: HomeEndpoints.newestBookEndpoint,
+      );
       List<BookModel> books = [];
       for (var item in data["items"]) {
         books.add(BookModel.fromJson(item));
