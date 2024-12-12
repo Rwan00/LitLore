@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import 'package:litlore/core/utils/app_methods.dart';
 import 'package:litlore/features/search/presentation/widgets/search_view_body.dart';
+
+import '../../../../core/utils/app_assets.dart';
 
 class SearchView extends StatelessWidget {
   static const String routeName = "Search View";
@@ -22,7 +24,7 @@ class SearchView extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {},
-            icon: const Icon(FontAwesomeIcons.hatWizard),
+            icon:  const Image(image: AssetImage(AssetsData.wizard,),),
           ),
         ],
       ),

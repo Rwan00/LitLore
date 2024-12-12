@@ -14,32 +14,37 @@ class ServerFailure extends Failures {
       case DioExceptionType.connectionTimeout:
         return ServerFailure(
             errorMsg:
-                "Conneection Timeout..Please check your internet connection.");
+                "Conneection Timeout,\n Don't worry, the server just play hide and seek with you.");
       case DioExceptionType.sendTimeout:
         return ServerFailure(
-          errorMsg: "Send Timeout..Please check your internet connection.",
+          errorMsg: "This request took too long,\n We gave up.",
         );
       case DioExceptionType.receiveTimeout:
         return ServerFailure(
-          errorMsg: "Receive Timeout..Please check your internet connection.",
+          errorMsg: "No reply,\n Maybe the server's giving us the silent treatment.",
         );
       case DioExceptionType.badCertificate:
         return ServerFailure(
-          errorMsg: "Bad Certificate..Don't worry it's our fault.",
+          errorMsg: "Certificate error,\n Looks like someone skipped their SSL class.",
         );
       case DioExceptionType.badResponse:
-      return ServerFailure.fromResponse(dioException.response!.statusCode!, dioException.response!.data,);
+        return ServerFailure.fromResponse(
+          dioException.response!.statusCode!,
+          dioException.response!.data,
+        );
       case DioExceptionType.cancel:
-      return ServerFailure(
-          errorMsg: "Your request was cancelled",
+        return ServerFailure(
+          errorMsg: "Request canceled,\n Was it something i said?",
         );
       case DioExceptionType.connectionError:
-      return ServerFailure(
-          errorMsg: "No Internet Connection, Don't try to fix it..Go for a walk",
+        return ServerFailure(
+          errorMsg:
+              "We tried to connect,\n But the internet ghosted us.",
         );
       case DioExceptionType.unknown:
-      return ServerFailure(
-          errorMsg: "Something went wrong, Actually we don't know if it's your fault or ours, But we're always right.",
+        return ServerFailure(
+          errorMsg:
+              "Something went wrong,\n Actually we don't know if it's your fault or ours, But we're always right.",
         );
     }
   }
@@ -48,15 +53,17 @@ class ServerFailure extends Failures {
     if (statusCode == 400 || statusCode == 401 || statusCode == 403) {
       return ServerFailure(errorMsg: response["error"]["message"]);
     } else if (statusCode == 404) {
-      return ServerFailure(errorMsg: "Your request not found, Please try again later!");
-    }else if(statusCode == 500){
-       return ServerFailure(
-          errorMsg: "Server Error..Don't worry it's our mistake, Go touch the grass until we fix the problem.",
-        );
-    }else{
-       return ServerFailure(
-          errorMsg: "Oops! Something went wrong.",
-        );
+      return ServerFailure(
+          errorMsg: "Your request not found, Please try again later!");
+    } else if (statusCode == 500) {
+      return ServerFailure(
+        errorMsg:
+            "Server Error..Don't worry it's our mistake, Go touch the grass until we fix the problem.",
+      );
+    } else {
+      return ServerFailure(
+        errorMsg: "Oops! Something went wrong.",
+      );
     }
   }
 }

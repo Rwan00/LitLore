@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 
 import '../../../../core/theme/fonts.dart';
 
@@ -13,7 +13,7 @@ class BookRating extends StatelessWidget {
     return Row(
       children: [
         const Icon(
-          FontAwesomeIcons.solidStar,
+          Icons.star,
           color: Colors.orange,
           size: 12,
         ),

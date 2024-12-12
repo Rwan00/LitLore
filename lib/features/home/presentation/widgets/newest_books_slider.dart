@@ -41,8 +41,8 @@ class NewestBooksSlider extends StatelessWidget {
                         imgUrl: book.volumeInfo.imageLinks.thumbnail);
                   }).toList(),
                   options: CarouselOptions(
-                    aspectRatio: 1.9,
-                    viewportFraction: 0.4,
+                    aspectRatio: 2,
+                    viewportFraction: 0.35,
                     initialPage: 0,
                     enlargeCenterPage: true,
                     pauseAutoPlayOnManualNavigate: true,
@@ -58,7 +58,7 @@ class NewestBooksSlider extends StatelessWidget {
             return const Center(
               child: Image(
                 image: AssetImage(
-                  AssetsData.loading,
+                  AssetsData.loadingBook,
                 ),
               ),
             );
