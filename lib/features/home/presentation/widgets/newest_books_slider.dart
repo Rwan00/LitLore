@@ -11,14 +11,14 @@ import 'category_title.dart';
 import 'book_image.dart';
 
 class NewestBooksSlider extends StatelessWidget {
-  final List imgList;
-  const NewestBooksSlider({super.key, required this.imgList});
+  const NewestBooksSlider({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) =>
-          NewestBooksCubit(ServiceLocator.getIt<HomeRepoImpl>())..fetchNewestBooks(),
+          NewestBooksCubit(ServiceLocator.getIt<HomeRepoImpl>())
+            ..fetchNewestBooks(),
       child: BlocBuilder<NewestBooksCubit, NewestBooksState>(
         builder: (context, state) {
           if (state is NewestBooksFailure) {
@@ -36,11 +36,12 @@ class NewestBooksSlider extends StatelessWidget {
                   ),
                 ),
                 CarouselSlider(
-                  items: imgList.map((imgURL) {
-                    return BookImage(imgUrl: imgURL);
+                  items: state.books.map((book) {
+                    return BookImage(
+                        imgUrl: book.volumeInfo.imageLinks.thumbnail);
                   }).toList(),
                   options: CarouselOptions(
-                    aspectRatio: 1.67,
+                    aspectRatio: 1.9,
                     viewportFraction: 0.4,
                     initialPage: 0,
                     enlargeCenterPage: true,

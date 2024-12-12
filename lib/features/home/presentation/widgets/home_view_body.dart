@@ -20,11 +20,11 @@ class HomeViewBody extends StatelessWidget {
     ];
     return CustomScrollView(
       slivers: <Widget>[
-        SliverToBoxAdapter(
+        const SliverToBoxAdapter(
           child: Column(
             children: [
-              NewestBooksSlider(imgList: imgList),
-              const Padding(
+              NewestBooksSlider(),
+              Padding(
                 padding: EdgeInsets.only(
                   left: 12,
                 ),
