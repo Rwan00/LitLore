@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:litlore/core/theme/colors.dart';
 import 'package:litlore/core/routes/app_routes.dart';
-
+import 'package:litlore/core/utils/service_locator.dart';
 
 void main() {
+  ServiceLocator.setup();
   runApp(const LitLore());
 }
 
@@ -17,7 +18,6 @@ class LitLore extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       routes: routes,
-      
       theme: ThemeData(
         scaffoldBackgroundColor: MyColors.kScaffoldColor,
         appBarTheme: const AppBarTheme(color: MyColors.kScaffoldColor),

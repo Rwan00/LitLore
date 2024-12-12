@@ -8,13 +8,13 @@ import 'package:litlore/features/home/data/models/book_model/book_model.dart';
 import 'package:litlore/features/home/data/repos/home_repo.dart';
 
 class HomeRepoImpl implements HomeRepo {
-  final AppService appService;
+  final ApiService apiService;
 
-  HomeRepoImpl({required this.appService});
+  HomeRepoImpl({required this.apiService});
   @override
   Future<Either<Failures, List<BookModel>>> fetchDiscoverBooks() async{
    try {
-      var data = await appService.get(
+      var data = await apiService.get(
           endPoint: "volumes?q=subject: drama");
       List<BookModel> books = [];
       for (var item in data["items"]) {
@@ -37,7 +37,7 @@ class HomeRepoImpl implements HomeRepo {
   @override
   Future<Either<Failures, List<BookModel>>> fetchNewestBooks() async {
     try {
-      var data = await appService.get(
+      var data = await apiService.get(
           endPoint: "volumes?q=subject: api&Sorting=newest");
       List<BookModel> books = [];
       for (var item in data["items"]) {
