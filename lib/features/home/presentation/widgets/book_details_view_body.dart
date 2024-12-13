@@ -35,6 +35,7 @@ class BookDetailsViewBody extends StatelessWidget {
             price: book.saleInfo?.saleability == "FOR_SALE"
                 ? "Buy For ${book.saleInfo?.listPrice?.amount} ${book.saleInfo?.listPrice?.currencyCode}"
                 : "Not for sale",
+                url: book.volumeInfo.previewLink!,
           ),
           AboutBookSection(
             description: book.volumeInfo.description ?? "",

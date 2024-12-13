@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/theme/colors.dart';
 import '../../../../core/theme/fonts.dart';
 
 class BookActionSection extends StatelessWidget {
   final String price;
+  final String url;
   const BookActionSection({
-    super.key, required this.price,
+    super.key,
+    required this.price,
+    required this.url,
   });
 
   @override
@@ -35,7 +39,12 @@ class BookActionSection extends StatelessWidget {
           width: 2,
         ),
         ElevatedButton(
-          onPressed: () {},
+          onPressed: () async {
+            Uri uri = Uri.parse(url);
+            if (await canLaunchUrl(uri)) {
+              await launchUrl(uri);
+            }
+          },
           style: ButtonStyle(
             shape: WidgetStateProperty.all(
               const RoundedRectangleBorder(
