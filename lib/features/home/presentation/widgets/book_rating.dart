@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 import '../../../../core/theme/fonts.dart';
 
 class BookRating extends StatelessWidget {

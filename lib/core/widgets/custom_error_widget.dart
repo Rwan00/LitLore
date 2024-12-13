@@ -5,7 +5,11 @@ import 'package:litlore/core/utils/app_assets.dart';
 class CustomErrorWidget extends StatelessWidget {
   final String error;
   final void Function() retryFunction;
-  const CustomErrorWidget({super.key, required this.error,required this.retryFunction,});
+  const CustomErrorWidget({
+    super.key,
+    required this.error,
+    required this.retryFunction,
+  });
 
   @override
   Widget build(BuildContext context) {

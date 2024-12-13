@@ -6,7 +6,7 @@ import 'book_action_section.dart';
 import 'book_details_section.dart';
 
 import 'release_overview_section.dart';
-import 'similar_books_list.dart';
+
 
 class BookDetailsViewBody extends StatelessWidget {
   final BookModel book;
@@ -30,7 +30,9 @@ class BookDetailsViewBody extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            BookDetailsSection(imgUrl: book.volumeInfo.imageLinks.smallThumbnail, categories: categories),
+            BookDetailsSection(
+                imgUrl: book.volumeInfo.imageLinks?.smallThumbnail??"",
+                categories: categories),
             const SizedBox(
               height: 55,
             ),
@@ -43,7 +45,7 @@ class BookDetailsViewBody extends StatelessWidget {
             const SizedBox(
               height: 18,
             ),
-            SimilarBooksList(imgUrl: book.volumeInfo.imageLinks.smallThumbnail)
+            //SimilarBooksList(imgUrl: book.volumeInfo.imageLinks?.smallThumbnail?"")
           ],
         ),
       ),

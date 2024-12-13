@@ -31,7 +31,7 @@ class BookDetailsView extends StatelessWidget {
         ],
       ),
       body: BookDetailsViewBody(
-      book: book,
+        book: book,
       ),
     );
   }

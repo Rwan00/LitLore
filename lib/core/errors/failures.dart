@@ -21,11 +21,13 @@ class ServerFailure extends Failures {
         );
       case DioExceptionType.receiveTimeout:
         return ServerFailure(
-          errorMsg: "No reply,\n Maybe the server's giving us the silent treatment.",
+          errorMsg:
+              "No reply,\n Maybe the server's giving us the silent treatment.",
         );
       case DioExceptionType.badCertificate:
         return ServerFailure(
-          errorMsg: "Certificate error,\n Looks like someone skipped their SSL class.",
+          errorMsg:
+              "Certificate error,\n Looks like someone skipped their SSL class.",
         );
       case DioExceptionType.badResponse:
         return ServerFailure.fromResponse(
@@ -38,8 +40,7 @@ class ServerFailure extends Failures {
         );
       case DioExceptionType.connectionError:
         return ServerFailure(
-          errorMsg:
-              "We tried to connect,\n But the internet ghosted us.",
+          errorMsg: "We tried to connect,\n But the internet ghosted us.",
         );
       case DioExceptionType.unknown:
         return ServerFailure(

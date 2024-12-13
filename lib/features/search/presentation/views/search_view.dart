@@ -24,7 +24,11 @@ class SearchView extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {},
-            icon:  const Image(image: AssetImage(AssetsData.wizard,),),
+            icon: const Image(
+              image: AssetImage(
+                AssetsData.wizard,
+              ),
+            ),
           ),
         ],
       ),
