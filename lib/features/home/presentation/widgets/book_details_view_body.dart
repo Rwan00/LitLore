@@ -20,19 +20,25 @@ class BookDetailsViewBody extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           BookDetailsSection(
-            imgUrl: book.volumeInfo.imageLinks?.smallThumbnail ?? "",
-            categories: book.volumeInfo.categories ?? [],
-            bookId: book.id,
+            book: book,
           ),
           const SizedBox(
             height: 55,
           ),
-          const ReleaseOverViewSection(),
+          ReleaseOverViewSection(
+            book: book,
+          ),
           const SizedBox(
             height: 45,
           ),
-          const BookActionSection(),
-          const AboutBookSection(),
+          BookActionSection(
+            price: book.saleInfo?.saleability == "FOR_SALE"
+                ? "Buy For ${book.saleInfo?.listPrice?.amount} ${book.saleInfo?.listPrice?.currencyCode}"
+                : "Not for sale",
+          ),
+          AboutBookSection(
+            description: book.volumeInfo.description ?? "",
+          ),
           const SizedBox(
             height: 18,
           ),

@@ -4,8 +4,9 @@ import '../../../../core/theme/colors.dart';
 import '../../../../core/theme/fonts.dart';
 
 class BookActionSection extends StatelessWidget {
+  final String price;
   const BookActionSection({
-    super.key,
+    super.key, required this.price,
   });
 
   @override
@@ -26,7 +27,7 @@ class BookActionSection extends StatelessWidget {
             ),
           ),
           child: Text(
-            "Buy For 11.11 L.E",
+            price,
             style: MyFonts.subTiltleStyle14,
           ),
         ),

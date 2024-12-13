@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:litlore/features/home/data/models/book_model/book_model.dart';
 
 import '../../../../core/theme/colors.dart';
 import '../../../../core/theme/fonts.dart';
@@ -7,10 +8,10 @@ import '../../../../core/utils/app_methods.dart';
 class BookBasicDetails extends StatelessWidget {
   const BookBasicDetails({
     super.key,
-    required this.categories,
+    required this.book,
   });
 
-  final List<String> categories;
+  final BookModel book;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,7 @@ class BookBasicDetails extends StatelessWidget {
           SizedBox(
             width: width(context) * 0.6,
             child: Text(
-              "The last four things",
+             book.volumeInfo.title,
               style: MyFonts.titleMediumStyle18,
               softWrap: true,
               maxLines: 5,
@@ -32,14 +33,14 @@ class BookBasicDetails extends StatelessWidget {
             height: 6,
           ),
           Text(
-            "Paul Hoffman",
+            book.volumeInfo.authors?.join(', ') ?? '',
             style: MyFonts.subTiltleStyle14,
           ),
           const SizedBox(
             height: 6,
           ),
-          const Text(
-            "Released on: 2015-05-22",
+           Text(
+            "Released on: ${book.volumeInfo.publishedDate}",
             style: MyFonts.subTiltleStyle12,
           ),
           const SizedBox(
@@ -48,7 +49,7 @@ class BookBasicDetails extends StatelessWidget {
           Wrap(
             direction: Axis.horizontal,
             children: List.generate(
-              categories.length,
+              book.volumeInfo.categories?.length??0,
               (index) {
                 return Padding(
                   padding: const EdgeInsets.all(2.0),
@@ -60,7 +61,7 @@ class BookBasicDetails extends StatelessWidget {
                       color: MyColors.kPrimaryColor.withOpacity(0.3),
                     ),
                     child: Text(
-                      categories[index],
+                      book.volumeInfo.categories?[index]??"",
                       style: MyFonts.subTiltleStyle12,
                     ),
                   ),

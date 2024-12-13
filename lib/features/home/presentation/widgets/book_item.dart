@@ -72,8 +72,9 @@ class BookItem extends StatelessWidget {
                       height: 6,
                     ),
                     BookRating(
-                        rating: book.volumeInfo.averageRating!,
-                        count: book.volumeInfo.ratingsCount!),
+                      rating: book.volumeInfo.averageRating!,
+                      count: book.volumeInfo.ratingsCount!,
+                    ),
                     const Spacer(),
                     Align(
                       alignment: AlignmentDirectional.bottomEnd,

@@ -1,20 +1,16 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/utils/app_methods.dart';
+import '../../data/models/book_model/book_model.dart';
 import 'book_basic_details.dart';
 import 'book_image.dart';
 
 class BookDetailsSection extends StatelessWidget {
   const BookDetailsSection({
-    super.key,
-    required this.imgUrl,
-    required this.bookId,
-    required this.categories,
+    super.key, required this.book,
   });
 
-  final String imgUrl;
-  final String bookId;
-  final List<String> categories;
+  final BookModel book;
 
   @override
   Widget build(BuildContext context) {
@@ -25,14 +21,14 @@ class BookDetailsSection extends StatelessWidget {
           SizedBox(
             width: width(context) * 0.3,
             child: Hero(
-              tag: bookId,
-              child: BookImage(imgUrl: imgUrl),
+              tag: book.id,
+              child: BookImage(imgUrl: book.volumeInfo.imageLinks?.smallThumbnail??"",),
             ),
           ),
           const SizedBox(
             width: 12,
           ),
-          BookBasicDetails(categories: categories),
+          BookBasicDetails(book: book),
         ],
       ),
     );
