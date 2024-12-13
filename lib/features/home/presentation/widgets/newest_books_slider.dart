@@ -21,14 +21,7 @@ class NewestBooksSlider extends StatelessWidget {
             ..fetchNewestBooks(),
       child: BlocBuilder<NewestBooksCubit, NewestBooksState>(
         builder: (context, state) {
-          if (state is NewestBooksFailure) {
-            return CustomErrorWidget(
-              error: state.errorMsg,
-              retryFunction: () async {
-                NewestBooksCubit.get(context).fetchNewestBooks();
-              },
-            );
-          } else if (state is NewestBooksSuccess) {
+          if (state is NewestBooksSuccess) {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -36,6 +29,7 @@ class NewestBooksSlider extends StatelessWidget {
                   items: state.books.map((book) {
                     return BookImage(
                       imgUrl: book.volumeInfo.imageLinks?.smallThumbnail ?? "",
+                      
                     );
                   }).toList(),
                   options: CarouselOptions(
@@ -52,7 +46,15 @@ class NewestBooksSlider extends StatelessWidget {
                 ),
               ],
             );
-          } else {
+          } else if (state is NewestBooksFailure) {
+            return CustomErrorWidget(
+              error: state.errorMsg,
+              retryFunction: () async {
+                NewestBooksCubit.get(context).fetchNewestBooks();
+              },
+            );
+          } 
+          else {
             return const CustomLoadingWidget();
           }
         },

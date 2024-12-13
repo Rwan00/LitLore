@@ -37,7 +37,12 @@ class BookItem extends StatelessWidget {
           ),
           child: Row(
             children: [
-              BookImage(imgUrl: book.volumeInfo.imageLinks?.smallThumbnail??""),
+              Hero(
+                tag: book.id,
+                child: BookImage(
+                  imgUrl: book.volumeInfo.imageLinks?.smallThumbnail ?? "",
+                ),
+              ),
               const SizedBox(
                 width: 8,
               ),
@@ -66,7 +71,9 @@ class BookItem extends StatelessWidget {
                     const SizedBox(
                       height: 6,
                     ),
-                     BookRating(rating: book.volumeInfo.averageRating!,count:book.volumeInfo.ratingsCount!),
+                    BookRating(
+                        rating: book.volumeInfo.averageRating!,
+                        count: book.volumeInfo.ratingsCount!),
                     const Spacer(),
                     Align(
                       alignment: AlignmentDirectional.bottomEnd,

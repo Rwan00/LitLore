@@ -8,28 +8,33 @@ class BookDetailsSection extends StatelessWidget {
   const BookDetailsSection({
     super.key,
     required this.imgUrl,
+    required this.bookId,
     required this.categories,
   });
 
   final String imgUrl;
+  final String bookId;
   final List<String> categories;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Hero(
-          tag: imgUrl,
-          child: SizedBox(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+      child: Row(
+        children: [
+          SizedBox(
             width: width(context) * 0.3,
-            child: BookImage(imgUrl: imgUrl),
+            child: Hero(
+              tag: bookId,
+              child: BookImage(imgUrl: imgUrl),
+            ),
           ),
-        ),
-        const SizedBox(
-          width: 12,
-        ),
-        BookBasicDetails(categories: categories),
-      ],
+          const SizedBox(
+            width: 12,
+          ),
+          BookBasicDetails(categories: categories),
+        ],
+      ),
     );
   }
 }
