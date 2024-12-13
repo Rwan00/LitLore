@@ -35,12 +35,12 @@ class NewestBooksSlider extends StatelessWidget {
                 CarouselSlider(
                   items: state.books.map((book) {
                     return BookImage(
-                      imgUrl: book.volumeInfo.imageLinks?.smallThumbnail??"",
+                      imgUrl: book.volumeInfo.imageLinks?.smallThumbnail ?? "",
                     );
                   }).toList(),
                   options: CarouselOptions(
-                    aspectRatio: 2,
-                    viewportFraction: 0.35,
+                    aspectRatio: 2.4,
+                    viewportFraction: 0.3,
                     initialPage: 0,
                     enlargeCenterPage: true,
                     pauseAutoPlayOnManualNavigate: true,

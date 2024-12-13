@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import '../../../../core/theme/fonts.dart';
 
 class BookRating extends StatelessWidget {
+  final num rating;
+  final num count;
   const BookRating({
-    super.key,
+    super.key, required this.rating, required this.count,
   });
 
   @override
@@ -19,15 +21,15 @@ class BookRating extends StatelessWidget {
         const SizedBox(
           width: 4,
         ),
-        const Text(
-          "4.8",
+         Text(
+          rating.toString(),
           style: MyFonts.subTiltleStyle12,
         ),
         const SizedBox(
           width: 4,
         ),
         Text(
-          "(2658)",
+          "($count)",
           style: MyFonts.subTiltleStyle12.copyWith(
             color: Colors.grey,
           ),

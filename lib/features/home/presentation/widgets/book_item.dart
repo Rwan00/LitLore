@@ -66,13 +66,13 @@ class BookItem extends StatelessWidget {
                     const SizedBox(
                       height: 6,
                     ),
-                    const BookRating(),
+                     BookRating(rating: book.volumeInfo.averageRating!,count:book.volumeInfo.ratingsCount!),
                     const Spacer(),
                     Align(
                       alignment: AlignmentDirectional.bottomEnd,
                       child: Text(
                         book.saleInfo?.saleability == "FOR_SALE"
-                            ? "11"
+                            ? "${book.saleInfo?.listPrice?.amount} ${book.saleInfo?.listPrice?.currencyCode}"
                             : "Not for sale",
                         style: MyFonts.textStyleStyle16,
                       ),

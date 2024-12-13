@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/theme/fonts.dart';
-import 'book_rating.dart';
+
 import 'custom_vertical_divider.dart';
 
 class ReleaseOverViewSection extends StatelessWidget {
@@ -16,7 +16,7 @@ class ReleaseOverViewSection extends StatelessWidget {
       children: [
         const Column(
           children: [
-            BookRating(),
+            //BookRating(),
             Text(
               "Review",
               style: MyFonts.subTiltleStyle12,

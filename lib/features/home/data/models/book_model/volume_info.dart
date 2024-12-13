@@ -20,8 +20,8 @@ class VolumeInfo extends Equatable {
   final Dimensions? dimensions;
   final String? printType;
   final List<String>? categories;
-  final int? averageRating;
-  final int? ratingsCount;
+  final num? averageRating;
+  final num? ratingsCount;
   final String? maturityRating;
   final bool? allowAnonLogging;
   final String? contentVersion;
@@ -79,9 +79,11 @@ class VolumeInfo extends Equatable {
             ? null
             : Dimensions.fromJson(json['dimensions'] as Map<String, dynamic>),
         printType: json['printType'] as String?,
-         categories: (json['categories'] as List<dynamic>?)?.cast<String>(),
-        averageRating: json['averageRating'] as int?,
-        ratingsCount: json['ratingsCount'] as int?,
+        categories: (json['categories'] as List<dynamic>?)?.cast<String>(),
+        averageRating:
+            json['averageRating'] == null ? 0 : json['averageRating'] as num?,
+        ratingsCount:
+            json['ratingsCount'] == null ? 0 : json['ratingsCount'] as num?,
         maturityRating: json['maturityRating'] as String?,
         allowAnonLogging: json['allowAnonLogging'] as bool?,
         contentVersion: json['contentVersion'] as String?,
