@@ -4,7 +4,8 @@ import 'package:litlore/core/utils/app_assets.dart';
 
 class CustomErrorWidget extends StatelessWidget {
   final String error;
-  const CustomErrorWidget({super.key, required this.error});
+  final void Function() retryFunction;
+  const CustomErrorWidget({super.key, required this.error,required this.retryFunction,});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,17 @@ class CustomErrorWidget extends StatelessWidget {
             style: MyFonts.textStyleStyle16,
             textAlign: TextAlign.center,
           ),
-        )
+        ),
+        TextButton.icon(
+          onPressed: retryFunction,
+          label: Text(
+            "Try again",
+            style: MyFonts.subTiltleStyle14,
+          ),
+          icon: const Icon(
+            Icons.restart_alt_sharp,
+          ),
+        ),
       ],
     );
   }

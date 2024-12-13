@@ -1,18 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:litlore/core/widgets/custom_loading_widget.dart';
+import 'package:litlore/features/home/manager/discover_books_cubit/discover_books_cubit.dart';
 
+import '../../../../core/utils/service_locator.dart';
+import '../../../../core/widgets/custom_error_widget.dart';
+import '../../data/repos/home_repo/home_repo_impl.dart';
 import 'book_item.dart';
 
 class DiscoverBooksList extends StatelessWidget {
-  final List imgList;
-  const DiscoverBooksList({super.key, required this.imgList});
+  const DiscoverBooksList({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: imgList.length,
-      itemBuilder: (context, index) => BookItem(
-        imgUrl: imgList[index],
+    return BlocProvider(
+      create: (context) =>
+          DiscoverBooksCubit(ServiceLocator.getIt<HomeRepoImpl>())
+            ..fetchDiscoverBooks(),
+      child: BlocBuilder<DiscoverBooksCubit, DiscoverBooksState>(
+        builder: (context, state) {
+          if (state is DiscoverBooksFailure) {
+            return CustomErrorWidget(
+              error: state.errorMsg,
+              retryFunction: () async {
+                DiscoverBooksCubit.get(context).fetchDiscoverBooks();
+              },
+            );
+          } else if (state is DiscoverBooksSuccess) {
+            return Column(
+              children: List.generate(
+                state.books.length,
+                (index) => BookItem(book: state.books[index]),
+              ),
+            );
+          } else {
+            return const CustomLoadingWidget();
+          }
+        },
       ),
     );
   }

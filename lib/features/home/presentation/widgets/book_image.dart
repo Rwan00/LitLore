@@ -8,22 +8,25 @@ class BookImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(7),
-      child: AspectRatio(
-        aspectRatio: 2.7 / 4,
-        child: CachedNetworkImage(
-          fit: BoxFit.fill,
-          imageUrl: imgUrl,
-          errorWidget: (context, url, error) => const Image(
-            image: AssetImage(
-              AssetsData.error,
+    return Hero(
+      tag: imgUrl,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(7),
+        child: AspectRatio(
+          aspectRatio: 2.7 / 4,
+          child: CachedNetworkImage(
+            fit: BoxFit.fill,
+            imageUrl: imgUrl,
+            errorWidget: (context, url, error) => const Image(
+              image: AssetImage(
+                AssetsData.error,
+              ),
+              
             ),
-            
-          ),
-          placeholder: (context, url) => const Image(
-            image: AssetImage(
-              AssetsData.loading,
+            placeholder: (context, url) => const Image(
+              image: AssetImage(
+                AssetsData.loading,
+              ),
             ),
           ),
         ),

@@ -3,14 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:litlore/core/theme/colors.dart';
 import 'package:litlore/core/theme/fonts.dart';
 import 'package:litlore/core/utils/app_methods.dart';
+import 'package:litlore/features/home/data/models/book_model/book_model.dart';
+
 import 'package:litlore/features/home/presentation/views/book_details_view.dart';
 import 'package:litlore/features/home/presentation/widgets/book_image.dart';
 
 import 'book_rating.dart';
 
 class BookItem extends StatelessWidget {
-  final String imgUrl;
-  const BookItem({super.key, required this.imgUrl});
+  final BookModel book;
+  const BookItem({super.key, required this.book});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +21,7 @@ class BookItem extends StatelessWidget {
         context: context,
         routeName: BookDetailsView.routeName,
         delete: false,
-        arguments: imgUrl,
+        arguments: book,
       ),
       child: Padding(
         padding: const EdgeInsets.only(left: 12.0, right: 12, bottom: 2),
@@ -35,10 +37,7 @@ class BookItem extends StatelessWidget {
           ),
           child: Row(
             children: [
-              Hero(
-                tag: imgUrl,
-                child: BookImage(imgUrl: imgUrl),
-              ),
+              BookImage(imgUrl: book.volumeInfo.imageLinks.smallThumbnail),
               const SizedBox(
                 width: 8,
               ),
@@ -47,9 +46,9 @@ class BookItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
-                      width: width(context) * 0.5,
-                      child: const Text(
-                        "The last four things",
+                      width: width(context) * 0.54,
+                      child: Text(
+                        book.volumeInfo.title,
                         style: MyFonts.textStyleStyle16,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
@@ -59,18 +58,22 @@ class BookItem extends StatelessWidget {
                       height: 6,
                     ),
                     Text(
-                      "Paul Hoffman",
+                      book.volumeInfo.authors?.take(2).join(', ') ?? '',
                       style: MyFonts.subTiltleStyle14,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(
                       height: 6,
                     ),
                     const BookRating(),
                     const Spacer(),
-                    const Align(
+                    Align(
                       alignment: AlignmentDirectional.bottomEnd,
                       child: Text(
-                        "11.11 L.E",
+                        book.saleInfo?.saleability == "FOR_SALE"
+                            ? "11"
+                            : "Not for sale",
                         style: MyFonts.textStyleStyle16,
                       ),
                     ),
