@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:litlore/features/home/data/models/book_model/book_model.dart';
 
 import 'about_book_section.dart';
 import 'book_action_section.dart';
@@ -8,8 +9,8 @@ import 'release_overview_section.dart';
 import 'similar_books_list.dart';
 
 class BookDetailsViewBody extends StatelessWidget {
-  final String imgUrl;
-  const BookDetailsViewBody({super.key, required this.imgUrl});
+  final BookModel book;
+  const BookDetailsViewBody({super.key, required this.book});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +30,7 @@ class BookDetailsViewBody extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            BookDetailsSection(imgUrl: imgUrl, categories: categories),
+            BookDetailsSection(imgUrl: book.volumeInfo.imageLinks.smallThumbnail, categories: categories),
             const SizedBox(
               height: 55,
             ),
@@ -42,7 +43,7 @@ class BookDetailsViewBody extends StatelessWidget {
             const SizedBox(
               height: 18,
             ),
-            SimilarBooksList(imgUrl: imgUrl)
+            SimilarBooksList(imgUrl: book.volumeInfo.imageLinks.smallThumbnail)
           ],
         ),
       ),

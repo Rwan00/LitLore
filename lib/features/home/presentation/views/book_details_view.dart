@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:litlore/core/utils/app_methods.dart';
+import 'package:litlore/features/home/data/models/book_model/book_model.dart';
 import 'package:litlore/features/home/presentation/widgets/book_details_view_body.dart';
 
 class BookDetailsView extends StatelessWidget {
@@ -8,7 +9,7 @@ class BookDetailsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final imgUrl = ModalRoute.of(context)?.settings.arguments as String;
+    final book = ModalRoute.of(context)?.settings.arguments as BookModel;
     return Scaffold(
       appBar: AppBar(
         surfaceTintColor: Colors.white,
@@ -30,7 +31,7 @@ class BookDetailsView extends StatelessWidget {
         ],
       ),
       body: BookDetailsViewBody(
-        imgUrl: imgUrl,
+      book: book,
       ),
     );
   }
