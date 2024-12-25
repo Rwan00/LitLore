@@ -39,7 +39,7 @@ class _SplashViewBodyState extends State<SplashViewBody>
         alignment: AlignmentDirectional.bottomCenter,
         children: [
           Image.asset(
-            AssetsData.splash,
+            AppAssets.splash,
             width: 250,
             fit: BoxFit.cover,
           ),

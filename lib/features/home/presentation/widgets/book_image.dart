@@ -24,7 +24,7 @@ class BookImage extends StatelessWidget {
           ),
           placeholder: (context, url) => const Image(
             image: AssetImage(
-              AssetsData.loading,
+              AppAssets.loading,
             ),
           ),
         ),

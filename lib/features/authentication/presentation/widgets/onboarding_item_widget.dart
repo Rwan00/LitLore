@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:litlore/core/theme/colors.dart';
 
 import '../../../../core/theme/fonts.dart';
 import '../../data/models/onboarding_model.dart';

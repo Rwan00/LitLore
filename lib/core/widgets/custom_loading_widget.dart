@@ -12,7 +12,7 @@ class CustomLoadingWidget extends StatelessWidget {
     return const Center(
       child: Image(
         image: AssetImage(
-          AssetsData.loadingBook,
+          AppAssets.loadingBook,
         ),
       ),
     );

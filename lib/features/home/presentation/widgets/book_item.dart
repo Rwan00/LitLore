@@ -28,7 +28,7 @@ class BookItem extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(4),
           width: double.infinity,
-          height: height(context) * 0.15,
+          height: height(context) * 0.17,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(7),
             border: Border.all(

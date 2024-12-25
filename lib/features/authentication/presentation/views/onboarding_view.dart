@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:litlore/core/theme/colors.dart';
 
-import 'package:litlore/core/theme/fonts.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../data/models/onboarding_model.dart';
 import '../widgets/onboarding_item_widget.dart';

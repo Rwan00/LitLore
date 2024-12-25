@@ -17,7 +17,7 @@ class HomeView extends StatelessWidget {
       appBar: AppBar(
         surfaceTintColor: Colors.white,
         backgroundColor: Colors.transparent,
-        leading: Image.asset(AssetsData.logo),
+        leading: Image.asset(AppAssets.logo),
         title: Text(
           "LitLoRe",
           style: MyFonts.logoStyle.copyWith(fontSize: 16),
@@ -25,7 +25,7 @@ class HomeView extends StatelessWidget {
         actions: [
           const Image(
             image: AssetImage(
-              AssetsData.wizard,
+              AppAssets.wizard,
             ),
             width: 32,
           ),

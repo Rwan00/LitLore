@@ -17,7 +17,7 @@ class CustomErrorWidget extends StatelessWidget {
       children: [
         const Image(
           image: AssetImage(
-            AssetsData.sad,
+            AppAssets.sad,
           ),
           width: 64,
         ),

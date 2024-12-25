@@ -10,12 +10,12 @@ class TestScreen extends StatelessWidget {
       body: Center(
         child: ElevatedButton(
             onPressed: () async {
-              final GoogleSignIn _googleSignIn = GoogleSignIn(
+              final GoogleSignIn googleSignIn = GoogleSignIn(
                 scopes: ['https://www.googleapis.com/auth/books'],
               );
 
               try {
-                final account = await _googleSignIn.signIn();
+                final account = await googleSignIn.signIn();
                 if (account != null) {
                   final authHeaders = await account.authHeaders;
                   print('Access Token: ${authHeaders['Authorization']}');
@@ -25,7 +25,7 @@ class TestScreen extends StatelessWidget {
                 print('Error signing in: $error');
               }
             },
-            child: Text("Sign-In")),
+            child: const Text("Sign-In")),
       ),
     );
   }
