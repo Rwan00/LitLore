@@ -9,8 +9,9 @@ class OnboardingItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
         Container(
           foregroundDecoration: BoxDecoration(
             gradient: LinearGradient(
@@ -32,22 +33,17 @@ class OnboardingItemWidget extends StatelessWidget {
             fit: BoxFit.cover,
           ),
         ),
-        TextButton(
-          onPressed: () {
-            /* CacheHelper.saveData(key: "onBoarding", value: true)
-                    .then((value) {
-                  if (value == true) {
-                    animatedNavigateAndDelete(
-                        context: context,
-                        widget: const SignScreen(),
-                        direction: PageTransitionType.leftToRight,
-                        curve: Curves.easeInOutCirc);
-                  }
-                }); */
-          },
+        Text(
+          onBoardingModel.title,
+          style: MyFonts.logoStyle,
+          textAlign: TextAlign.center,
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12.0),
           child: Text(
-            "SKIP",
-            style: MyFonts.logoStyle,
+            onBoardingModel.body,
+            style: MyFonts.splashSubStyle.copyWith(fontSize: 14),
+            textAlign: TextAlign.start,
           ),
         ),
       ],

@@ -8,5 +8,5 @@ class AppAssets {
   static const error = "assets/images/error.png";
   static const onboarding1 = "assets/images/onboarding3.jpg";
   static const onboarding2 = "assets/images/onboarding4.jpg";
-  static const onboarding3 = "assets/images/onboarding5.jpg";
+  static const onboarding3 = "assets/images/onboarding1.jpg";
 }
