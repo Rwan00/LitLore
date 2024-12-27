@@ -57,57 +57,76 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 ),
               ),
               const SizedBox(
-                height: 18,
+                height: 60,
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 32.0),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      /*  isLast
-                        ? CacheHelper.saveData(key: "onBoarding", value: true)
-                            .then((value) {
-                            if (value == true) {
-                              animatedNavigateAndDelete(
-                                  context: context,
-                                  widget: const SignScreen(),
-                                  direction: PageTransitionType.leftToRight,
-                                  curve: Curves.easeInOutCirc);
-                            }
-                          })
-                        : boardController.nextPage(
-                            duration: const Duration(milliseconds: 900),
-                            curve: Curves.easeInOutBack); */
-                    },
-                    style: ButtonStyle(
-                      foregroundColor: WidgetStateProperty.all(Colors.white),
-                      textStyle: WidgetStateProperty.all(
-                          GoogleFonts.raleway(fontSize: 16)),
-                      shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16.0),
-                        ),
-                      ),
-                      backgroundColor: WidgetStateProperty.all(
-                        MyColors.kPrimaryColor,
-                      ),
-                    ),
-                    child: const Text("Next"),
-                  ),
-                ),
+              AppButton(
+                onPressed: () {
+                  /*  isLast
+                      ? CacheHelper.saveData(key: "onBoarding", value: true)
+                          .then((value) {
+                          if (value == true) {
+                            animatedNavigateAndDelete(
+                                context: context,
+                                widget: const SignScreen(),
+                                direction: PageTransitionType.leftToRight,
+                                curve: Curves.easeInOutCirc);
+                          }
+                        })
+                      : boardController.nextPage(
+                          duration: const Duration(milliseconds: 900),
+                          curve: Curves.easeInOutBack); */
+                },
+                width: 140,
+                label: "Next",
               ),
               TextButton(
                 onPressed: () {},
                 child: Text(
                   "Skip",
                   style: MyFonts.logoStyle.copyWith(
-                      fontSize: 22, decoration: TextDecoration.underline),
+                    fontSize: 18,
+                    decoration: TextDecoration.underline,
+                  ),
                 ),
               ),
             ],
           ),
         ],
+      ),
+    );
+  }
+}
+
+class AppButton extends StatelessWidget {
+  final void Function() onPressed;
+  final double width;
+  final String label;
+  const AppButton({
+    super.key,
+    required this.onPressed,
+    required this.width,
+    required this.label,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: width,
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ButtonStyle(
+          foregroundColor: WidgetStateProperty.all(Colors.white),
+          textStyle: WidgetStateProperty.all(GoogleFonts.raleway(fontSize: 16)),
+          shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16.0),
+            ),
+          ),
+          backgroundColor: WidgetStateProperty.all(
+            MyColors.kPrimaryColor,
+          ),
+        ),
+        child: Text(label),
       ),
     );
   }

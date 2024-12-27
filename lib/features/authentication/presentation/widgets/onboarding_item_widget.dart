@@ -9,46 +9,42 @@ class OnboardingItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          foregroundDecoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Theme.of(context).scaffoldBackgroundColor,
-                Colors.transparent,
-              ],
-              begin: Alignment.bottomCenter,
-              end: Alignment.topCenter,
-              stops: const [0, 0.5],
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
+            foregroundDecoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Theme.of(context).scaffoldBackgroundColor,
+                  Colors.transparent,
+                ],
+                begin: Alignment.bottomCenter,
+                end: Alignment.topCenter,
+                stops: const [0, 0.5],
+              ),
+            ),
+            child: Image.asset(
+              onBoardingModel.img,
+              height: 500,
+              width: double.infinity,
+              fit: BoxFit.cover,
             ),
           ),
-          // height: 300,
-          //width: double.infinity,
-          child: Image.asset(
-            onBoardingModel.img,
-            height: 500,
-            width: double.infinity,
-            fit: BoxFit.cover,
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
-          child: Text(
+          Text(
             onBoardingModel.title,
             style: MyFonts.logoStyle,
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 12.0),
-          child: Text(
+          Text(
             onBoardingModel.body,
             style: MyFonts.subTiltleStyle14.copyWith(fontSize: 16),
             textAlign: TextAlign.start,
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
