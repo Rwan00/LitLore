@@ -10,7 +10,7 @@ class OnboardingItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
           foregroundDecoration: BoxDecoration(
@@ -33,16 +33,18 @@ class OnboardingItemWidget extends StatelessWidget {
             fit: BoxFit.cover,
           ),
         ),
-        Text(
-          onBoardingModel.title,
-          style: MyFonts.logoStyle,
-          textAlign: TextAlign.center,
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
+          child: Text(
+            onBoardingModel.title,
+            style: MyFonts.logoStyle,
+          ),
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12.0),
+          padding: const EdgeInsets.only(left: 12.0),
           child: Text(
             onBoardingModel.body,
-            style: MyFonts.splashSubStyle.copyWith(fontSize: 14),
+            style: MyFonts.subTiltleStyle14.copyWith(fontSize: 16),
             textAlign: TextAlign.start,
           ),
         ),

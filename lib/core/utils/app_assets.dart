@@ -6,7 +6,8 @@ class AppAssets {
   static const sad = "assets/images/sad.gif";
   static const wizard = "assets/images/wizard.png";
   static const error = "assets/images/error.png";
-  static const onboarding1 = "assets/images/onboarding3.jpg";
-  static const onboarding2 = "assets/images/onboarding4.jpg";
-  static const onboarding3 = "assets/images/onboarding1.jpg";
+  static const onboarding1 = "assets/images/onboarding7.jpg";
+  static const onboarding2 = "assets/images/onboarding8.jpg";
+  static const onboarding3 = "assets/images/onboarding9.jpg";
+  static const onboarding4 = "assets/images/onboarding10.jpg";
 }
