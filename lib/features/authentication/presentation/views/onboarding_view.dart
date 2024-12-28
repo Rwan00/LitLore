@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:litlore/core/theme/colors.dart';
+import 'package:litlore/core/utils/app_methods.dart';
+import 'package:litlore/features/authentication/presentation/views/authentication_view.dart';
 
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -61,28 +63,30 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
               ),
               AppButton(
                 onPressed: () {
-                  /*  isLast
-                      ? CacheHelper.saveData(key: "onBoarding", value: true)
-                          .then((value) {
-                          if (value == true) {
-                            animatedNavigateAndDelete(
-                                context: context,
-                                widget: const SignScreen(),
-                                direction: PageTransitionType.leftToRight,
-                                curve: Curves.easeInOutCirc);
-                          }
-                        })
-                      : boardController.nextPage(
+                  isLast
+                      ? goToPage(
+                          context: context,
+                          routeName: AuthenticationView.routeName,
+                          delete: true,
+                        )
+                      : pageController.nextPage(
                           duration: const Duration(milliseconds: 900),
-                          curve: Curves.easeInOutBack); */
+                          curve: Curves.easeInOutBack,
+                        );
                 },
                 width: 140,
                 label: "Next",
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  goToPage(
+                    context: context,
+                    routeName: AuthenticationView.routeName,
+                    delete: true,
+                  );
+                },
                 child: Text(
-                  "Skip",
+                  "Already have an account?",
                   style: MyFonts.logoStyle.copyWith(
                     fontSize: 18,
                     decoration: TextDecoration.underline,
