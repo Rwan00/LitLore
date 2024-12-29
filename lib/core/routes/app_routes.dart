@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:litlore/features/authentication/presentation/views/authentication_view.dart';
+import 'package:litlore/features/authentication/presentation/views/register_view.dart';
 import 'package:litlore/features/authentication/presentation/views/onboarding_view.dart';
 import 'package:litlore/features/home/presentation/views/book_details_view.dart';
 
@@ -14,5 +14,5 @@ Map<String, WidgetBuilder> routes = {
   BookDetailsView.routeName: (_) => const BookDetailsView(),
   SearchView.routeName: (_) => const SearchView(),
   OnBoardingScreen.routeName:(_)=>const OnBoardingScreen(),
-  AuthenticationView.routeName:(_)=>const AuthenticationView(),
+  RegisterView.routeName:(_)=>const RegisterView(),
 };

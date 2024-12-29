@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "437111373823",
+    "project_id": "litlore-62236",
+    "storage_bucket": "litlore-62236.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:437111373823:android:4a1077f7e61b1f2ef771ca",
+        "android_client_info": {
+          "package_name": "com.example.litlore"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAdEEDS7OjYRMHqCVgJIWFzQook4jmzCuM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

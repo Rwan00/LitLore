@@ -1,12 +1,23 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 import 'package:litlore/core/theme/colors.dart';
-import 'package:litlore/core/routes/app_routes.dart';
 import 'package:litlore/core/utils/service_locator.dart';
 
-void main() {
+import 'core/routes/app_routes.dart';
+
+import 'core/utils/bloc_observer.dart';
+import 'firebase_options.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  Bloc.observer = SimpleBlocObserver();
   ServiceLocator.setup();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const LitLore());
 }
 
