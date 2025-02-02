@@ -9,6 +9,11 @@ abstract class MyFonts {
     fontWeight: FontWeight.bold,
     fontSize: 26,
   );
+  static const headingStyle = TextStyle(
+    color: MyColors.kPrimaryColor,
+    fontWeight: FontWeight.bold,
+    fontSize: 26,
+  );
   static final splashSubStyle = GoogleFonts.lustria(
     color: MyColors.kPrimaryColor,
     fontSize: 22,
@@ -24,7 +29,7 @@ abstract class MyFonts {
     fontWeight: FontWeight.bold,
   );
   static final subTiltleStyle14 = TextStyle(
-    color: Colors.black.withOpacity(0.6),
+    color: Colors.black.withValues(alpha: 0.4),
     fontSize: 14,
     fontWeight: FontWeight.bold,
   );

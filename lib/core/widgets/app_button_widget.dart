@@ -5,12 +5,12 @@ import '../theme/colors.dart';
 
 class AppButtonWidget extends StatelessWidget {
   final void Function() onPressed;
-  final double width;
+  final double? width;
   final String label;
   const AppButtonWidget({
     super.key,
     required this.onPressed,
-    required this.width,
+    this.width,
     required this.label,
   });
 
@@ -21,9 +21,11 @@ class AppButtonWidget extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onPressed,
         style: ButtonStyle(
-          foregroundColor: WidgetStateProperty.all(Colors.white,),
+          foregroundColor: WidgetStateProperty.all(
+            Colors.white,
+          ),
           textStyle: WidgetStateProperty.all(
-            MyFonts.textStyleStyle16,
+            MyFonts.titleMediumStyle18,
           ),
           shape: WidgetStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(

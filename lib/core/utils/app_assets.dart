@@ -10,4 +10,6 @@ class AppAssets {
   static const onboarding2 = "assets/images/onboarding8.jpg";
   static const onboarding3 = "assets/images/onboarding9.jpg";
   static const onboarding4 = "assets/images/onboarding10.jpg";
+  static const authBackground = "assets/images/background.jpg";
+  static const owlBackground = "assets/images/owl_background.png";
 }
