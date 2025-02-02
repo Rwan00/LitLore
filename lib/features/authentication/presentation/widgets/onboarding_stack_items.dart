@@ -4,11 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:litlore/features/authentication/manager/onpage_change_cubit/onpage_change_cubit.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
+import '../../../../core/functions/navigations_functions.dart';
 import '../../../../core/theme/colors.dart';
 
-//import '../../../../core/utils/app_methods.dart';
 import '../../data/models/onboarding_model.dart';
-//import '../views/register_view.dart';
+import '../views/register_view.dart';
 
 class OnboardingStackItems extends StatelessWidget {
   const OnboardingStackItems({super.key});
@@ -34,11 +34,11 @@ class OnboardingStackItems extends StatelessWidget {
               backgroundColor: MyColors.kPrimaryColor,
               onPressed: () {
                 if (cubit.isLast) {
-                  // goToPage(
-                  //   context: context,
-                  //   routeName: RegisterView.routeName,
-                  //   delete: true,
-                  // );
+                  goToPage(
+                    context: context,
+                    routeName: RegisterView.routeName,
+                    delete: true,
+                  );
                 } else {
                   cubit.pageController.nextPage(
                     duration: const Duration(milliseconds: 900),

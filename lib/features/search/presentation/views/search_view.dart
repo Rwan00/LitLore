@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'package:litlore/core/utils/app_methods.dart';
+
 import 'package:litlore/features/search/presentation/widgets/search_view_body.dart';
 
+import '../../../../core/functions/navigations_functions.dart';
 import '../../../../core/utils/app_assets.dart';
 
 class SearchView extends StatelessWidget {

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:litlore/core/utils/app_methods.dart';
+
 import 'package:litlore/features/home/data/models/book_model/book_model.dart';
 import 'package:litlore/features/home/presentation/widgets/book_details_view_body.dart';
+
+import '../../../../core/functions/navigations_functions.dart';
 
 class BookDetailsView extends StatelessWidget {
   static const routeName = "Book Details View";

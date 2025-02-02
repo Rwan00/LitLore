@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/utils/app_methods.dart';
+
+import '../../../../core/functions/size_functions.dart';
 import '../../data/models/book_model/book_model.dart';
 import 'book_basic_details.dart';
 import 'book_image.dart';

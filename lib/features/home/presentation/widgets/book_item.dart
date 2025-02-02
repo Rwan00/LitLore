@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 
 import 'package:litlore/core/theme/colors.dart';
 import 'package:litlore/core/theme/fonts.dart';
-import 'package:litlore/core/utils/app_methods.dart';
+
 import 'package:litlore/features/home/data/models/book_model/book_model.dart';
 
 import 'package:litlore/features/home/presentation/views/book_details_view.dart';
 import 'package:litlore/features/home/presentation/widgets/book_image.dart';
 
+import '../../../../core/functions/navigations_functions.dart';
+import '../../../../core/functions/size_functions.dart';
 import 'book_rating.dart';
 
 class BookItem extends StatelessWidget {
@@ -32,7 +34,7 @@ class BookItem extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(7),
             border: Border.all(
-              color: MyColors.kPrimaryColor.withOpacity(0.3),
+              color: MyColors.kPrimaryColor,
             ),
           ),
           child: Row(

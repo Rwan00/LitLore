@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:litlore/features/home/data/models/book_model/book_model.dart';
 
+import '../../../../core/functions/size_functions.dart';
 import '../../../../core/theme/colors.dart';
 import '../../../../core/theme/fonts.dart';
-import '../../../../core/utils/app_methods.dart';
+
 
 class BookBasicDetails extends StatelessWidget {
   const BookBasicDetails({

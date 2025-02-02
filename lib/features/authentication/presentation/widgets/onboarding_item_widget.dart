@@ -22,7 +22,7 @@ class OnboardingItemWidget extends StatelessWidget {
         ),
         Text(
           onBoardingModel.body,
-          style: MyFonts.titleMediumStyle18.copyWith(color: Colors.grey),
+          style: MyFonts.textStyleStyle16,
           textAlign: TextAlign.center,
         ),
       ],

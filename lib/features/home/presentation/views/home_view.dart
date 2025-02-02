@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'package:litlore/core/theme/fonts.dart';
 import 'package:litlore/core/utils/app_assets.dart';
-import 'package:litlore/core/utils/app_methods.dart';
+
 import 'package:litlore/features/home/presentation/widgets/home_view_body.dart';
 
+import '../../../../core/functions/navigations_functions.dart';
 import '../../../search/presentation/views/search_view.dart';
 
 class HomeView extends StatelessWidget {

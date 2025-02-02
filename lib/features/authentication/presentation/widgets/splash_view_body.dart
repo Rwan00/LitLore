@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
 import 'package:litlore/core/utils/app_assets.dart';
-import 'package:litlore/core/utils/app_methods.dart';
+
 import 'package:litlore/features/authentication/presentation/views/onboarding_view.dart';
+
+import '../../../../core/functions/navigations_functions.dart';
 
 class SplashViewBody extends StatefulWidget {
   const SplashViewBody({super.key});
@@ -33,14 +35,14 @@ class _SplashViewBodyState extends State<SplashViewBody> {
   void navigateToHome() {
     Future.delayed(
       const Duration(
-        seconds: 5,
+        seconds: 3,
       ),
       () {
         if (mounted) {
           goToPage(
               context: context,
               routeName: OnBoardingScreen.routeName,
-              delete: true);
+              delete: true,);
         }
       },
     );

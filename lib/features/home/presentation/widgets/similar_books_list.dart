@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:litlore/features/home/data/repos/book_details_repo/book_details_repo_impl.dart';
 
-import '../../../../core/utils/app_methods.dart';
+
+import '../../../../core/functions/size_functions.dart';
 import '../../../../core/utils/service_locator.dart';
 
 import '../../../../core/widgets/custom_error_widget.dart';

@@ -24,7 +24,7 @@ abstract class MyFonts {
     fontWeight: FontWeight.bold,
   );
   static const textStyleStyle16 = TextStyle(
-    color: MyColors.kPrimaryColor,
+    color: Colors.grey,
     fontSize: 16,
     fontWeight: FontWeight.bold,
   );
