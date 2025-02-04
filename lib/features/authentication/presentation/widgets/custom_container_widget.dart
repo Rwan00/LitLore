@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:litlore/features/authentication/presentation/widgets/background_stack_image.dart';
 
 
-import '../../../../core/theme/colors.dart';
-
 
 class CustomContainerWidget extends StatelessWidget {
   final double containerHeight;
@@ -26,7 +24,7 @@ class CustomContainerWidget extends StatelessWidget {
                 topLeft: Radius.circular(40),
                 topRight: Radius.circular(40),
               ),
-              color: MyColors.kScaffoldColor,
+              color: Colors.white,
             ),
             child: child,
           ),

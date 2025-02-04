@@ -23,17 +23,18 @@ class RegisterView extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Image(
-                    image: AssetImage(
-                      AppAssets.logo,
-                    ),
-                    width: 80,
-                  ),
-                  Text(
+                   Text(
                     "Register",
                     style: MyFonts.headingStyle,
                     textAlign: TextAlign.start,
                   ),
+                  Image(
+                    image: AssetImage(
+                      AppAssets.logoRight,
+                    ),
+                    width: 80,
+                  ),
+                 
                 ],
               ),
 
