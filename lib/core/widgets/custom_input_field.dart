@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:litlore/core/theme/colors.dart';
 import 'package:litlore/core/utils/app_assets.dart';
@@ -50,19 +49,19 @@ class _CustomInputFieldState extends State<CustomInputField> {
           height: 4,
         ),
         Container(
-          height: 50,
+          height: 40,
           margin: const EdgeInsets.only(bottom: 8),
           decoration: BoxDecoration(
             color: Colors.grey.withAlpha(20),
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(7),
           ),
           child: TextFormField(
             obscureText: widget.isPassword && !showPwd,
             controller: widget.controller,
             keyboardType: widget.textType,
             autofocus: false,
-            style: MyFonts.titleMediumStyle18,
-            cursorColor: MyColors.kPrimaryColor,
+            style: MyFonts.subTiltleStyle14
+                .copyWith(color: MyColors.kPrimaryColor),
             decoration: InputDecoration(
               suffixIcon: widget.isPassword
                   ? IconButton(
@@ -75,7 +74,7 @@ class _CustomInputFieldState extends State<CustomInputField> {
               hintText: widget.hint,
               hintStyle: MyFonts.subTiltleStyle14,
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(7),
                 borderSide: const BorderSide(
                   color: Colors.grey,
                   style: BorderStyle.solid,
@@ -83,8 +82,8 @@ class _CustomInputFieldState extends State<CustomInputField> {
                 ),
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(
+                borderRadius: BorderRadius.circular(7),
+                borderSide: const BorderSide(
                   color: MyColors.kPrimaryColor,
                   width: 2,
                 ),
