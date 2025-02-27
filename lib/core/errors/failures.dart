@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 abstract class Failures {
   final String errorMsg;
@@ -68,3 +69,41 @@ class ServerFailure extends Failures {
     }
   }
 }
+
+class FirebaseAuthFailure extends Failures {
+  FirebaseAuthFailure({required super.errorMsg});
+
+  factory FirebaseAuthFailure.fromFirebaseAuthException(
+      FirebaseAuthException authException) {
+    switch (authException.code) {
+      case "invalid-email":
+        return FirebaseAuthFailure(
+            errorMsg: "Invalid email format, Please check and try again.");
+      case "user-disabled":
+        return FirebaseAuthFailure(
+            errorMsg: "This account has been disabled, Contact support.");
+      case "user-not-found":
+        return FirebaseAuthFailure(
+            errorMsg: "No user found with this email, Sign up instead?");
+      case "wrong-password":
+        return FirebaseAuthFailure(
+            errorMsg: "Incorrect password, Try again or reset it.");
+      case "email-already-in-use":
+        return FirebaseAuthFailure(
+            errorMsg: "This email is already registered, Try logging in.");
+      case "weak-password":
+        return FirebaseAuthFailure(
+            errorMsg: "Weak password, Try using a stronger one.");
+      case "too-many-requests":
+        return FirebaseAuthFailure(
+            errorMsg: "Too many attempts, Please try again later.");
+      case "operation-not-allowed":
+        return FirebaseAuthFailure(
+            errorMsg: "This operation is not allowed, Contact support.");
+      default:
+        return FirebaseAuthFailure(
+            errorMsg: "Authentication failed, Please try again.");
+    }
+  }
+}
+

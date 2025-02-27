@@ -1,8 +1,9 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
-
   static final AuthService _instance = AuthService._internal();
   factory AuthService() => _instance;
   AuthService._internal();
@@ -18,11 +19,13 @@ class AuthService {
 
   Future<User?> signUpWithEmail(String email, String password) async {
     try {
-      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+      UserCredential userCredential =
+        await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
       await userCredential.user?.sendEmailVerification();
+      
       return userCredential.user;
     } catch (e) {
       print('Sign-Up Error: $e');
@@ -30,19 +33,16 @@ class AuthService {
     }
   }
 
-  
-
-  
-
   Future<User?> signInWithGoogle() async {
     try {
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
       if (googleUser == null) return null;
 
-      final GoogleSignInAuthentication googleAuth = 
+      final GoogleSignInAuthentication googleAuth =
           await googleUser.authentication;
 
       _accessToken = googleAuth.accessToken;
+      log("TTTTTTTTOkkeeennn $_accessToken");
       _tokenExpiryTime = DateTime.now().add(const Duration(hours: 1));
 
       final credential = GoogleAuthProvider.credential(
@@ -59,63 +59,61 @@ class AuthService {
   }
 
   Future<User?> linkGoogleAccount() async {
-  try {
-    final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-    if (googleUser == null) return null;
+    try {
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      if (googleUser == null) return null;
 
-    final GoogleSignInAuthentication googleAuth = 
-        await googleUser.authentication;
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
 
-    final OAuthCredential credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
-    );
+      final OAuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
 
-    // Link Google credential to email/password account
-    await _auth.currentUser?.linkWithCredential(credential);
-    
-    // Update token information
-    _accessToken = googleAuth.accessToken;
-    _tokenExpiryTime = DateTime.now().add(const Duration(hours: 1));
-    
-    return _auth.currentUser;
-  } catch (e) {
-    print('Error linking Google account: $e');
-    return null;
+      // Link Google credential to email/password account
+      await _auth.currentUser?.linkWithCredential(credential);
+
+      // Update token information
+      _accessToken = googleAuth.accessToken;
+      _tokenExpiryTime = DateTime.now().add(const Duration(hours: 1));
+
+      return _auth.currentUser;
+    } catch (e) {
+      print('Error linking Google account: $e');
+      return null;
+    }
   }
-}
-
-  
 
   Future<String?> getAccessToken() async {
-    if (_accessToken != null && 
-        _tokenExpiryTime != null && 
+    if (_accessToken != null &&
+        _tokenExpiryTime != null &&
         DateTime.now().isBefore(_tokenExpiryTime!)) {
       return _accessToken;
     }
     return _refreshToken();
   }
 
- Future<String?> _refreshToken() async {
-  try {
-    // Check if there's a current Google user
-    if (_googleSignIn.currentUser == null) return null;
-    
-    final GoogleSignInAccount? googleUser = 
-        await _googleSignIn.signInSilently();
-    if (googleUser == null) return null;
+  Future<String?> _refreshToken() async {
+    try {
+      // Check if there's a current Google user
+      if (_googleSignIn.currentUser == null) return null;
 
-    final GoogleSignInAuthentication googleAuth = 
-        await googleUser.authentication;
+      final GoogleSignInAccount? googleUser =
+          await _googleSignIn.signInSilently();
+      if (googleUser == null) return null;
 
-    _accessToken = googleAuth.accessToken;
-    _tokenExpiryTime = DateTime.now().add(const Duration(hours: 1));
-    return _accessToken;
-  } catch (e) {
-    print('Token refresh error: $e');
-    return null;
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+
+      _accessToken = googleAuth.accessToken;
+      _tokenExpiryTime = DateTime.now().add(const Duration(hours: 1));
+      return _accessToken;
+    } catch (e) {
+      print('Token refresh error: $e');
+      return null;
+    }
   }
-}
 
   Future<void> signOut() async {
     await _auth.signOut();

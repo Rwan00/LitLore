@@ -1,85 +1,12 @@
-/* import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-
-class TestScreen extends StatelessWidget {
-  const TestScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: ElevatedButton(
-            onPressed: () async {
-              final GoogleSignIn googleSignIn = GoogleSignIn(
-                scopes: ['https://www.googleapis.com/auth/books'],
-              );
-
-              try {
-                final account = await googleSignIn.signIn();
-                if (account != null) {
-                  final authHeaders = await account.authHeaders;
-                  print('Access Token: ${authHeaders['Authorization']}');
-                  // Use this token to call My Library API
-                }
-              } catch (error) {
-                print('Error signing in: $error');
-              }
-            },
-            child: const Text("Sign-In")),
-      ),
-    );
-  }
-}
-
-
-
-
-
-class AuthService {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-
-  // Email/Password Sign-Up
-  Future<User?> signUpWithEmail(String email, String password) async {
-    try {
-      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-      return userCredential.user;
-    } catch (e) {
-      print(e);
-      return null;
-    }
-  }
-
-  // Google Sign-In
-  Future<User?> signInWithGoogle() async {
-    try {
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-      if (googleUser == null) return null;
-
-      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-      final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
-
-      UserCredential userCredential = await _auth.signInWithCredential(credential);
-      return userCredential.user;
-    } catch (e) {
-      print(e);
-      return null;
-    }
-  }
-} */
+import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+
+import '../../core/network/remote/authentication_service.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -92,6 +19,62 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final AuthService _authService = AuthService();
+
+  void _showVerificationDialog(User user) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        title: const Text('Verify Your Email'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text('A verification email has been sent to:'),
+            Text(user.email ?? '', style: const TextStyle(fontWeight: FontWeight.bold)),
+            const SizedBox(height: 20),
+            const Text('Please verify your email to continue.'),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () async {
+              Navigator.pop(context);
+              await _checkEmailVerification(user);
+            },
+            child: const Text('Continue'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _checkEmailVerification(User user) async {
+    await user.reload();
+    final updatedUser = _authService.currentUser;
+
+    if (updatedUser != null && updatedUser.emailVerified) {
+      final linkedUser = await _authService.linkGoogleAccount();
+      if (linkedUser != null) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const LibraryScreen()),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Google account linking failed')),
+        );
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Email not verified yet')),
+      );
+      _showVerificationDialog(user);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -118,14 +101,29 @@ class _SignUpScreenState extends State<SignUpScreen> {
               onPressed: () async {
                 final email = _emailController.text.trim();
                 final password = _passwordController.text.trim();
-                final user =
-                    await _authService.signUpWithEmail(email, password);
+                final user = await _authService.signUpWithEmail(email, password);
+                
                 if (user != null) {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const LibraryScreen()),
-                  );
+                  if (user.emailVerified) {
+                    final linkedUser = await _authService.linkGoogleAccount();
+                    if (linkedUser != null) {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => const LibraryScreen()),
+                      );
+                    }
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Verification email sent to ${user.email}'),
+                        action: SnackBarAction(
+                          label: 'Resend',
+                          onPressed: () => user.sendEmailVerification(),
+                        ),
+                      ),
+                    );
+                    _showVerificationDialog(user);
+                  }
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Sign-Up Failed')),
@@ -143,8 +141,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 if (user != null) {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => const LibraryScreen()),
+                    MaterialPageRoute(builder: (context) => const LibraryScreen()),
                   );
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -159,6 +156,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 }
+
+// Add this new method to the AuthService class
+
+
+// Rest of the code remains the same as previous corrected version
 
 class LibraryScreen extends StatefulWidget {
   const LibraryScreen({super.key});
@@ -178,27 +180,41 @@ class _LibraryScreenState extends State<LibraryScreen> {
   }
 
   Future<void> _fetchLibrary() async {
+    setState(() => _isLoading = true);
+
     try {
-      final token = await AuthService().getAccessToken();
+      final auth = AuthService();
+      final user = auth.currentUser;
+      
+      // Verify Google authentication
+      if (user == null || !user.providerData.any((info) => info.providerId == 'google.com')) {
+        throw Exception('Google sign-in required to access library');
+      }
+
+      final token = await auth.getAccessToken();
+      if (token == null) throw Exception("Failed to get access token");
+
       final response = await http.get(
         Uri.parse('https://www.googleapis.com/books/v1/mylibrary/bookshelves'),
         headers: {'Authorization': 'Bearer $token'},
       );
 
+       log("TTTTTTTTOkkeeennn  $token");
+
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         setState(() {
           _books = data['items'] ?? [];
-          print(_books);
           _isLoading = false;
         });
+      } else if (response.statusCode == 401) {
+        await auth.signOut();
+        throw Exception('Session expired. Please sign in again.');
       } else {
-        throw Exception('Failed to load library');
+        throw Exception('Failed to load library: ${response.statusCode}');
       }
     } catch (e) {
-      setState(() {
-        _isLoading = false;
-      });
+      setState(() => _isLoading = false);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error: $e')),
       );
@@ -207,6 +223,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
 
   @override
   Widget build(BuildContext context) {
+   
     return Scaffold(
       appBar: AppBar(title: const Text("My Library")),
       body: _isLoading
@@ -218,9 +235,8 @@ class _LibraryScreenState extends State<LibraryScreen> {
                   itemBuilder: (context, index) {
                     final book = _books[index];
                     return ListTile(
-                      title: Text(book['title']),
-                      subtitle:
-                          Text(book['authors']?.join(', ') ?? 'Unknown Author'),
+                      title: Text(book['title'] ?? 'Untitled'),
+                      subtitle: Text(book['authors']?.join(', ') ?? 'Unknown Author'),
                     );
                   },
                 ),
@@ -228,52 +244,3 @@ class _LibraryScreenState extends State<LibraryScreen> {
   }
 }
 
-class AuthService {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final GoogleSignIn _googleSignIn = GoogleSignIn(
-    scopes: ['https://www.googleapis.com/auth/books'],
-  );
-
-  // Email/Password Sign-Up
-  Future<User?> signUpWithEmail(String email, String password) async {
-    try {
-      UserCredential userCredential =
-          await _auth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-      return userCredential.user;
-    } catch (e) {
-      print('Sign-Up Error: $e');
-      return null;
-    }
-  }
-
-  // Google Sign-In
-  Future<User?> signInWithGoogle() async {
-    try {
-      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-      if (googleUser == null) return null;
-
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
-      final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
-
-      await _auth.signInWithCredential(credential);
-      return _auth.currentUser;
-    } catch (e) {
-      print('Google Sign-In Error: $e');
-      return null;
-    }
-  }
-
-  // Get Access Token for API
-  Future<String?> getAccessToken() async {
-    final googleUser = await _googleSignIn.signInSilently();
-    final authHeaders = await googleUser?.authHeaders;
-    return authHeaders?['Authorization']?.replaceFirst('Bearer ', '');
-  }
-}

@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:litlore/core/theme/colors.dart';
 import 'package:litlore/core/utils/service_locator.dart';
 
+
 import 'core/routes/app_routes.dart';
 
 import 'core/utils/bloc_observer.dart';
@@ -36,6 +37,7 @@ class LitLore extends StatelessWidget {
         useMaterial3: true,
         textTheme: GoogleFonts.nunitoTextTheme(),
       ),
+     
     );
   }
 }
