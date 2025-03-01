@@ -78,31 +78,31 @@ class FirebaseAuthFailure extends Failures {
     switch (authException.code) {
       case "invalid-email":
         return FirebaseAuthFailure(
-            errorMsg: "Invalid email format, Please check and try again.");
+            errorMsg: "If this is your email, then I’m the CEO of the Internet. Try again!");
       case "user-disabled":
         return FirebaseAuthFailure(
-            errorMsg: "This account has been disabled, Contact support.");
+            errorMsg: "Access denied! Your account went rogue, and we had to lock it in the library basement.");
       case "user-not-found":
         return FirebaseAuthFailure(
-            errorMsg: "No user found with this email, Sign up instead?");
+            errorMsg: "Even Sherlock Holmes couldn’t find this user. Double-check your details!");
       case "wrong-password":
         return FirebaseAuthFailure(
-            errorMsg: "Incorrect password, Try again or reset it.");
+            errorMsg: "Wrong password! Even my pet goldfish could do better.");
       case "email-already-in-use":
         return FirebaseAuthFailure(
-            errorMsg: "This email is already registered, Try logging in.");
+            errorMsg: "Déjà vu! This email is already part of our story.");
       case "weak-password":
         return FirebaseAuthFailure(
-            errorMsg: "Weak password, Try using a stronger one.");
+            errorMsg: "This password is like a plot twist everyone saw coming. Try again!");
       case "too-many-requests":
         return FirebaseAuthFailure(
-            errorMsg: "Too many attempts, Please try again later.");
+            errorMsg: "Whoa there, speed reader! Give the system a breather!");
       case "operation-not-allowed":
         return FirebaseAuthFailure(
-            errorMsg: "This operation is not allowed, Contact support.");
+            errorMsg: "Oops! That move is as forbidden as spoilers in a book club.");
       default:
         return FirebaseAuthFailure(
-            errorMsg: "Authentication failed, Please try again.");
+            errorMsg: "Authentication failed! Even the secret library archives wouldn’t let you in.");
     }
   }
 }
