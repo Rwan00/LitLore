@@ -3,13 +3,15 @@ import 'package:flutter/material.dart';
 import '../../../../core/widgets/custom_input_field.dart';
 
 class RegisterForm extends StatelessWidget {
-  const RegisterForm({super.key});
+  final TextEditingController email;
+  final TextEditingController password;
+  const RegisterForm({super.key, required this.email, required this.password});
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
+    return  Column(
       children: [
-        CustomInputField(
+        const CustomInputField(
           title: 'Username',
           hint: 'What Shall We Call You?',
           //controller: emailController,
@@ -17,17 +19,17 @@ class RegisterForm extends StatelessWidget {
         CustomInputField(
           title: 'Email Address',
           hint: 'Your wizardly email address.',
-          //controller: emailController,
+          controller: email,
           textType: TextInputType.emailAddress,
         ),
-        CustomInputField(
+         CustomInputField(
           title: 'Password',
           hint: 'At least 8 characters, no spoilers!',
           isPassword: true,
           textType: TextInputType.visiblePassword,
-          //controller: passwordController,
+          controller: password,
         ),
-        CustomInputField(
+        const CustomInputField(
           title: 'Confirm Password',
           hint: 'Repeat your secret phrase',
           isPassword: true,

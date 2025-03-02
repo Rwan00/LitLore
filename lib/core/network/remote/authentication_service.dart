@@ -1,37 +1,20 @@
-import 'dart:developer';
+/* import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
-  static final AuthService _instance = AuthService._internal();
-  factory AuthService() => _instance;
-  AuthService._internal();
+  // static final AuthService _instance = AuthService._internal();
+  // factory AuthService() => _instance;
+  // AuthService._internal();
 
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final GoogleSignIn _googleSignIn = GoogleSignIn(
-    scopes: ['https://www.googleapis.com/auth/books'],
-  );
+  
   String? _accessToken;
   DateTime? _tokenExpiryTime;
 
   User? get currentUser => _auth.currentUser;
 
-  Future<User?> signUpWithEmail(String email, String password) async {
-    try {
-      UserCredential userCredential =
-        await _auth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-      await userCredential.user?.sendEmailVerification();
-      
-      return userCredential.user;
-    } catch (e) {
-      print('Sign-Up Error: $e');
-      return null;
-    }
-  }
+  
 
   Future<User?> signInWithGoogle() async {
     try {
@@ -122,3 +105,4 @@ class AuthService {
     _tokenExpiryTime = null;
   }
 }
+ */

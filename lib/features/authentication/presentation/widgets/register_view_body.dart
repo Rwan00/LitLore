@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:litlore/core/functions/size_functions.dart';
 
 import 'package:litlore/core/theme/fonts.dart';
@@ -8,6 +9,8 @@ import 'package:litlore/core/widgets/app_button_widget.dart';
 import 'package:litlore/features/authentication/presentation/widgets/custom_container_widget.dart';
 import 'package:litlore/features/authentication/presentation/widgets/form_title_widget.dart';
 import 'package:litlore/features/authentication/presentation/widgets/register_form.dart';
+
+import '../../manager/register_cubit/register_cubit.dart';
 
 class RegisterViewBody extends StatelessWidget {
   const RegisterViewBody({super.key});
@@ -21,17 +24,31 @@ class RegisterViewBody extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const FormTitleWidget(),
-            const RegisterForm(),
+            RegisterForm(
+              email: _email,
+              password: _email,
+            ),
             const SizedBox(
               height: 12,
             ),
-            SizedBox(
-              width: double.infinity,
-              height: 45,
-              child: AppButtonWidget(
-                label: 'Join the Story!',
-                onPressed: () {},
-              ),
+            BlocConsumer<RegisterCubit, RegisterState>(
+              listener: (context, state) {
+                // TODO: implement listener
+              },
+              builder: (context, state) {
+                var cubit = RegisterCubit.get(context);
+                return SizedBox(
+                  width: double.infinity,
+                  height: 45,
+                  child: AppButtonWidget(
+                    label: 'Join the Story!',
+                    onPressed: () async {
+                      await cubit.signUpWithEmail(
+                          email: _email.text, password: "123456");
+                    },
+                  ),
+                );
+              },
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -55,3 +72,6 @@ class RegisterViewBody extends StatelessWidget {
     );
   }
 }
+
+TextEditingController _email = TextEditingController();
+TextEditingController _password = TextEditingController();
