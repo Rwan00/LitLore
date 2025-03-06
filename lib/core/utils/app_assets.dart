@@ -15,4 +15,5 @@ class AppAssets {
   static const owlBackground = "assets/images/owl_background.png";
   static const openedBook = "assets/images/opened_book.png";
   static const closedBook = "assets/images/closed_book.png";
+  static const owlError = "assets/images/owl_error.png";
 }

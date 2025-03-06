@@ -10,6 +10,7 @@ import 'package:litlore/features/authentication/presentation/widgets/custom_cont
 import 'package:litlore/features/authentication/presentation/widgets/form_title_widget.dart';
 import 'package:litlore/features/authentication/presentation/widgets/register_form.dart';
 
+import '../../../../core/functions/show_bottom_sheet_function.dart';
 import '../../manager/register_cubit/register_cubit.dart';
 
 class RegisterViewBody extends StatelessWidget {
@@ -26,14 +27,16 @@ class RegisterViewBody extends StatelessWidget {
             const FormTitleWidget(),
             RegisterForm(
               email: _email,
-              password: _email,
+              password: _password,
             ),
             const SizedBox(
               height: 12,
             ),
             BlocConsumer<RegisterCubit, RegisterState>(
               listener: (context, state) {
-                // TODO: implement listener
+                if (state is RegisterFailure) {
+                  showBottomSheetFunction(context, state.errorMsg);
+                }
               },
               builder: (context, state) {
                 var cubit = RegisterCubit.get(context);
@@ -44,7 +47,9 @@ class RegisterViewBody extends StatelessWidget {
                     label: 'Join the Story!',
                     onPressed: () async {
                       await cubit.signUpWithEmail(
-                          email: _email.text, password: "123456");
+                        email: _email.text,
+                        password: _password.text,
+                      );
                     },
                   ),
                 );
