@@ -7,7 +7,8 @@ import 'package:litlore/core/widgets/custom_error_widget.dart';
 import 'package:litlore/features/home/data/repos/home_repo/home_repo_impl.dart';
 import 'package:litlore/features/home/manager/newest_books_cubit/newest_books_cubit.dart';
 
-import '../../../../core/widgets/custom_loading_widget.dart';
+
+import '../../../../core/widgets/flapping_owl_loading.dart';
 import 'book_image.dart';
 
 class NewestBooksSlider extends StatelessWidget {
@@ -55,7 +56,7 @@ class NewestBooksSlider extends StatelessWidget {
             );
           } 
           else {
-            return const CustomLoadingWidget();
+            return const FlappingOwlLoading();
           }
         },
       ),

@@ -7,7 +7,8 @@ import '../../../../core/functions/size_functions.dart';
 import '../../../../core/utils/service_locator.dart';
 
 import '../../../../core/widgets/custom_error_widget.dart';
-import '../../../../core/widgets/custom_loading_widget.dart';
+
+import '../../../../core/widgets/flapping_owl_loading.dart';
 import '../../manager/similar_books_cubit/similar_books_cubit.dart';
 import 'book_image.dart';
 
@@ -64,7 +65,7 @@ class SimilarBooksList extends StatelessWidget {
               ),
             );
           } else {
-            return const CustomLoadingWidget();
+            return const FlappingOwlLoading();
           }
         },
       ),

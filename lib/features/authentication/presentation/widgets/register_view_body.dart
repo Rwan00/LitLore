@@ -5,6 +5,7 @@ import 'package:litlore/core/functions/size_functions.dart';
 import 'package:litlore/core/theme/fonts.dart';
 
 import 'package:litlore/core/widgets/app_button_widget.dart';
+import 'package:litlore/core/widgets/flapping_owl_loading.dart';
 
 import 'package:litlore/features/authentication/presentation/widgets/custom_container_widget.dart';
 import 'package:litlore/features/authentication/presentation/widgets/form_title_widget.dart';
@@ -40,36 +41,45 @@ class RegisterViewBody extends StatelessWidget {
               },
               builder: (context, state) {
                 var cubit = RegisterCubit.get(context);
-                return SizedBox(
-                  width: double.infinity,
-                  height: 45,
-                  child: AppButtonWidget(
-                    label: 'Join the Story!',
-                    onPressed: () async {
-                      await cubit.signUpWithEmail(
-                        email: _email.text,
-                        password: _password.text,
+                return state is! RegisterLoading
+                    ? Center(
+                        child: FlappingOwlLoading(),
+                      )
+                    : Column(
+                        children: [
+                          SizedBox(
+                            width: double.infinity,
+                            height: 45,
+                            child: AppButtonWidget(
+                              label: 'Join the Story!',
+                              onPressed: () async {
+                                await cubit.signUpWithEmail(
+                                  email: _email.text,
+                                  password: _password.text,
+                                );
+                              },
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Already have a library card?',
+                                style: MyFonts.titleMediumStyle18
+                                    .copyWith(fontSize: 16),
+                              ),
+                              TextButton(
+                                onPressed: () {},
+                                child: const Text(
+                                  'Log in and reunite!',
+                                  style: MyFonts.subTiltleStyle12,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
                       );
-                    },
-                  ),
-                );
               },
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Already have a library card?',
-                  style: MyFonts.titleMediumStyle18.copyWith(fontSize: 16),
-                ),
-                TextButton(
-                  onPressed: () {},
-                  child: const Text(
-                    'Log in and reunite!',
-                    style: MyFonts.subTiltleStyle12,
-                  ),
-                ),
-              ],
             ),
           ],
         ),
