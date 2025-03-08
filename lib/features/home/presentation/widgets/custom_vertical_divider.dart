@@ -14,7 +14,7 @@ class CustomVerticalDivider extends StatelessWidget {
       child: Container(
         height: 30,
         width: 2,
-        color: MyColors.kPrimaryColor.withOpacity(0.6),
+        color: MyColors.kPrimaryColor.withAlpha(3),
       ),
     );
   }

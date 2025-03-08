@@ -49,5 +49,3 @@ class _FlappingOwlLoadingState extends State<FlappingOwlLoading>
     super.dispose();
   }
 }
-
-// Usage:

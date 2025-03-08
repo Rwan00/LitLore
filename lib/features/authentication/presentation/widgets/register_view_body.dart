@@ -13,6 +13,7 @@ import 'package:litlore/features/authentication/presentation/widgets/register_fo
 
 import '../../../../core/functions/show_bottom_sheet_function.dart';
 import '../../manager/register_cubit/register_cubit.dart';
+import 'google_signing_btn.dart';
 
 class RegisterViewBody extends StatelessWidget {
   const RegisterViewBody({super.key});
@@ -41,7 +42,7 @@ class RegisterViewBody extends StatelessWidget {
               },
               builder: (context, state) {
                 var cubit = RegisterCubit.get(context);
-                return state is! RegisterLoading
+                return state is RegisterLoading
                     ? Center(
                         child: FlappingOwlLoading(),
                       )
@@ -60,6 +61,10 @@ class RegisterViewBody extends StatelessWidget {
                               },
                             ),
                           ),
+                          SizedBox(
+                            height: 12,
+                          ),
+                          GoogleSigningBtn(onPressed: () {}),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -70,9 +75,9 @@ class RegisterViewBody extends StatelessWidget {
                               ),
                               TextButton(
                                 onPressed: () {},
-                                child: const Text(
-                                  'Log in and reunite!',
-                                  style: MyFonts.subTiltleStyle12,
+                                child: Text(
+                                  'Login and reunite!',
+                                  style: MyFonts.subTiltleStyle14,
                                 ),
                               ),
                             ],

@@ -52,7 +52,7 @@ class _CustomInputFieldState extends State<CustomInputField> {
           height: 40,
           margin: const EdgeInsets.only(bottom: 8),
           decoration: BoxDecoration(
-            color: Colors.grey.withAlpha(20),
+            color: Colors.white,
             borderRadius: BorderRadius.circular(7),
           ),
           child: TextFormField(

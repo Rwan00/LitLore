@@ -17,4 +17,5 @@ class AppAssets {
   static const closedBook = "assets/images/closed_book.png";
   static const owlError = "assets/images/horror.png";
   static const owlLoading = "assets/images/owl_loading.png";
+  static const google = "assets/images/google.png";
 }
