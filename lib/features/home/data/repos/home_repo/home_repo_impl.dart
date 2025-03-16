@@ -8,6 +8,8 @@ import 'package:litlore/features/home/data/models/book_model/book_model.dart';
 import 'package:litlore/features/home/data/repos/home_repo/home_endpoints.dart';
 import 'package:litlore/features/home/data/repos/home_repo/home_repo.dart';
 
+import '../../../../../core/errors/server_failure.dart';
+
 class HomeRepoImpl implements HomeRepo {
   final ApiService apiService;
 

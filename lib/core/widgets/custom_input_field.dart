@@ -11,6 +11,7 @@ class CustomInputField extends StatefulWidget {
   final Widget? widget;
   final TextInputType? textType;
   final bool isPassword;
+  final String? Function(String?)? validator;
 
   const CustomInputField({
     this.title,
@@ -19,7 +20,7 @@ class CustomInputField extends StatefulWidget {
     this.widget,
     this.textType,
     this.isPassword = false,
-    super.key,
+    super.key, this.validator,
   });
 
   @override
@@ -56,6 +57,7 @@ class _CustomInputFieldState extends State<CustomInputField> {
             borderRadius: BorderRadius.circular(7),
           ),
           child: TextFormField(
+            validator: widget.validator,
             obscureText: widget.isPassword && !showPwd,
             controller: widget.controller,
             keyboardType: widget.textType,
@@ -85,6 +87,13 @@ class _CustomInputFieldState extends State<CustomInputField> {
                 borderRadius: BorderRadius.circular(7),
                 borderSide: const BorderSide(
                   color: MyColors.kPrimaryColor,
+                  width: 2,
+                ),
+              ),
+              errorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(7),
+                borderSide: const BorderSide(
+                  color: Colors.red,
                   width: 2,
                 ),
               ),

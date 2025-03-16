@@ -8,6 +8,7 @@ import 'package:litlore/core/errors/failures.dart';
 import 'package:litlore/features/home/data/models/book_model/book_model.dart';
 
 
+import '../../../../../core/errors/server_failure.dart';
 import '../../../../../core/network/remote/api_service.dart';
 import 'book_details_repo.dart';
 

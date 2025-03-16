@@ -1,0 +1,10 @@
+{
+    "configurations": [
+        {
+            "name": "Flutter (lib\\features\\authentication\\presentation\\widgets\\form_title_widget.dart)",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib\\features\\authentication\\presentation\\widgets\\form_title_widget.dart"
+        }
+    ]
+}

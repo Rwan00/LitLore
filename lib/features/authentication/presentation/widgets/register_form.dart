@@ -9,7 +9,7 @@ class RegisterForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Column(
+    return Column(
       children: [
         const CustomInputField(
           title: 'Username',
@@ -21,8 +21,11 @@ class RegisterForm extends StatelessWidget {
           hint: 'Your wizardly email address.',
           controller: email,
           textType: TextInputType.emailAddress,
+          validator: (txt) {
+            return "Hello? Anybody home? This field feels lonely!";
+          },
         ),
-         CustomInputField(
+        CustomInputField(
           title: 'Password',
           hint: 'At least 8 characters, no spoilers!',
           isPassword: true,

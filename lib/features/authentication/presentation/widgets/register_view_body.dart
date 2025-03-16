@@ -12,6 +12,7 @@ import 'package:litlore/features/authentication/presentation/widgets/form_title_
 import 'package:litlore/features/authentication/presentation/widgets/register_form.dart';
 
 import '../../../../core/functions/show_bottom_sheet_function.dart';
+import '../../../../core/functions/show_verification_bottom_sheet.dart';
 import '../../manager/register_cubit/register_cubit.dart';
 import 'google_signing_btn.dart';
 
@@ -38,6 +39,11 @@ class RegisterViewBody extends StatelessWidget {
               listener: (context, state) {
                 if (state is RegisterFailure) {
                   showBottomSheetFunction(context, state.errorMsg);
+                } else if (state is RegisterSuccess) {
+                  showVerificationBottomSheet(
+                      context: context,
+                      onPressed: () =>
+                          RegisterCubit.get(context).checkEmailVerification());
                 }
               },
               builder: (context, state) {

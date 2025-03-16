@@ -22,4 +22,12 @@ final class RegisterSuccess extends RegisterState {
 
   const RegisterSuccess({required this.user});
 }
+final class VirificationFailure extends RegisterState {
+  final String errorMsg;
+
+  const VirificationFailure({required this.errorMsg});
+}
+
+final class VirificationrSuccess extends RegisterState {
+}
 
