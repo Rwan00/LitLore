@@ -14,6 +14,7 @@ import 'package:litlore/features/authentication/presentation/widgets/register_fo
 import '../../../../core/functions/show_bottom_sheet_function.dart';
 import '../../../../core/functions/show_verification_bottom_sheet.dart';
 import '../../manager/register_cubit/register_cubit.dart';
+import '../../manager/register_cubit/register_state.dart';
 import 'google_signing_btn.dart';
 
 class RegisterViewBody extends StatelessWidget {
@@ -21,78 +22,84 @@ class RegisterViewBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final formKey = GlobalKey<FormState>();
     return CustomContainerWidget(
       containerHeight: height(context) * 0.73,
       child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const FormTitleWidget(),
-            RegisterForm(
-              email: _email,
-              password: _password,
-            ),
-            const SizedBox(
-              height: 12,
-            ),
-            BlocConsumer<RegisterCubit, RegisterState>(
-              listener: (context, state) {
-                if (state is RegisterFailure) {
-                  showBottomSheetFunction(context, state.errorMsg);
-                } else if (state is RegisterSuccess) {
-                  showVerificationBottomSheet(
+        child: Form(
+          key: formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const FormTitleWidget(),
+              RegisterForm(
+                email: _email,
+                password: _password,
+                confirmPassword: _confirmPassword,
+              ),
+              const SizedBox(
+                height: 12,
+              ),
+              BlocConsumer<RegisterCubit, RegisterState>(
+                listener: (context, state) {
+                  if (state.status == RegisterStatus.failure) {
+                    showBottomSheetFunction(context, state.errorMessage ?? "");
+                  } else if (state.status == RegisterStatus.success) {
+                    showVerificationBottomSheet(
                       context: context,
-                      onPressed: () =>
-                          RegisterCubit.get(context).checkEmailVerification());
-                }
-              },
-              builder: (context, state) {
-                var cubit = RegisterCubit.get(context);
-                return state is RegisterLoading
-                    ? Center(
-                        child: FlappingOwlLoading(),
-                      )
-                    : Column(
-                        children: [
-                          SizedBox(
-                            width: double.infinity,
-                            height: 45,
-                            child: AppButtonWidget(
-                              label: 'Join the Story!',
-                              onPressed: () async {
-                                await cubit.signUpWithEmail(
-                                  email: _email.text,
-                                  password: _password.text,
-                                );
-                              },
+                    );
+                  }
+                },
+                builder: (context, state) {
+                  var cubit = context.read<RegisterCubit>();
+                  return state.status == RegisterStatus.loading
+                      ? Center(
+                          child: FlappingOwlLoading(),
+                        )
+                      : Column(
+                          children: [
+                            SizedBox(
+                              width: double.infinity,
+                              height: 45,
+                              child: AppButtonWidget(
+                                label: 'Join the Story!',
+                                onPressed: () async {
+                                  if (formKey.currentState!.validate()) {
+                                    await cubit.signUpWithEmail(
+                                      email: _email.text,
+                                      password: _password.text,
+                                    );
+                                  }
+                                },
+                              ),
                             ),
-                          ),
-                          SizedBox(
-                            height: 12,
-                          ),
-                          GoogleSigningBtn(onPressed: () {}),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Already have a library card?',
-                                style: MyFonts.titleMediumStyle18
-                                    .copyWith(fontSize: 16),
-                              ),
-                              TextButton(
-                                onPressed: () {},
-                                child: Text(
-                                  'Login and reunite!',
-                                  style: MyFonts.subTiltleStyle14,
+                            SizedBox(
+                              height: 12,
+                            ),
+                            GoogleSigningBtn(onPressed: () {}),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Already have a library card?',
+                                  style: MyFonts.titleMediumStyle18
+                                      .copyWith(fontSize: 16),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      );
-              },
-            ),
-          ],
+                                TextButton(
+                                  onPressed: () {},
+                                  child: Text(
+                                    'Login and reunite!',
+                                    style: MyFonts.subTiltleStyle14,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -101,3 +108,4 @@ class RegisterViewBody extends StatelessWidget {
 
 TextEditingController _email = TextEditingController();
 TextEditingController _password = TextEditingController();
+TextEditingController _confirmPassword = TextEditingController();

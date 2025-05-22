@@ -20,7 +20,8 @@ class CustomInputField extends StatefulWidget {
     this.widget,
     this.textType,
     this.isPassword = false,
-    super.key, this.validator,
+    super.key,
+    this.validator,
   });
 
   @override
@@ -49,53 +50,48 @@ class _CustomInputFieldState extends State<CustomInputField> {
         const SizedBox(
           height: 4,
         ),
-        Container(
-          height: 40,
-          margin: const EdgeInsets.only(bottom: 8),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(7),
-          ),
-          child: TextFormField(
-            validator: widget.validator,
-            obscureText: widget.isPassword && !showPwd,
-            controller: widget.controller,
-            keyboardType: widget.textType,
-            autofocus: false,
-            style: MyFonts.subTiltleStyle14
-                .copyWith(color: MyColors.kPrimaryColor),
-            decoration: InputDecoration(
-              suffixIcon: widget.isPassword
-                  ? IconButton(
-                      onPressed: changePasswordVisibility,
-                      icon: showPwd
-                          ? Image.asset(AppAssets.openedBook)
-                          : Image.asset(AppAssets.closedBook),
-                    )
-                  : widget.widget,
-              hintText: widget.hint,
-              hintStyle: MyFonts.subTiltleStyle14,
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(7),
-                borderSide: const BorderSide(
-                  color: Colors.grey,
-                  style: BorderStyle.solid,
-                  width: 1,
-                ),
+        TextFormField(
+          validator: widget.validator,
+          obscureText: widget.isPassword && !showPwd,
+          controller: widget.controller,
+          keyboardType: widget.textType,
+          autofocus: false,
+          style: MyFonts.subTiltleStyle14
+              .copyWith(color: MyColors.kPrimaryColor),
+          decoration: InputDecoration(
+        
+            filled: true,
+            fillColor: Colors.white,
+            suffixIcon: widget.isPassword
+                ? IconButton(
+                    onPressed: changePasswordVisibility,
+                    icon: showPwd
+                        ? Image.asset(AppAssets.openedBook)
+                        : Image.asset(AppAssets.closedBook),
+                  )
+                : widget.widget,
+            hintText: widget.hint,
+            hintStyle: MyFonts.subTiltleStyle14,
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(7),
+              borderSide: const BorderSide(
+                color: Colors.grey,
+                style: BorderStyle.solid,
+                width: 1,
               ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(7),
-                borderSide: const BorderSide(
-                  color: MyColors.kPrimaryColor,
-                  width: 2,
-                ),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(7),
+              borderSide: const BorderSide(
+                color: MyColors.kPrimaryColor,
+                width: 2,
               ),
-              errorBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(7),
-                borderSide: const BorderSide(
-                  color: Colors.red,
-                  width: 2,
-                ),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(7),
+              borderSide: const BorderSide(
+                color: Colors.red,
+                width: 2,
               ),
             ),
           ),

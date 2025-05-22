@@ -34,7 +34,7 @@ void showBottomSheetFunction(BuildContext context, String message) {
               onPressed: () {
                 Navigator.pop(context);
               },
-              label: "Sorry,I Need an Adult",
+              label: "Sorry",
             ),
           ],
         ),

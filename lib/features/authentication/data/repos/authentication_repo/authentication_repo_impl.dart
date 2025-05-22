@@ -41,9 +41,26 @@ class AuthenticationRepoImpl implements AuthenticationRepo {
         email: email,
         password: password,
       );
-      await userCredential.user?.sendEmailVerification();
+      await verifyEmail();
 
       return right(userCredential.user);
+    } on FirebaseAuthException catch (err) {
+      log(err.toString());
+      return left(FirebaseAuthFailure.fromFirebaseAuthException(err));
+    } catch (error) {
+      return left(
+        FirebaseAuthFailure(
+          errorMsg: error.toString(),
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<Failures, void>> verifyEmail() async {
+    try {
+      await FirebaseAuth.instance.currentUser!.sendEmailVerification();
+      return right(null);
     } on FirebaseAuthException catch (err) {
       log(err.toString());
       return left(FirebaseAuthFailure.fromFirebaseAuthException(err));

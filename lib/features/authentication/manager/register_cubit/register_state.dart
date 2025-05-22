@@ -1,33 +1,40 @@
-part of 'register_cubit.dart';
+import 'package:equatable/equatable.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-sealed class RegisterState extends Equatable {
-  const RegisterState();
+enum RegisterStatus { initial, loading, success, failure }
 
-  @override
-  List<Object> get props => [];
-}
-
-final class RegisterInitial extends RegisterState {}
-
-final class RegisterLoading extends RegisterState {}
-
-final class RegisterFailure extends RegisterState {
-  final String errorMsg;
-
-  const RegisterFailure({required this.errorMsg});
-}
-
-final class RegisterSuccess extends RegisterState {
+class RegisterState extends Equatable {
+  final RegisterStatus status;
+  final String? errorMessage;
   final User? user;
 
-  const RegisterSuccess({required this.user});
-}
-final class VirificationFailure extends RegisterState {
-  final String errorMsg;
+  const RegisterState({
+    this.status = RegisterStatus.initial,
+    this.errorMessage ,
+    this.user,
+  });
 
-  const VirificationFailure({required this.errorMsg});
+  factory RegisterState.initial() {
+    return const RegisterState(
+      status: RegisterStatus.initial,
+     
+    );
+  }
+
+  RegisterState copyWith({
+    RegisterStatus? status,
+    String? errorMessage,
+    User? user,
+  }) {
+    return RegisterState(
+      status: status ?? this.status,
+      errorMessage: errorMessage ?? this.errorMessage,
+      user: user ?? this.user,
+    );
+  }
+
+  @override
+  List<Object?> get props => [status, errorMessage, user];
 }
 
-final class VirificationrSuccess extends RegisterState {
-}
 
