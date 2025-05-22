@@ -81,6 +81,7 @@ class _VerificationBottomSheetContentState
           }
         },
         builder: (context, state) {
+          var cubit = context.read<RegisterCubit>();
           return Padding(
             padding: EdgeInsets.only(
                 left: 16,
@@ -109,7 +110,12 @@ class _VerificationBottomSheetContentState
                   children: [
                     Expanded(
                       child: AppButtonWidget(
-                        onPressed: _isButtonEnabled ? () {} : () {},
+                        onPressed: _isButtonEnabled
+                            ? () {
+                                cubit.verifyEmail();
+                                _startCountdown();
+                              }
+                            : () {},
                         label: _isButtonEnabled
                             ? "Resend"
                             : "Resend in $_countdown s",
@@ -118,13 +124,9 @@ class _VerificationBottomSheetContentState
                     const SizedBox(width: 5),
                     Expanded(
                       child: AppButtonWidget(
-                        onPressed: _isButtonEnabled
-                            ? () {
-                                context
-                                    .read<RegisterCubit>()
-                                    .checkEmailVerification();
-                              }
-                            : () {},
+                        onPressed: () {
+                          cubit.checkEmailVerification();
+                        },
                         label: "Turn the page",
                       ),
                     ),

@@ -32,6 +32,15 @@ class RegisterCubit extends Cubit<RegisterState> {
           status: RegisterStatus.failure, errorMessage: failure));
     }, (done) {
       log("verified");
+      emit(state.copyWith(status: RegisterStatus.success));
     });
+  }
+
+  Future<void> verifyEmail() async {
+    var result = await authenticationRepo.verifyEmail();
+    result.fold((failure) {
+      emit(state.copyWith(
+          status: RegisterStatus.failure, errorMessage: failure.errorMsg));
+    }, (done) {});
   }
 }
