@@ -76,7 +76,9 @@ class RegisterViewBody extends StatelessWidget {
                             SizedBox(
                               height: 12,
                             ),
-                            GoogleSigningBtn(onPressed: () {}),
+                            GoogleSigningBtn(onPressed: () {
+                              cubit.signInWithGoogle();
+                            }),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [

@@ -43,4 +43,14 @@ class RegisterCubit extends Cubit<RegisterState> {
           status: RegisterStatus.failure, errorMessage: failure.errorMsg));
     }, (done) {});
   }
+
+  Future<void> signInWithGoogle() async {
+    var result = await authenticationRepo.signInWithGoogle();
+    result?.fold((failure) {
+      state.copyWith(
+          status: RegisterStatus.failure, errorMessage: failure.errorMsg);
+    }, (success) {
+      state.copyWith(status: RegisterStatus.success);
+    });
+  }
 }

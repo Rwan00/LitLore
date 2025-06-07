@@ -9,4 +9,5 @@ abstract class AuthenticationRepo {
   Future<Either<Failures,void>> verifyEmail();
   Future<Either<String,void>> checkEmailVerification();
   Future<Either<Failures,User?>?> linkGoogleAccount();
+  Future<Either<Failures,User?>?> signInWithGoogle();
 }

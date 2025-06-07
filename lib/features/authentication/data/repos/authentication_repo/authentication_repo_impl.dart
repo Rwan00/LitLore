@@ -123,4 +123,36 @@ class AuthenticationRepoImpl implements AuthenticationRepo {
       );
     }
   }
+
+   @override
+     Future<Either<Failures,User?>?> signInWithGoogle() async {
+    try {
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      if (googleUser == null) return null;
+
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+
+      _accessToken = googleAuth.accessToken;
+      log("TTTTTTTTOkkeeennn $_accessToken");
+      _tokenExpiryTime = DateTime.now().add(const Duration(hours: 1));
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      await _auth.signInWithCredential(credential);
+      return right(_auth.currentUser);
+    } on FirebaseAuthException catch (err) {
+      log(err.toString());
+      return left(FirebaseGoogleAuthFailure.fromFirebaseAuthException(err));
+    } catch (error) {
+      return left(
+        FirebaseGoogleAuthFailure(
+          errorMsg: error.toString(),
+        ),
+      );
+    }
+  }
 }
