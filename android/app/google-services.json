@@ -7,12 +7,17 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:437111373823:android:4a1077f7e61b1f2ef771ca",
+        "mobilesdk_app_id": "1:437111373823:android:f0acacf67f4005edf771ca",
         "android_client_info": {
           "package_name": "com.example.litlore"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "437111373823-hv41m68mvg50bvf2ntngjo88atvkg1vf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAdEEDS7OjYRMHqCVgJIWFzQook4jmzCuM"
@@ -20,7 +25,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "437111373823-hv41m68mvg50bvf2ntngjo88atvkg1vf.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "437111373823-n1sb1fje3sb9uuaebqkatsd9uf4rd9pp.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.litlore"
+              }
+            }
+          ]
         }
       }
     }

@@ -42,17 +42,17 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyAOEE10QCaAiYHHtWt2iVKOLohPUEAKW00',
-    appId: '1:437111373823:web:24d3f29b56ee5d7df771ca',
+    appId: '1:437111373823:web:9656670a8cf9b45cf771ca',
     messagingSenderId: '437111373823',
     projectId: 'litlore-62236',
     authDomain: 'litlore-62236.firebaseapp.com',
     storageBucket: 'litlore-62236.firebasestorage.app',
-    measurementId: 'G-K3NF59WXZZ',
+    measurementId: 'G-NG5GQH7RJ2',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyAdEEDS7OjYRMHqCVgJIWFzQook4jmzCuM',
-    appId: '1:437111373823:android:4a1077f7e61b1f2ef771ca',
+    appId: '1:437111373823:android:f0acacf67f4005edf771ca',
     messagingSenderId: '437111373823',
     projectId: 'litlore-62236',
     storageBucket: 'litlore-62236.firebasestorage.app',
@@ -60,29 +60,32 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyAOzYZvV6l7dujCx6tpeSwbw3uDk-DKerc',
-    appId: '1:437111373823:ios:9b3b60e0e08da856f771ca',
+    appId: '1:437111373823:ios:4db2e1aac8d7bbf8f771ca',
     messagingSenderId: '437111373823',
     projectId: 'litlore-62236',
     storageBucket: 'litlore-62236.firebasestorage.app',
+    iosClientId: '437111373823-n1sb1fje3sb9uuaebqkatsd9uf4rd9pp.apps.googleusercontent.com',
     iosBundleId: 'com.example.litlore',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyAOzYZvV6l7dujCx6tpeSwbw3uDk-DKerc',
-    appId: '1:437111373823:ios:9b3b60e0e08da856f771ca',
+    appId: '1:437111373823:ios:4db2e1aac8d7bbf8f771ca',
     messagingSenderId: '437111373823',
     projectId: 'litlore-62236',
     storageBucket: 'litlore-62236.firebasestorage.app',
+    iosClientId: '437111373823-n1sb1fje3sb9uuaebqkatsd9uf4rd9pp.apps.googleusercontent.com',
     iosBundleId: 'com.example.litlore',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
     apiKey: 'AIzaSyAOEE10QCaAiYHHtWt2iVKOLohPUEAKW00',
-    appId: '1:437111373823:web:bcedc800f85981f7f771ca',
+    appId: '1:437111373823:web:070710513dd9a747f771ca',
     messagingSenderId: '437111373823',
     projectId: 'litlore-62236',
     authDomain: 'litlore-62236.firebaseapp.com',
     storageBucket: 'litlore-62236.firebasestorage.app',
-    measurementId: 'G-ED9CVK4BB2',
+    measurementId: 'G-G81013X536',
   );
+
 }

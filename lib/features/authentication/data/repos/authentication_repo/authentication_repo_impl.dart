@@ -2,157 +2,172 @@ import 'dart:developer';
 
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:litlore/core/errors/failures.dart';
+import 'package:litlore/core/errors/firebase_auth_failure.dart';
 import 'package:litlore/core/errors/google_auth_failure.dart';
+import 'package:litlore/features/authentication/data/models/onboarding_model.dart';
+import 'package:litlore/features/authentication/data/repos/authentication_repo/authentication_repo.dart';
 
-import '../../../../../core/errors/failures.dart';
-import '../../../../../core/errors/firebase_auth_failure.dart';
-
-import '../../models/onboarding_model.dart';
-import 'authentication_repo.dart';
+import '../../../../../core/network/remote/google_signin_service.dart';
 
 class AuthenticationRepoImpl implements AuthenticationRepo {
+  final FirebaseAuth _auth = GoogleSignInService.auth;
+
+  User? get currentUser => _auth.currentUser;
+
   @override
   bool onPageChange({required int index}) {
-    bool isLast = false;
-    if (index == onBoardingList.length - 1) {
-      isLast = true;
-    } else {
-      isLast = false;
-    }
-    return isLast;
+    return index == onBoardingList.length - 1;
   }
 
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  User? get currentUser => _auth.currentUser;
-  String? _accessToken;
-  DateTime? _tokenExpiryTime;
-  final GoogleSignIn _googleSignIn = GoogleSignIn(
-    scopes: ['https://www.googleapis.com/auth/books'],
-  );
-
   @override
-  Future<Either<Failures, User?>> signUpWithEmail(
-      {required String email, required String password}) async {
+  Future<Either<Failures, User?>> signUpWithEmail({
+    required String email,
+    required String password,
+  }) async {
     try {
-      UserCredential userCredential =
-          await _auth.createUserWithEmailAndPassword(
+      final userCredential = await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
-      await verifyEmail();
 
-      return right(userCredential.user);
+      // Send verification email
+      final verificationResult = await verifyEmail();
+      return verificationResult.fold(
+            (failure) => left(failure),
+            (_) => right(userCredential.user),
+      );
     } on FirebaseAuthException catch (err) {
-      log(err.toString());
+      log('Firebase Auth Error in signUpWithEmail: ${err.code} - ${err.message}');
       return left(FirebaseAuthFailure.fromFirebaseAuthException(err));
     } catch (error) {
-      return left(
-        FirebaseAuthFailure(
-          errorMsg: error.toString(),
-        ),
-      );
+      log('General Error in signUpWithEmail: $error');
+      return left(FirebaseAuthFailure(
+        errorMsg: 'An unexpected error occurred during sign up: $error',
+      ));
     }
   }
 
   @override
   Future<Either<Failures, void>> verifyEmail() async {
     try {
-      await FirebaseAuth.instance.currentUser!.sendEmailVerification();
+      final user = _auth.currentUser;
+      if (user == null) {
+        return left(FirebaseAuthFailure(errorMsg: 'No user is currently signed in'));
+      }
+
+      if (user.emailVerified) return right(null);
+
+      await user.sendEmailVerification();
       return right(null);
     } on FirebaseAuthException catch (err) {
-      log(err.toString());
       return left(FirebaseAuthFailure.fromFirebaseAuthException(err));
     } catch (error) {
-      return left(
-        FirebaseAuthFailure(
-          errorMsg: error.toString(),
-        ),
-      );
+      return left(FirebaseAuthFailure(errorMsg: 'Failed to send verification email: $error'));
     }
   }
 
   @override
-  Future<Either<String, void>> checkEmailVerification() async {
-    await currentUser?.reload();
-    final updatedUser = currentUser;
+  Future<Either<String, bool>> checkEmailVerification() async {
+    try {
+      final user = currentUser;
+      if (user == null) return left("No user is currently signed in");
 
-    if (updatedUser != null && updatedUser.emailVerified) {
-      final linkedUser = await linkGoogleAccount();
-      if (linkedUser != null) {
-        return right(null);
-      } else {
-        return left("Hmm… Google says it doesn’t know this email. Awkward!");
+      await user.reload();
+      final updatedUser = _auth.currentUser;
+
+      if (updatedUser == null || !updatedUser.emailVerified) {
+        return left("Email not yet verified. Please check your inbox and verify your email.");
       }
-    } else {
-      return left(
-          "Still unverified? That’s like reading half a book and stopping!");
-      //_showVerificationDialog(user);
+
+      return right(true);
+    } catch (error) {
+      return left("Error checking email verification: $error");
     }
   }
+
+  @override
+  Future<Either<Failures, User?>?> signInWithGoogle() async {
+    try {
+      final userCredential = await GoogleSignInService.signInWithGoogle();
+      if (userCredential == null) {
+        return null; // cancelled
+      }
+      return right(userCredential.user);
+    } on FirebaseAuthException catch (err) {
+      return left(FirebaseGoogleAuthFailure.fromFirebaseAuthException(err));
+    } catch (error) {
+      return left(FirebaseGoogleAuthFailure(
+        errorMsg: 'Failed to sign in with Google: $error',
+      ));
+    }
+  }
+
+  @override
+  Future<Either<Failures, void>> signOut() async {
+    try {
+      await GoogleSignInService.signOut();
+      return right(null);
+    } catch (error) {
+      return left(FirebaseAuthFailure(errorMsg: 'Failed to sign out: $error'));
+    }
+  }
+
+  // Convenience getters
+  bool get isSignedIn => currentUser != null;
+  bool get isEmailVerified => currentUser?.emailVerified ?? false;
+  String? get userEmail => currentUser?.email;
+  String? get userDisplayName => currentUser?.displayName;
 
   @override
   Future<Either<Failures, User?>?> linkGoogleAccount() async {
     try {
-      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-      if (googleUser == null) return null;
+      final user = _auth.currentUser;
+      if (user == null) {
+        return left(FirebaseAuthFailure(
+          errorMsg: 'No user is currently signed in',
+        ));
+      }
 
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
+      // Use the service to perform Google sign-in
+      final googleUserCredential = await GoogleSignInService.signInWithGoogle();
+      if (googleUserCredential == null) {
+        return null; // cancelled by user
+      }
 
-      final OAuthCredential credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
+      final googleCredential = googleUserCredential.credential;
+      if (googleCredential == null) {
+        return left(FirebaseGoogleAuthFailure(
+          errorMsg: "No Google credentials found",
+        ));
+      }
 
-      await _auth.currentUser?.linkWithCredential(credential);
-
-      _accessToken = googleAuth.accessToken;
-      _tokenExpiryTime = DateTime.now().add(const Duration(hours: 1));
-
-      return right(_auth.currentUser);
+      try {
+        // Link Google account with current Firebase user
+        final linkedCredential = await user.linkWithCredential(googleCredential);
+        log("Google account linked successfully");
+        return right(linkedCredential.user);
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'credential-already-in-use') {
+          return left(FirebaseGoogleAuthFailure(
+            errorMsg: "This Google account is already linked to another account",
+          ));
+        } else if (e.code == 'provider-already-linked') {
+          return left(FirebaseGoogleAuthFailure(
+            errorMsg: "Google account is already linked to this user",
+          ));
+        }
+        return left(FirebaseGoogleAuthFailure.fromFirebaseAuthException(e));
+      }
     } on FirebaseAuthException catch (err) {
-      log(err.toString());
+      log("Firebase Auth Error in linkGoogleAccount: ${err.code} - ${err.message}");
       return left(FirebaseGoogleAuthFailure.fromFirebaseAuthException(err));
     } catch (error) {
-      return left(
-        FirebaseGoogleAuthFailure(
-          errorMsg: error.toString(),
-        ),
-      );
+      log("General Error in linkGoogleAccount: $error");
+      return left(FirebaseGoogleAuthFailure(
+        errorMsg: 'Failed to link Google account: $error',
+      ));
     }
   }
 
-   @override
-     Future<Either<Failures,User?>?> signInWithGoogle() async {
-    try {
-      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-      if (googleUser == null) return null;
-
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
-
-      _accessToken = googleAuth.accessToken;
-      log("TTTTTTTTOkkeeennn $_accessToken");
-      _tokenExpiryTime = DateTime.now().add(const Duration(hours: 1));
-
-      final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
-
-      await _auth.signInWithCredential(credential);
-      return right(_auth.currentUser);
-    } on FirebaseAuthException catch (err) {
-      log(err.toString());
-      return left(FirebaseGoogleAuthFailure.fromFirebaseAuthException(err));
-    } catch (error) {
-      return left(
-        FirebaseGoogleAuthFailure(
-          errorMsg: error.toString(),
-        ),
-      );
-    }
-  }
 }
