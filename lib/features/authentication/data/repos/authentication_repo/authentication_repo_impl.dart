@@ -2,18 +2,29 @@ import 'dart:developer';
 
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:litlore/core/errors/failures.dart';
 import 'package:litlore/core/errors/firebase_auth_failure.dart';
 import 'package:litlore/core/errors/google_auth_failure.dart';
+import 'package:litlore/core/network/remote/google_signin_service.dart';
+import 'package:litlore/core/utils/app_consts.dart';
 import 'package:litlore/features/authentication/data/models/onboarding_model.dart';
 import 'package:litlore/features/authentication/data/repos/authentication_repo/authentication_repo.dart';
 
-import '../../../../../core/network/remote/google_signin_service.dart';
-
 class AuthenticationRepoImpl implements AuthenticationRepo {
-  final FirebaseAuth _auth = GoogleSignInService.auth;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  String? _accessToken;
+  DateTime? _tokenExpiryTime;
 
   User? get currentUser => _auth.currentUser;
+
+  String? get googleBooksAccessToken {
+    if (_tokenExpiryTime != null &&
+        DateTime.now().isBefore(_tokenExpiryTime!)) {
+      return _accessToken;
+    }
+    return null;
+  }
 
   @override
   bool onPageChange({required int index}) {
@@ -30,59 +41,116 @@ class AuthenticationRepoImpl implements AuthenticationRepo {
         email: email,
         password: password,
       );
-
-      // Send verification email
-      final verificationResult = await verifyEmail();
-      return verificationResult.fold(
-            (failure) => left(failure),
-            (_) => right(userCredential.user),
-      );
+      await verifyEmail();
+      return right(userCredential.user);
     } on FirebaseAuthException catch (err) {
-      log('Firebase Auth Error in signUpWithEmail: ${err.code} - ${err.message}');
+      log(err.toString());
       return left(FirebaseAuthFailure.fromFirebaseAuthException(err));
     } catch (error) {
-      log('General Error in signUpWithEmail: $error');
-      return left(FirebaseAuthFailure(
-        errorMsg: 'An unexpected error occurred during sign up: $error',
-      ));
+      return left(FirebaseAuthFailure(errorMsg: error.toString()));
     }
   }
 
   @override
   Future<Either<Failures, void>> verifyEmail() async {
     try {
-      final user = _auth.currentUser;
-      if (user == null) {
-        return left(FirebaseAuthFailure(errorMsg: 'No user is currently signed in'));
-      }
-
-      if (user.emailVerified) return right(null);
-
-      await user.sendEmailVerification();
+      await _auth.currentUser!.sendEmailVerification();
       return right(null);
     } on FirebaseAuthException catch (err) {
+      log(err.toString());
       return left(FirebaseAuthFailure.fromFirebaseAuthException(err));
     } catch (error) {
-      return left(FirebaseAuthFailure(errorMsg: 'Failed to send verification email: $error'));
+      return left(FirebaseAuthFailure(errorMsg: error.toString()));
     }
   }
 
   @override
   Future<Either<String, bool>> checkEmailVerification() async {
     try {
-      final user = currentUser;
-      if (user == null) return left("No user is currently signed in");
-
-      await user.reload();
-      final updatedUser = _auth.currentUser;
+      await currentUser?.reload();
+      final updatedUser = currentUser;
 
       if (updatedUser == null || !updatedUser.emailVerified) {
-        return left("Email not yet verified. Please check your inbox and verify your email.");
+        return left(
+          "Still unverified? That's like reading half a book and stopping!",
+        );
       }
 
-      return right(true);
+      // Check if Google account is already linked
+      final hasGoogleProvider = updatedUser.providerData.any(
+        (provider) => provider.providerId == 'google.com',
+      );
+
+      if (hasGoogleProvider) {
+        log(
+          "This Google account's already on chapter 5. Pick another to start fresh!",
+        );
+        return right(true);
+      }
+
+      // Try to link Google account
+      final linkedUser = await linkGoogleAccount();
+      if (linkedUser == null) {
+        return left("Sign-in aborted. Google is now crying in a corner.");
+      }
+
+      return linkedUser.fold(
+        (failure) => left(failure.errorMsg),
+        (user) => right(true),
+      );
     } catch (error) {
-      return left("Error checking email verification: $error");
+      log("Error checking email verification: $error");
+      return left("Tried verifying your email, but it ghosted us.");
+    }
+  }
+
+  @override
+  Future<Either<Failures, User?>?> linkGoogleAccount() async {
+    try {
+      final googleUser = await GoogleSignInService.getGoogleSigninAccount();
+      if (googleUser == null) return null;
+
+      final googleAuth = await googleUser.authentication;
+      final authorization = await googleUser.authorizationClient
+          .authorizationForScopes([
+            'email',
+            'profile',
+            'https://www.googleapis.com/auth/books',
+          ]);
+
+      final accessToken = authorization?.accessToken;
+      final credential = GoogleAuthProvider.credential(
+        accessToken: accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      // Check if this Google account is already linked to another Firebase account
+      try {
+        await _auth.currentUser?.linkWithCredential(credential);
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'credential-already-in-use') {
+          return left(
+            FirebaseGoogleAuthFailure(
+              errorMsg: "Hmm… Google says it doesn't know this email. Awkward!",
+            ),
+          );
+        }
+        rethrow;
+      }
+
+      _accessToken = accessToken;
+      _tokenExpiryTime = DateTime.now().add(const Duration(hours: 1));
+
+      log(
+        "Google account linked successfully. Access token: ${_accessToken != null ? 'Available:$_accessToken' : 'Not available'}",
+      );
+      return right(_auth.currentUser);
+    } on FirebaseAuthException catch (err) {
+      log("Firebase Auth Error: ${err.toString()}");
+      return left(FirebaseGoogleAuthFailure.fromFirebaseAuthException(err));
+    } catch (error) {
+      log("General Error: ${error.toString()}");
+      return left(FirebaseGoogleAuthFailure(errorMsg: error.toString()));
     }
   }
 
@@ -90,84 +158,42 @@ class AuthenticationRepoImpl implements AuthenticationRepo {
   Future<Either<Failures, User?>?> signInWithGoogle() async {
     try {
       final userCredential = await GoogleSignInService.signInWithGoogle();
-      if (userCredential == null) {
-        return null; // cancelled
-      }
+      if (userCredential == null) return null;
+
       return right(userCredential.user);
     } on FirebaseAuthException catch (err) {
+      logger.e("${err.code}, ${ err.message}");
       return left(FirebaseGoogleAuthFailure.fromFirebaseAuthException(err));
     } catch (error) {
-      return left(FirebaseGoogleAuthFailure(
-        errorMsg: 'Failed to sign in with Google: $error',
-      ));
+      logger.e(error);
+      return left(
+        FirebaseGoogleAuthFailure(
+          errorMsg: 'Failed to sign in with Google: $error',
+        ),
+      );
     }
   }
 
-  @override
-  Future<Either<Failures, void>> signOut() async {
+  Future<String?> refreshGoogleBooksToken() async {
     try {
-      await GoogleSignInService.signOut();
-      return right(null);
+      final currentUser = await GoogleSignInService.getGoogleSigninAccount();
+      if (currentUser == null) return null;
+
+      
+      final authorization = await currentUser.authorizationClient
+          .authorizationForScopes([
+            'email',
+            'profile',
+            'https://www.googleapis.com/auth/books',
+          ]);
+
+      final _accessToken = authorization?.accessToken;
+
+      _tokenExpiryTime = DateTime.now().add(const Duration(hours: 1));
+      return _accessToken;
     } catch (error) {
-      return left(FirebaseAuthFailure(errorMsg: 'Failed to sign out: $error'));
+      log("Error refreshing Google Books token: $error");
+      return null;
     }
   }
-
-  // Convenience getters
-  bool get isSignedIn => currentUser != null;
-  bool get isEmailVerified => currentUser?.emailVerified ?? false;
-  String? get userEmail => currentUser?.email;
-  String? get userDisplayName => currentUser?.displayName;
-
-  @override
-  Future<Either<Failures, User?>?> linkGoogleAccount() async {
-    try {
-      final user = _auth.currentUser;
-      if (user == null) {
-        return left(FirebaseAuthFailure(
-          errorMsg: 'No user is currently signed in',
-        ));
-      }
-
-      // Use the service to perform Google sign-in
-      final googleUserCredential = await GoogleSignInService.signInWithGoogle();
-      if (googleUserCredential == null) {
-        return null; // cancelled by user
-      }
-
-      final googleCredential = googleUserCredential.credential;
-      if (googleCredential == null) {
-        return left(FirebaseGoogleAuthFailure(
-          errorMsg: "No Google credentials found",
-        ));
-      }
-
-      try {
-        // Link Google account with current Firebase user
-        final linkedCredential = await user.linkWithCredential(googleCredential);
-        log("Google account linked successfully");
-        return right(linkedCredential.user);
-      } on FirebaseAuthException catch (e) {
-        if (e.code == 'credential-already-in-use') {
-          return left(FirebaseGoogleAuthFailure(
-            errorMsg: "This Google account is already linked to another account",
-          ));
-        } else if (e.code == 'provider-already-linked') {
-          return left(FirebaseGoogleAuthFailure(
-            errorMsg: "Google account is already linked to this user",
-          ));
-        }
-        return left(FirebaseGoogleAuthFailure.fromFirebaseAuthException(e));
-      }
-    } on FirebaseAuthException catch (err) {
-      log("Firebase Auth Error in linkGoogleAccount: ${err.code} - ${err.message}");
-      return left(FirebaseGoogleAuthFailure.fromFirebaseAuthException(err));
-    } catch (error) {
-      log("General Error in linkGoogleAccount: $error");
-      return left(FirebaseGoogleAuthFailure(
-        errorMsg: 'Failed to link Google account: $error',
-      ));
-    }
-  }
-
 }
