@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-enum RegisterStatus { initial, loading, success, failure }
+enum RegisterStatus { initial, loading, success, failure,emailSent }
 
 class RegisterState extends Equatable {
   final RegisterStatus status;

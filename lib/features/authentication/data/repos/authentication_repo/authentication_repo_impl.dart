@@ -6,8 +6,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:litlore/core/errors/failures.dart';
 import 'package:litlore/core/errors/firebase_auth_failure.dart';
 import 'package:litlore/core/errors/google_auth_failure.dart';
+import 'package:litlore/core/network/local/cache_helper.dart';
 import 'package:litlore/core/network/remote/google_signin_service.dart';
-import 'package:litlore/core/utils/app_consts.dart';
+
 import 'package:litlore/features/authentication/data/models/onboarding_model.dart';
 import 'package:litlore/features/authentication/data/repos/authentication_repo/authentication_repo.dart';
 
@@ -26,6 +27,44 @@ class AuthenticationRepoImpl implements AuthenticationRepo {
     return null;
   }
 
+  /// Extract Firebase ID token from user
+  Future<String?> _getFirebaseIdToken(User? user) async {
+    try {
+      if (user == null) return null;
+      final idToken = await user.getIdToken();
+      return idToken;
+    } catch (e) {
+      log('❌ Error getting Firebase ID token: $e');
+      return null;
+    }
+  }
+
+  /// Save tokens to cache
+  Future<void> _saveTokensToCache({
+    required String? accessToken,
+    required String? refreshToken,
+  }) async {
+    try {
+      if (accessToken != null && accessToken.isNotEmpty) {
+        await AppCacheHelper.cacheSecureString(
+          key: AppCacheHelper.accessTokenKey,
+          value: accessToken,
+        );
+        log('✅ Access token saved to cache');
+      }
+
+      if (refreshToken != null && refreshToken.isNotEmpty) {
+        await AppCacheHelper.cacheSecureString(
+          key: AppCacheHelper.refreshTokenKey,
+          value: refreshToken,
+        );
+        log('✅ Refresh token saved to cache');
+      }
+    } catch (e) {
+      log('❌ Error saving tokens to cache: $e');
+    }
+  }
+
   @override
   bool onPageChange({required int index}) {
     return index == onBoardingList.length - 1;
@@ -41,12 +80,27 @@ class AuthenticationRepoImpl implements AuthenticationRepo {
         email: email,
         password: password,
       );
+      
+      final user = userCredential.user;
+
+      // Extract and save tokens
+      if (user != null) {
+        final idToken = await _getFirebaseIdToken(user);
+        final refreshToken = user.refreshToken;
+
+        await _saveTokensToCache(
+          accessToken: idToken,
+          refreshToken: refreshToken,
+        );
+      }
+
       await verifyEmail();
-      return right(userCredential.user);
+      return right(user);
     } on FirebaseAuthException catch (err) {
-      log(err.toString());
+      log('❌ Firebase Auth Error: ${err.toString()}');
       return left(FirebaseAuthFailure.fromFirebaseAuthException(err));
     } catch (error) {
+      log('❌ General Error: ${error.toString()}');
       return left(FirebaseAuthFailure(errorMsg: error.toString()));
     }
   }
@@ -57,9 +111,10 @@ class AuthenticationRepoImpl implements AuthenticationRepo {
       await _auth.currentUser!.sendEmailVerification();
       return right(null);
     } on FirebaseAuthException catch (err) {
-      log(err.toString());
+      log('❌ Firebase Auth Error: ${err.toString()}');
       return left(FirebaseAuthFailure.fromFirebaseAuthException(err));
     } catch (error) {
+      log('❌ General Error: ${error.toString()}');
       return left(FirebaseAuthFailure(errorMsg: error.toString()));
     }
   }
@@ -85,6 +140,16 @@ class AuthenticationRepoImpl implements AuthenticationRepo {
         log(
           "This Google account's already on chapter 5. Pick another to start fresh!",
         );
+
+        // Extract and save tokens
+        final idToken = await _getFirebaseIdToken(updatedUser);
+        final refreshToken = updatedUser.refreshToken;
+
+        await _saveTokensToCache(
+          accessToken: idToken,
+          refreshToken: refreshToken,
+        );
+
         return right(true);
       }
 
@@ -96,10 +161,22 @@ class AuthenticationRepoImpl implements AuthenticationRepo {
 
       return linkedUser.fold(
         (failure) => left(failure.errorMsg),
-        (user) => right(true),
+        (user) async {
+          // Extract and save tokens after linking
+          if (user != null) {
+            final idToken = await _getFirebaseIdToken(user);
+            final refreshToken = user.refreshToken;
+
+            await _saveTokensToCache(
+              accessToken: idToken,
+              refreshToken: refreshToken,
+            );
+          }
+          return right(true);
+        },
       );
     } catch (error) {
-      log("Error checking email verification: $error");
+      log("❌ Error checking email verification: $error");
       return left("Tried verifying your email, but it ghosted us.");
     }
   }
@@ -110,7 +187,7 @@ class AuthenticationRepoImpl implements AuthenticationRepo {
       final googleUser = await GoogleSignInService.getGoogleSigninAccount();
       if (googleUser == null) return null;
 
-      final googleAuth = await googleUser.authentication;
+      final googleAuth = googleUser.authentication;
       final authorization = await googleUser.authorizationClient
           .authorizationForScopes([
             'email',
@@ -126,7 +203,30 @@ class AuthenticationRepoImpl implements AuthenticationRepo {
 
       // Check if this Google account is already linked to another Firebase account
       try {
-        await _auth.currentUser?.linkWithCredential(credential);
+        final linkedUserCredential =
+            await _auth.currentUser?.linkWithCredential(credential);
+        final linkedUser = linkedUserCredential?.user;
+
+        // Extract and save tokens after linking
+        if (linkedUser != null) {
+          final idToken = await _getFirebaseIdToken(linkedUser);
+          final refreshToken = linkedUser.refreshToken;
+
+          await _saveTokensToCache(
+            accessToken: idToken,
+            refreshToken: refreshToken,
+          );
+
+          // Store Google Books access token separately
+          _accessToken = accessToken;
+          _tokenExpiryTime = DateTime.now().add(const Duration(hours: 1));
+
+          log(
+            "✅ Google account linked successfully. Tokens saved.",
+          );
+        }
+
+        return right(linkedUser);
       } on FirebaseAuthException catch (e) {
         if (e.code == 'credential-already-in-use') {
           return left(
@@ -137,19 +237,11 @@ class AuthenticationRepoImpl implements AuthenticationRepo {
         }
         rethrow;
       }
-
-      _accessToken = accessToken;
-      _tokenExpiryTime = DateTime.now().add(const Duration(hours: 1));
-
-      log(
-        "Google account linked successfully. Access token: ${_accessToken != null ? 'Available:$_accessToken' : 'Not available'}",
-      );
-      return right(_auth.currentUser);
     } on FirebaseAuthException catch (err) {
-      log("Firebase Auth Error: ${err.toString()}");
+      log("❌ Firebase Auth Error: ${err.toString()}");
       return left(FirebaseGoogleAuthFailure.fromFirebaseAuthException(err));
     } catch (error) {
-      log("General Error: ${error.toString()}");
+      log("❌ General Error: ${error.toString()}");
       return left(FirebaseGoogleAuthFailure(errorMsg: error.toString()));
     }
   }
@@ -160,12 +252,27 @@ class AuthenticationRepoImpl implements AuthenticationRepo {
       final userCredential = await GoogleSignInService.signInWithGoogle();
       if (userCredential == null) return null;
 
-      return right(userCredential.user);
+      final user = userCredential.user;
+
+      // Extract and save tokens
+      if (user != null) {
+        final idToken = await _getFirebaseIdToken(user);
+        final refreshToken = user.refreshToken;
+
+        await _saveTokensToCache(
+          accessToken: idToken,
+          refreshToken: refreshToken,
+        );
+
+        log('✅ Google sign-in successful. Tokens saved.');
+      }
+
+      return right(user);
     } on FirebaseAuthException catch (err) {
-      logger.e("${err.code}, ${ err.message}");
+      log("❌ Firebase Auth Error: ${err.code}, ${err.message}");
       return left(FirebaseGoogleAuthFailure.fromFirebaseAuthException(err));
     } catch (error) {
-      logger.e(error);
+      log("❌ General Error: ${error.toString()}");
       return left(
         FirebaseGoogleAuthFailure(
           errorMsg: 'Failed to sign in with Google: $error',
@@ -174,26 +281,4 @@ class AuthenticationRepoImpl implements AuthenticationRepo {
     }
   }
 
-  Future<String?> refreshGoogleBooksToken() async {
-    try {
-      final currentUser = await GoogleSignInService.getGoogleSigninAccount();
-      if (currentUser == null) return null;
-
-      
-      final authorization = await currentUser.authorizationClient
-          .authorizationForScopes([
-            'email',
-            'profile',
-            'https://www.googleapis.com/auth/books',
-          ]);
-
-      final _accessToken = authorization?.accessToken;
-
-      _tokenExpiryTime = DateTime.now().add(const Duration(hours: 1));
-      return _accessToken;
-    } catch (error) {
-      log("Error refreshing Google Books token: $error");
-      return null;
-    }
-  }
 }
