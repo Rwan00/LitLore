@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:google_fonts/google_fonts.dart';
+import 'package:litlore/core/network/local/cache_helper.dart';
 import 'package:litlore/core/theme/colors.dart';
+import 'package:litlore/core/utils/app_consts.dart';
 import 'package:litlore/core/utils/service_locator.dart';
 
 
@@ -18,6 +20,8 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   Bloc.observer = SimpleBlocObserver();
+   AppConsts.accessToken = await AppCacheHelper.getSecureString(key: AppCacheHelper.accessTokenKey);
+      AppConsts.accessToken = await AppCacheHelper.getSecureString(key: AppCacheHelper.refreshTokenKey);
   ServiceLocator.setup();
  
   runApp(const LitLore());

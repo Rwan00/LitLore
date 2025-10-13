@@ -17,12 +17,18 @@ import '../../manager/register_cubit/register_cubit.dart';
 import '../../manager/register_cubit/register_state.dart';
 import 'google_signing_btn.dart';
 
-class RegisterViewBody extends StatelessWidget {
+class RegisterViewBody extends StatefulWidget {
   const RegisterViewBody({super.key});
 
   @override
+  State<RegisterViewBody> createState() => _RegisterViewBodyState();
+}
+
+class _RegisterViewBodyState extends State<RegisterViewBody> {
+  final formKey = GlobalKey<FormState>();
+  @override
   Widget build(BuildContext context) {
-    final formKey = GlobalKey<FormState>();
+    
     return CustomContainerWidget(
       containerHeight: height(context) * 0.73,
       child: SingleChildScrollView(
