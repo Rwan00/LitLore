@@ -64,6 +64,7 @@ class RegisterCubit extends Cubit<RegisterState> {
           status: RegisterStatus.failure, errorMessage: failure.errorMsg));
     }, (user) {
       log("Google sign-in successful");
+      
       emit(state.copyWith(status: RegisterStatus.success, user: user));
     });
   }

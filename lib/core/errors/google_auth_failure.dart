@@ -27,9 +27,10 @@ class FirebaseGoogleAuthFailure extends Failures {
       case "operation-not-allowed":
         return FirebaseGoogleAuthFailure(
             errorMsg: "Oops! That request just got rejected faster than a terrible book idea.");
+     
       default:
         return FirebaseGoogleAuthFailure(
-            errorMsg: "Linking failed! Even Google couldn’t sneak past this one.");
+            errorMsg: "Signing failed! Even Google couldn’t sneak past this one.");
     }
   }
 }

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import 'package:litlore/features/home/data/models/book_model/book_model.dart';
 import 'package:litlore/features/home/presentation/widgets/book_details_view_body.dart';
 
-import '../../../../core/functions/navigations_functions.dart';
+
 
 class BookDetailsView extends StatelessWidget {
   static const routeName = "Book Details View";
@@ -18,23 +19,18 @@ class BookDetailsView extends StatelessWidget {
         backgroundColor: Colors.transparent,
         leading: IconButton(
           onPressed: () {
-            viewPop(context);
+            context.pop();
           },
           icon: const Icon(Icons.arrow_back_ios),
         ),
         actions: [
           IconButton(
             onPressed: () {},
-            icon: const Icon(
-              Icons.star_border_outlined,
-              size: 28,
-            ),
+            icon: const Icon(Icons.star_border_outlined, size: 28),
           ),
         ],
       ),
-      body: BookDetailsViewBody(
-        book: book,
-      ),
+      body: BookDetailsViewBody(book: book),
     );
   }
 }

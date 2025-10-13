@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-
+import 'package:go_router/go_router.dart';
 
 import 'package:litlore/features/search/presentation/widgets/search_view_body.dart';
 
-import '../../../../core/functions/navigations_functions.dart';
 import '../../../../core/utils/app_assets.dart';
 
 class SearchView extends StatelessWidget {
@@ -18,18 +17,14 @@ class SearchView extends StatelessWidget {
         backgroundColor: Colors.transparent,
         leading: IconButton(
           onPressed: () {
-            viewPop(context);
+            context.pop();
           },
           icon: const Icon(Icons.arrow_back_ios),
         ),
         actions: [
           IconButton(
             onPressed: () {},
-            icon: const Image(
-              image: AssetImage(
-                AppAssets.wizard,
-              ),
-            ),
+            icon: const Image(image: AssetImage(AppAssets.wizard)),
           ),
         ],
       ),

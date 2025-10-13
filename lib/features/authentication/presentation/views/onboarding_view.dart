@@ -11,7 +11,7 @@ import '../../../../core/utils/service_locator.dart';
 
 
 class OnBoardingScreen extends StatelessWidget {
-  static const routeName = "Onboarding view";
+  static const routeName = "/onboardingView";
   const OnBoardingScreen({super.key});
 
   @override

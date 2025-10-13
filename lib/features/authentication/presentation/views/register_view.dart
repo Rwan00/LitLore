@@ -7,7 +7,7 @@ import 'package:litlore/features/authentication/presentation/widgets/register_vi
 import '../../data/repos/authentication_repo/authentication_repo_impl.dart';
 
 class RegisterView extends StatelessWidget {
-  static const routeName = "Register View";
+  static const routeName = "/RegisterView";
   const RegisterView({super.key});
 
   @override

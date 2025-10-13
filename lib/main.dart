@@ -28,9 +28,9 @@ class LitLore extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       debugShowCheckedModeBanner: false,
-      routes: routes,
+      routerConfig: AppRouter.router,
       theme: ThemeData(
         scaffoldBackgroundColor: MyColors.kScaffoldColor,
         appBarTheme: const AppBarTheme(color: MyColors.kScaffoldColor),

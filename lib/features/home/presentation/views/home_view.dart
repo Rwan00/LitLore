@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import 'package:litlore/core/theme/fonts.dart';
 import 'package:litlore/core/utils/app_assets.dart';
 
 import 'package:litlore/features/home/presentation/widgets/home_view_body.dart';
 
-import '../../../../core/functions/navigations_functions.dart';
+
 import '../../../search/presentation/views/search_view.dart';
 
 class HomeView extends StatelessWidget {
@@ -32,10 +33,9 @@ class HomeView extends StatelessWidget {
           ),
           IconButton(
             onPressed: () {
-              goToPage(
-                context: context,
-                routeName: SearchView.routeName,
-                delete: false,
+              context.push(
+                 SearchView.routeName,
+                
               );
             },
             icon: const Icon(

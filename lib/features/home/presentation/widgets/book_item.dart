@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import 'package:litlore/core/theme/colors.dart';
 import 'package:litlore/core/theme/fonts.dart';
@@ -8,7 +9,7 @@ import 'package:litlore/features/home/data/models/book_model/book_model.dart';
 import 'package:litlore/features/home/presentation/views/book_details_view.dart';
 import 'package:litlore/features/home/presentation/widgets/book_image.dart';
 
-import '../../../../core/functions/navigations_functions.dart';
+
 import '../../../../core/functions/size_functions.dart';
 import 'book_rating.dart';
 
@@ -19,12 +20,9 @@ class BookItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => goToPage(
-        context: context,
-        routeName: BookDetailsView.routeName,
-        delete: false,
-        arguments: book,
-      ),
+      onTap: () {
+        context.push(BookDetailsView.routeName,extra: book);
+      },
       child: Padding(
         padding: const EdgeInsets.only(left: 12.0, right: 12, bottom: 2),
         child: Container(

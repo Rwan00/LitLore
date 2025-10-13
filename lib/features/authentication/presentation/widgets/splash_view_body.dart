@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import 'package:litlore/core/utils/app_assets.dart';
 
 import 'package:litlore/features/authentication/presentation/views/onboarding_view.dart';
 
-import '../../../../core/functions/navigations_functions.dart';
+
 
 class SplashViewBody extends StatefulWidget {
   const SplashViewBody({super.key});
@@ -39,10 +40,9 @@ class _SplashViewBodyState extends State<SplashViewBody> {
       ),
       () {
         if (mounted) {
-          goToPage(
-              context: context,
-              routeName: OnBoardingScreen.routeName,
-              delete: true,);
+          context.pushReplacement(
+               OnBoardingScreen.routeName,
+              );
         }
       },
     );

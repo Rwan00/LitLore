@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import 'package:litlore/features/authentication/manager/onpage_change_cubit/onpage_change_cubit.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-import '../../../../core/functions/navigations_functions.dart';
+
 import '../../../../core/theme/colors.dart';
 
 import '../../data/models/onboarding_model.dart';
@@ -34,10 +35,9 @@ class OnboardingStackItems extends StatelessWidget {
               backgroundColor: MyColors.kPrimaryColor,
               onPressed: () {
                 if (cubit.isLast) {
-                  goToPage(
-                    context: context,
-                    routeName: RegisterView.routeName,
-                    delete: true,
+                  context.pushReplacement(
+                    RegisterView.routeName,
+                    
                   );
                 } else {
                   cubit.pageController.nextPage(
