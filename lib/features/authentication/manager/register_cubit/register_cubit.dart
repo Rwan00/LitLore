@@ -46,7 +46,7 @@ class RegisterCubit extends Cubit<RegisterState> {
       if (user != null) {
         // Get Firebase ID token (acts as access token)
         final idToken = await user.getIdToken();
-        
+
         // Save tokens
         await _saveTokens(
           accessToken: idToken,
@@ -66,7 +66,7 @@ class RegisterCubit extends Cubit<RegisterState> {
     required String password,
   }) async {
     emit(state.copyWith(status: RegisterStatus.loading));
-    
+
     try {
       var result = await authenticationRepo.signUpWithEmail(
         email: email,
@@ -76,26 +76,28 @@ class RegisterCubit extends Cubit<RegisterState> {
       result.fold(
         (failure) {
           log('❌ Sign up failed: ${failure.errorMsg}');
-          emit(state.copyWith(
-            status: RegisterStatus.failure,
-            errorMessage: failure.errorMsg,
-          ));
+          emit(
+            state.copyWith(
+              status: RegisterStatus.failure,
+              errorMessage: failure.errorMsg,
+            ),
+          );
         },
         (user) async {
           log('✅ Sign up successful');
-          await _handleUserAuthentication(user);
-          emit(state.copyWith(
-            status: RegisterStatus.success,
-            user: user,
-          ));
+
+          await checkEmailVerification();
+          emit(state.copyWith(status: RegisterStatus.success, user: user));
         },
       );
     } catch (e) {
       log('❌ Exception in signUpWithEmail: $e');
-      emit(state.copyWith(
-        status: RegisterStatus.failure,
-        errorMessage: 'Sign up failed: $e',
-      ));
+      emit(
+        state.copyWith(
+          status: RegisterStatus.failure,
+          errorMessage: 'Sign up failed: $e',
+        ),
+      );
     }
   }
 
@@ -109,10 +111,12 @@ class RegisterCubit extends Cubit<RegisterState> {
       result.fold(
         (failure) {
           log('❌ Email verification failed: $failure');
-          emit(state.copyWith(
-            status: RegisterStatus.failure,
-            errorMessage: failure,
-          ));
+          emit(
+            state.copyWith(
+              status: RegisterStatus.failure,
+              errorMessage: failure,
+            ),
+          );
         },
         (done) {
           log('✅ Email verified and Google account linked successfully');
@@ -124,37 +128,12 @@ class RegisterCubit extends Cubit<RegisterState> {
       );
     } catch (e) {
       log('❌ Exception in checkEmailVerification: $e');
-      emit(state.copyWith(
-        status: RegisterStatus.failure,
-        errorMessage: 'Verification check failed: $e',
-      ));
-    }
-  }
-
-  /// Send verification email
-  Future<void> verifyEmail() async {
-    try {
-      var result = await authenticationRepo.verifyEmail();
-
-      result.fold(
-        (failure) {
-          log('❌ Verification email failed: ${failure.errorMsg}');
-          emit(state.copyWith(
-            status: RegisterStatus.failure,
-            errorMessage: failure.errorMsg,
-          ));
-        },
-        (done) {
-          log('✅ Verification email sent');
-          emit(state.copyWith(status: RegisterStatus.emailSent));
-        },
+      emit(
+        state.copyWith(
+          status: RegisterStatus.failure,
+          errorMessage: 'Verification check failed: $e',
+        ),
       );
-    } catch (e) {
-      log('❌ Exception in verifyEmail: $e');
-      emit(state.copyWith(
-        status: RegisterStatus.failure,
-        errorMessage: 'Failed to send verification email: $e',
-      ));
     }
   }
 
@@ -175,21 +154,20 @@ class RegisterCubit extends Cubit<RegisterState> {
       result.fold(
         (failure) {
           log('❌ Google sign-in failed: ${failure.errorMsg}');
-          emit(state.copyWith(
-            status: RegisterStatus.failure,
-            errorMessage: failure.errorMsg,
-          ));
+          emit(
+            state.copyWith(
+              status: RegisterStatus.failure,
+              errorMessage: failure.errorMsg,
+            ),
+          );
         },
         (user) async {
           log('✅ Google sign-in successful');
-          
+
           // Handle authentication and save tokens
           await _handleUserAuthentication(user);
-          
-          emit(state.copyWith(
-            status: RegisterStatus.success,
-            user: user,
-          ));
+
+          emit(state.copyWith(status: RegisterStatus.success, user: user));
 
           // Navigate to home
           _navigateToHome();
@@ -197,10 +175,12 @@ class RegisterCubit extends Cubit<RegisterState> {
       );
     } catch (e) {
       log('❌ Exception in signInWithGoogle: $e');
-      emit(state.copyWith(
-        status: RegisterStatus.failure,
-        errorMessage: 'Google sign-in failed: $e',
-      ));
+      emit(
+        state.copyWith(
+          status: RegisterStatus.failure,
+          errorMessage: 'Google sign-in failed: $e',
+        ),
+      );
     }
   }
 
@@ -217,16 +197,18 @@ class RegisterCubit extends Cubit<RegisterState> {
       log('🚪 Signing out user...');
       await AppCacheHelper.signOut();
       emit(RegisterState.initial());
-      
+
       // Navigate to onboarding
       NavigationService.pushReplacement(OnBoardingScreen.routeName);
       log('✅ Sign out successful');
     } catch (e) {
       log('❌ Error during sign out: $e');
-      emit(state.copyWith(
-        status: RegisterStatus.failure,
-        errorMessage: 'Sign out failed: $e',
-      ));
+      emit(
+        state.copyWith(
+          status: RegisterStatus.failure,
+          errorMessage: 'Sign out failed: $e',
+        ),
+      );
     }
   }
 
@@ -240,7 +222,11 @@ class RegisterCubit extends Cubit<RegisterState> {
     );
 
     log('🔍 Debug Tokens:');
-    log('  Access Token: ${accessToken.isEmpty ? 'EMPTY' : 'EXISTS (${accessToken.length} chars)'}');
-    log('  Refresh Token: ${refreshToken.isEmpty ? 'EMPTY' : 'EXISTS (${refreshToken.length} chars)'}');
+    log(
+      '  Access Token: ${accessToken.isEmpty ? 'EMPTY' : 'EXISTS (${accessToken.length} chars)'}',
+    );
+    log(
+      '  Refresh Token: ${refreshToken.isEmpty ? 'EMPTY' : 'EXISTS (${refreshToken.length} chars)'}',
+    );
   }
 }

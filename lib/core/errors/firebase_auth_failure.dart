@@ -32,6 +32,10 @@ class FirebaseAuthFailure extends Failures {
       case "operation-not-allowed":
         return FirebaseAuthFailure(
             errorMsg: "Oops! That move is as forbidden as spoilers in a book club.");
+      case "network-request-failed":
+        return FirebaseAuthFailure(
+            errorMsg: "No internet detected. Maybe try shouting at your router—it works 60% of the time."
+);
       default:
         return FirebaseAuthFailure(
             errorMsg: "Authentication failed! Even the secret library archives wouldn’t let you in.");

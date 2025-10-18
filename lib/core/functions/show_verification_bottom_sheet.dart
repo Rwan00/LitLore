@@ -112,7 +112,7 @@ class _VerificationBottomSheetContentState
                       child: AppButtonWidget(
                         onPressed: _isButtonEnabled
                             ? () {
-                                cubit.verifyEmail();
+                               // cubit.verifyEmail();
                                 _startCountdown();
                               }
                             : () {},
