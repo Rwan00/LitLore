@@ -82,26 +82,8 @@ class GoogleSignInService {
       // Perform Google Sign-In
       final GoogleSignInAccount googleUser = await signIn.authenticate();
 
-      final authorizationClient = googleUser.authorizationClient;
 
-      // FIXED: Use authorizeScopes instead of authorizationForScopes
-      GoogleSignInClientAuthorization authorization = await authorizationClient
-          .authorizeScopes([
-            'email',
-            'profile',
-            'https://www.googleapis.com/auth/books',
-          ]);
-
-      // Verify we got the access token
-      if (authorization.accessToken == null) {
-        throw FirebaseAuthException(
-          code: "no-access-token",
-          message: "Failed to obtain access token from Google",
-        );
-      }
-
-      // REMOVED: Don't sign in with credential here - just return the account
-      // This was causing the user to be re-authenticated and losing their email/password session
+     
       
       return googleUser;
     } on GoogleSignInException catch (e) {

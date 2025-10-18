@@ -16,7 +16,7 @@ import 'package:litlore/features/authentication/data/repos/authentication_repo/a
 
 class AuthenticationRepoImpl implements AuthenticationRepo {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  String? _accessToken;
+  String? _googleBooksAccessToken;
   DateTime? _tokenExpiryTime;
 
   User? get currentUser => _auth.currentUser;
@@ -24,7 +24,7 @@ class AuthenticationRepoImpl implements AuthenticationRepo {
   String? get googleBooksAccessToken {
     if (_tokenExpiryTime != null &&
         DateTime.now().isBefore(_tokenExpiryTime!)) {
-      return _accessToken;
+      return _googleBooksAccessToken;
     }
     return null;
   }
@@ -41,18 +41,18 @@ class AuthenticationRepoImpl implements AuthenticationRepo {
     }
   }
 
-  /// Save tokens to cache
-  Future<void> _saveTokensToCache({
-    required String? accessToken,
+  /// Save Firebase tokens to cache (ID token as access token)
+  Future<void> _saveFirebaseTokensToCache({
+    required String? idToken,
     required String? refreshToken,
   }) async {
     try {
-      if (accessToken != null && accessToken.isNotEmpty) {
+      if (idToken != null && idToken.isNotEmpty) {
         await AppCacheHelper.cacheSecureString(
           key: AppCacheHelper.accessTokenKey,
-          value: accessToken,
+          value: idToken,
         );
-        log('✅ Access token saved to cache');
+        log('✅ Firebase ID token saved to cache');
       }
 
       if (refreshToken != null && refreshToken.isNotEmpty) {
@@ -60,10 +60,28 @@ class AuthenticationRepoImpl implements AuthenticationRepo {
           key: AppCacheHelper.refreshTokenKey,
           value: refreshToken,
         );
-        log('✅ Refresh token saved to cache');
+        log('✅ Firebase refresh token saved to cache');
       }
     } catch (e) {
-      log('❌ Error saving tokens to cache: $e');
+      log('❌ Error saving Firebase tokens to cache: $e');
+    }
+  }
+
+  /// Save Google Books access token separately
+  Future<void> _saveGoogleBooksToken(String accessToken) async {
+    try {
+      await AppCacheHelper.cacheSecureString(
+        key: 'google_books_access_token',
+        value: accessToken,
+      );
+      
+      // Store in memory with expiry
+      _googleBooksAccessToken = accessToken;
+      _tokenExpiryTime = DateTime.now().add(const Duration(hours: 1));
+      
+      log('✅ Google Books access token saved');
+    } catch (e) {
+      log('❌ Error saving Google Books token: $e');
     }
   }
 
@@ -107,16 +125,14 @@ class AuthenticationRepoImpl implements AuthenticationRepo {
       );
 
       if (hasGoogleProvider) {
-        log(
-          "This Google account's already on chapter 5. Pick another to start fresh!",
-        );
+        log("Google account already linked");
 
-        // Extract and save tokens
+        // Extract and save Firebase tokens
         final idToken = await _getFirebaseIdToken(updatedUser);
         final refreshToken = updatedUser.refreshToken;
 
-        await _saveTokensToCache(
-          accessToken: idToken,
+        await _saveFirebaseTokensToCache(
+          idToken: idToken,
           refreshToken: refreshToken,
         );
 
@@ -135,8 +151,8 @@ class AuthenticationRepoImpl implements AuthenticationRepo {
           final idToken = await _getFirebaseIdToken(user);
           final refreshToken = user.refreshToken;
 
-          await _saveTokensToCache(
-            accessToken: idToken,
+          await _saveFirebaseTokensToCache(
+            idToken: idToken,
             refreshToken: refreshToken,
           );
         }
@@ -148,122 +164,117 @@ class AuthenticationRepoImpl implements AuthenticationRepo {
     }
   }
 
-@override
-Future<Either<Failures, User?>?> linkGoogleAccount() async {
-  try {
-    logger.e("Starting Google account linking...");
-    log("Starting Google account linking...");
-
-    // Get current user BEFORE starting Google sign-in
-    final currentUser = _auth.currentUser;
-    if (currentUser == null) {
-      logger.e("No current user to link Google account to");
-      return left(FirebaseGoogleAuthFailure(
-        errorMsg: "No authenticated user found",
-      ));
-    }
-
-    // Get Google sign-in account
-    final googleUser = await GoogleSignInService.getGoogleSigninAccount();
-    if (googleUser == null) {
-      logger.e("Google sign-in was cancelled");
-      log("Google sign-in was cancelled");
-      return null;
-    }
-    
-    logger.e("Got Google user: ${googleUser.email}");
-    log("Got Google user: ${googleUser.email}");
-
-    final googleAuth = googleUser.authentication;
-    final authorizationClient = googleUser.authorizationClient;
-    
-    // Get authorization with Books scope
-    GoogleSignInClientAuthorization authorization = await authorizationClient
-        .authorizeScopes([
-          'email',
-          'profile',
-          'https://www.googleapis.com/auth/books',
-        ]);
-
-    final accessToken = authorization.accessToken;
-    logger.e("Access token obtained: ${accessToken != null}");
-    log("Access token obtained: ${accessToken != null}");
-    
-    if (accessToken == null) {
-      return left(FirebaseGoogleAuthFailure(
-        errorMsg: "Failed to obtain Google access token",
-      ));
-    }
-
-    final credential = GoogleAuthProvider.credential(
-      accessToken: accessToken,
-      idToken: googleAuth.idToken,
-    );
-
-    // Link the credential to the current user
+  @override
+  Future<Either<Failures, User?>?> linkGoogleAccount() async {
     try {
-      // IMPORTANT: Use currentUser reference we got earlier
-      final linkedUserCredential = await currentUser.linkWithCredential(credential);
-      final linkedUser = linkedUserCredential.user;
+      logger.e("Starting Google account linking...");
+      log("Starting Google account linking...");
 
-      // Reload to get fresh data
-      await linkedUser?.reload();
-      final freshUser = _auth.currentUser;
-
-      // Extract and save tokens after linking
-      if (freshUser != null) {
-        final idToken = await _getFirebaseIdToken(freshUser);
-        final refreshToken = freshUser.refreshToken;
-
-        await _saveTokensToCache(
-          accessToken: idToken,
-          refreshToken: refreshToken,
-        );
-
-        // Store Google Books access token separately
-        _accessToken = accessToken;
-        _tokenExpiryTime = DateTime.now().add(const Duration(hours: 1));
-
-        log("✅ Google account linked successfully. Tokens saved.");
-        logger.e("✅ Google account linked successfully");
+      // Get current user BEFORE starting Google sign-in
+      final currentUser = _auth.currentUser;
+      if (currentUser == null) {
+        logger.e("No current user to link Google account to");
+        return left(FirebaseGoogleAuthFailure(
+          errorMsg: "No authenticated user found",
+        ));
       }
 
-      return right(freshUser);
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'credential-already-in-use') {
-        logger.e("Google account already linked to another user");
-        return left(
-          FirebaseGoogleAuthFailure(
-            errorMsg: "This Google account is already linked to another account",
-          ),
-        );
-      } else if (e.code == 'provider-already-linked') {
-        logger.e("User already has Google linked");
-        return left(
-          FirebaseGoogleAuthFailure(
-            errorMsg: "A Google account is already linked to this user",
-          ),
-        );
-      } else if (e.code == 'email-already-in-use') {
-        logger.e("Email already in use by another account");
-        return left(
-          FirebaseGoogleAuthFailure(
-            errorMsg: "This email is already registered with another account",
-          ),
-        );
+      // Get Google sign-in account
+      final googleUser = await GoogleSignInService.getGoogleSigninAccount();
+      if (googleUser == null) {
+        logger.e("Google sign-in was cancelled");
+        log("Google sign-in was cancelled");
+        return null;
       }
-      rethrow;
+      
+      logger.e("Got Google user: ${googleUser.email}");
+      log("Got Google user: ${googleUser.email}");
+
+      final googleAuth = googleUser.authentication;
+      final authorizationClient = googleUser.authorizationClient;
+      
+      // Get authorization with Books scope
+      GoogleSignInClientAuthorization authorization = await authorizationClient
+          .authorizeScopes([
+            'email',
+            'profile',
+            'https://www.googleapis.com/auth/books',
+          ]);
+
+      final googleAccessToken = authorization.accessToken;
+      // ignore: unnecessary_null_comparison
+      logger.e("Google access token obtained: ${googleAccessToken != null}");
+      // ignore: unnecessary_null_comparison
+      log("Google access token obtained: ${googleAccessToken != null}");
+
+      // Save Google Books access token SEPARATELY
+      await _saveGoogleBooksToken(googleAccessToken);
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAccessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      // Link the credential to the current user
+      try {
+        final linkedUserCredential = await currentUser.linkWithCredential(credential);
+        final linkedUser = linkedUserCredential.user;
+
+        // Reload to get fresh data
+        await linkedUser?.reload();
+        final freshUser = _auth.currentUser;
+
+        // Extract and save Firebase tokens after linking
+        if (freshUser != null) {
+          final idToken = await _getFirebaseIdToken(freshUser);
+          final refreshToken = freshUser.refreshToken;
+
+          await _saveFirebaseTokensToCache(
+            idToken: idToken,
+            refreshToken: refreshToken,
+          );
+
+          log("✅ Google account linked successfully. All tokens saved.");
+          logger.e("✅ Google account linked successfully");
+        }
+
+        return right(freshUser);
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'credential-already-in-use') {
+          logger.e("Google account already linked to another user");
+          return left(
+            FirebaseGoogleAuthFailure(
+              errorMsg: "This Google account is already linked to another account",
+            ),
+          );
+        } else if (e.code == 'provider-already-linked') {
+          logger.e("User already has Google linked");
+          return left(
+            FirebaseGoogleAuthFailure(
+              errorMsg: "A Google account is already linked to this user",
+            ),
+          );
+        } else if (e.code == 'email-already-in-use') {
+          logger.e("Email already in use by another account");
+          return left(
+            FirebaseGoogleAuthFailure(
+              errorMsg: "This email is already registered with another account",
+            ),
+          );
+        }
+        rethrow;
+      }
+    } on FirebaseAuthException catch (err) {
+      log("❌ Firebase Auth Error: ${err.code} - ${err.message}");
+      logger.e("❌ Firebase Auth Error: ${err.code} - ${err.message}");
+      return left(FirebaseGoogleAuthFailure.fromFirebaseAuthException(err));
+    } catch (error) {
+      log("❌ General Error: ${error.toString()}");
+      logger.e("❌ General Error: ${error.toString()}");
+      return left(FirebaseGoogleAuthFailure(errorMsg: error.toString()));
     }
-  } on FirebaseAuthException catch (err) {
-    log("❌ Firebase Auth Error: ${err.code} - ${err.message}");
-    logger.e("❌ Firebase Auth Error: ${err.code} - ${err.message}");
-    return left(FirebaseGoogleAuthFailure.fromFirebaseAuthException(err));
-  } catch (error) {
-    log("❌ General Error: ${error.toString()}");
-    logger.e("❌ General Error: ${error.toString()}");
-    return left(FirebaseGoogleAuthFailure(errorMsg: error.toString()));
   }
-}
+
   @override
   Future<Either<Failures, User?>?> signInWithGoogle() async {
     try {
@@ -272,17 +283,39 @@ Future<Either<Failures, User?>?> linkGoogleAccount() async {
 
       final user = userCredential.user;
 
-      // Extract and save tokens
+      // Extract and save Firebase tokens
       if (user != null) {
         final idToken = await _getFirebaseIdToken(user);
         final refreshToken = user.refreshToken;
 
-        await _saveTokensToCache(
-          accessToken: idToken,
+        await _saveFirebaseTokensToCache(
+          idToken: idToken,
           refreshToken: refreshToken,
         );
 
-        log('✅ Google sign-in successful. Tokens saved.');
+        // Also try to get and save Google Books token if available
+        try {
+          final googleUser = await GoogleSignInService.getGoogleSigninAccount();
+          if (googleUser != null) {
+            // Request Books scope authorization to obtain an access token for Google Books API
+            try {
+              final authorizationClient = googleUser.authorizationClient;
+              final authorization = await authorizationClient.authorizeScopes([
+                'email',
+                'profile',
+                'https://www.googleapis.com/auth/books',
+              ]);
+              final googleAccessToken = authorization.accessToken;
+              await _saveGoogleBooksToken(googleAccessToken);
+                        } catch (e) {
+              log('⚠️ Could not obtain Google Books authorization: $e');
+            }
+          }
+        } catch (e) {
+          log('⚠️ Could not save Google Books token: $e');
+        }
+
+        log('✅ Google sign-in successful. All tokens saved.');
       }
 
       return right(user);

@@ -1,6 +1,6 @@
-import 'package:dio/dio.dart';
+
 import 'package:get_it/get_it.dart';
-import 'package:litlore/core/network/remote/api_service.dart';
+import 'package:litlore/core/network/remote/app_dio.dart';
 
 import 'package:litlore/features/authentication/data/repos/authentication_repo/authentication_repo_impl.dart';
 
@@ -11,19 +11,19 @@ abstract class ServiceLocator {
   static final getIt = GetIt.instance;
 
   static void setup() {
-    getIt.registerSingleton<ApiService>(
-      ApiService(
-        Dio(),
+    getIt.registerSingleton<AppDio>(
+      AppDio(
+     
       ),
     );
     getIt.registerSingleton<HomeRepoImpl>(
       HomeRepoImpl(
-        apiService: getIt.get<ApiService>(),
+        apiService: getIt.get<AppDio>(),
       ),
     );
     getIt.registerSingleton<BookDetailsRepoImpl>(
       BookDetailsRepoImpl(
-        apiService: getIt.get<ApiService>(),
+        apiService: getIt.get<AppDio>(),
       ),
     );
     getIt.registerSingleton<AuthenticationRepoImpl>(

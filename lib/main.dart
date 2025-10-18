@@ -8,7 +8,6 @@ import 'package:litlore/core/theme/colors.dart';
 import 'package:litlore/core/utils/app_consts.dart';
 import 'package:litlore/core/utils/service_locator.dart';
 
-
 import 'core/routes/app_routes.dart';
 
 import 'core/utils/bloc_observer.dart';
@@ -16,14 +15,16 @@ import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   Bloc.observer = SimpleBlocObserver();
-   AppConsts.accessToken = await AppCacheHelper.getSecureString(key: AppCacheHelper.accessTokenKey);
-      AppConsts.accessToken = await AppCacheHelper.getSecureString(key: AppCacheHelper.refreshTokenKey);
+  AppConsts.accessToken = await AppCacheHelper.getSecureString(
+    key: AppCacheHelper.accessTokenKey,
+  );
+  AppConsts.accessToken = await AppCacheHelper.getSecureString(
+    key: AppCacheHelper.refreshTokenKey,
+  );
   ServiceLocator.setup();
- 
+  logger.e(AppConsts.accessToken);
   runApp(const LitLore());
 }
 
@@ -42,7 +43,6 @@ class LitLore extends StatelessWidget {
         useMaterial3: true,
         textTheme: GoogleFonts.nunitoTextTheme(),
       ),
-     
     );
   }
 }

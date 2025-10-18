@@ -55,6 +55,7 @@ dependencies:
   go_router: ^16.2.4
   nb_utils: ^7.1.8
   flutter_secure_storage: ^9.2.4
+  pretty_dio_logger: ^1.4.0
 
 dev_dependencies:
   flutter_test:

@@ -1,53 +1,38 @@
-
-
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:litlore/core/utils/app_consts.dart' show logger;
+import 'package:litlore/core/utils/app_consts.dart' show AppConsts, logger;
 import 'package:nb_utils/nb_utils.dart';
 
 class AppCacheHelper {
   static final FlutterSecureStorage _storage = const FlutterSecureStorage(
-    aOptions: AndroidOptions(
-      encryptedSharedPreferences: true,
-    ),
-    iOptions: IOSOptions(
-      accessibility: KeychainAccessibility.first_unlock,
-    ),
+    aOptions: AndroidOptions(encryptedSharedPreferences: true),
+    iOptions: IOSOptions(accessibility: KeychainAccessibility.first_unlock),
   );
 
   // Keys for secure storage (sensitive data)
   static const String accessTokenKey = 'accessToken';
   static const String refreshTokenKey = 'refreshToken';
   static const String resetTokenKey = 'resetToken';
- 
-
-  
 
   static Future<void> saveRegistrationData({
     required String token,
     required String refreshToken,
-   
   }) async {
     try {
       // Save tokens in secure storage WITH fallback
       await cacheSecureString(key: accessTokenKey, value: token);
       await cacheSecureString(key: refreshTokenKey, value: refreshToken);
-
-     
-
     } catch (e) {
       print('Error saving registration data: $e');
       rethrow;
     }
   }
 
- 
   static Future<void> signOut() async {
     try {
       // Clear all secure storage data
       await deleteSecureCache(key: accessTokenKey);
       await deleteSecureCache(key: refreshTokenKey);
       await deleteSecureCache(key: resetTokenKey);
-  
 
       // Clear all shared preferences (comprehensive cleanup)
       await clearSharedPref();
@@ -61,7 +46,7 @@ class AppCacheHelper {
         deleteCache(key: accessTokenKey);
         deleteCache(key: refreshTokenKey);
         deleteCache(key: resetTokenKey);
-  
+
         await clearSharedPref();
 
         // Try to clear all secure storage as fallback
@@ -73,15 +58,20 @@ class AppCacheHelper {
     }
   }
 
-
   // FIXED: Secure storage methods with proper fallback
-  static Future<void> cacheSecureString({required String key, required String value}) async {
+  static Future<void> cacheSecureString({
+    required String key,
+    required String value,
+  }) async {
     try {
       // Try to save in secure storage first
-      await _storage.write(key: key, value: value);
+  await _storage.write(key: key, value: value);
+       
       print('Successfully saved $key to secure storage');
     } catch (e) {
-      logger.e('Failed to save $key to secure storage: $e. Using fallback to regular storage.');
+      logger.e(
+        'Failed to save $key to secure storage: $e. Using fallback to regular storage.',
+      );
       // Fallback to regular storage AND save both locations for reliability
       cacheString(key: key, value: value);
     }
@@ -102,6 +92,7 @@ class AppCacheHelper {
       // Try secure storage first
       final token = await _storage.read(key: key);
       if (token != null && token.isNotEmpty) {
+        AppConsts.accessToken = token;
         logger.i('Successfully retrieved $key from secure storage');
         return token;
       }
@@ -114,6 +105,7 @@ class AppCacheHelper {
       try {
         final backupToken = getCacheString(key: '${key}_backup');
         if (backupToken.isNotEmpty) {
+          AppConsts.accessToken = backupToken;
           logger.i('Retrieved $key from backup in regular storage');
           return backupToken;
         }
@@ -126,6 +118,7 @@ class AppCacheHelper {
     try {
       final regularToken = getCacheString(key: key);
       if (regularToken.isNotEmpty) {
+        AppConsts.accessToken = regularToken;
         print('Retrieved $key from regular storage fallback');
         return regularToken;
       }
@@ -203,8 +196,6 @@ class AppCacheHelper {
       // Clear secure storage
       await deleteSecureCache(key: accessTokenKey);
       await deleteSecureCache(key: refreshTokenKey);
-
-   
     } catch (e) {
       print('Error clearing auth data: $e');
       // Fallback: clear all regular storage
@@ -212,7 +203,6 @@ class AppCacheHelper {
       deleteCache(key: refreshTokenKey);
       deleteCache(key: '${accessTokenKey}_backup');
       deleteCache(key: '${refreshTokenKey}_backup');
-      
     }
   }
 
@@ -244,21 +234,26 @@ class AppCacheHelper {
     try {
       final secureToken = await _storage.read(key: accessTokenKey);
       print(
-          'Secure storage token: ${secureToken?.isNotEmpty == true ? 'EXISTS (${secureToken!.length} chars)' : 'EMPTY/NULL'}');
+        'Secure storage token: ${secureToken?.isNotEmpty == true ? 'EXISTS (${secureToken!.length} chars)' : 'EMPTY/NULL'}',
+      );
     } catch (e) {
       print('Secure storage read error: $e');
     }
 
     try {
       final regularToken = getCacheString(key: accessTokenKey);
-      print('Regular storage token: ${regularToken.isNotEmpty ? 'EXISTS (${regularToken.length} chars)' : 'EMPTY'}');
+      print(
+        'Regular storage token: ${regularToken.isNotEmpty ? 'EXISTS (${regularToken.length} chars)' : 'EMPTY'}',
+      );
     } catch (e) {
       print('Regular storage read error: $e');
     }
 
     try {
       final backupToken = getCacheString(key: '${accessTokenKey}_backup');
-      print('Backup token: ${backupToken.isNotEmpty ? 'EXISTS (${backupToken.length} chars)' : 'EMPTY'}');
+      print(
+        'Backup token: ${backupToken.isNotEmpty ? 'EXISTS (${backupToken.length} chars)' : 'EMPTY'}',
+      );
     } catch (e) {
       print('Backup token read error: $e');
     }
