@@ -67,7 +67,7 @@ class DioService {
               // Retry the original request with the new token
               final options = e.requestOptions;
               options.headers['Authorization'] = '$newToken';
-              
+
               try {
                 final cloneReq = await _dio.request(
                   options.path,
@@ -130,7 +130,7 @@ class DioService {
 
       // Get ID token (force refresh if needed)
       final idToken = await user.getIdToken(forceRefresh);
-      
+
       if (idToken != null && idToken.isNotEmpty) {
         // Update cache with fresh token
         await AppCacheHelper.cacheSecureString(
@@ -139,7 +139,7 @@ class DioService {
         );
         print('✅ Firebase ID token retrieved successfully');
       }
-      
+
       return idToken;
     } catch (e) {
       print('❌ Error getting Firebase ID token: $e');
@@ -151,14 +151,14 @@ class DioService {
   Future<String?> refreshFirebaseToken() async {
     try {
       print('🔄 Refreshing Firebase ID token...');
-      
+
       // Force refresh the Firebase ID token
       final newToken = await getFirebaseIdToken(forceRefresh: true);
-      
+
       if (newToken != null && newToken.isNotEmpty) {
         // Update AppConsts if you're using it
         AppConsts.accessToken = newToken;
-        
+
         print('✅ Firebase ID token refreshed successfully');
         return newToken;
       } else {
@@ -177,22 +177,22 @@ class DioService {
       // Clear tokens from cache
       AppConsts.accessToken = '';
       AppConsts.refreshToken = '';
-      
+
       await AppCacheHelper.deleteSecureCache(
         key: AppCacheHelper.accessTokenKey,
       );
       await AppCacheHelper.deleteSecureCache(
         key: AppCacheHelper.refreshTokenKey,
       );
-      
+
       AppCacheHelper.deleteCache(key: AppCacheHelper.accessTokenKey);
       AppCacheHelper.deleteCache(key: AppCacheHelper.refreshTokenKey);
-      
+
       // Sign out from Firebase
       await _auth.signOut();
-      
+
       await AppCacheHelper.signOut();
-      
+
       print('🚪 User logged out due to authentication failure');
     } catch (e) {
       print('❌ Error during authentication failure handling: $e');
@@ -211,17 +211,14 @@ class DioService {
     try {
       // Get headers with Firebase token
       final requestHeaders = headers ?? await getHeaders(withToken: withToken);
-      
+
       final response = await _dio.request(
         path,
         data: data,
         queryParameters: queryParams,
-        options: Options(
-          method: method,
-          headers: requestHeaders,
-        ),
+        options: Options(method: method, headers: requestHeaders),
       );
-      
+
       return response;
     } on DioException {
       rethrow;
@@ -236,7 +233,7 @@ class DioService {
       final token = await AppCacheHelper.getSecureString(
         key: 'google_books_access_token',
       );
-      
+
       return token.isNotEmpty ? token : null;
     } catch (e) {
       print('❌ Error getting Google Books access token: $e');
@@ -254,25 +251,20 @@ class DioService {
     try {
       // Get Google Books access token (not Firebase token)
       final googleToken = await getGoogleBooksAccessToken();
-      
-      final headers = <String, String>{
-        'Content-Type': 'application/json',
-      };
-      
+
+      final headers = <String, String>{'Content-Type': 'application/json'};
+
       if (googleToken != null && googleToken.isNotEmpty) {
         headers['Authorization'] = '$googleToken';
       }
-      
+
       final response = await _dio.request(
         path,
         data: data,
         queryParameters: queryParams,
-        options: Options(
-          method: method,
-          headers: headers,
-        ),
+        options: Options(method: method, headers: headers),
       );
-      
+
       return response;
     } on DioException {
       rethrow;

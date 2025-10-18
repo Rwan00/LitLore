@@ -74,11 +74,11 @@ class AuthenticationRepoImpl implements AuthenticationRepo {
         key: 'google_books_access_token',
         value: accessToken,
       );
-      
+
       // Store in memory with expiry
       _googleBooksAccessToken = accessToken;
       _tokenExpiryTime = DateTime.now().add(const Duration(hours: 1));
-      
+
       log('✅ Google Books access token saved');
     } catch (e) {
       log('❌ Error saving Google Books token: $e');
@@ -107,9 +107,6 @@ class AuthenticationRepoImpl implements AuthenticationRepo {
     } on FirebaseAuthException catch (err) {
       log('❌ Firebase Auth Error: ${err.toString()}');
       return left(FirebaseAuthFailure.fromFirebaseAuthException(err));
-    } catch (error) {
-      log('❌ General Error: ${error.toString()}');
-      return left(FirebaseAuthFailure(errorMsg: error.toString()));
     }
   }
 
@@ -174,9 +171,9 @@ class AuthenticationRepoImpl implements AuthenticationRepo {
       final currentUser = _auth.currentUser;
       if (currentUser == null) {
         logger.e("No current user to link Google account to");
-        return left(FirebaseGoogleAuthFailure(
-          errorMsg: "No authenticated user found",
-        ));
+        return left(
+          FirebaseGoogleAuthFailure(errorMsg: "No authenticated user found"),
+        );
       }
 
       // Get Google sign-in account
@@ -186,13 +183,13 @@ class AuthenticationRepoImpl implements AuthenticationRepo {
         log("Google sign-in was cancelled");
         return null;
       }
-      
+
       logger.e("Got Google user: ${googleUser.email}");
       log("Got Google user: ${googleUser.email}");
 
       final googleAuth = googleUser.authentication;
       final authorizationClient = googleUser.authorizationClient;
-      
+
       // Get authorization with Books scope
       GoogleSignInClientAuthorization authorization = await authorizationClient
           .authorizeScopes([
@@ -217,7 +214,9 @@ class AuthenticationRepoImpl implements AuthenticationRepo {
 
       // Link the credential to the current user
       try {
-        final linkedUserCredential = await currentUser.linkWithCredential(credential);
+        final linkedUserCredential = await currentUser.linkWithCredential(
+          credential,
+        );
         final linkedUser = linkedUserCredential.user;
 
         // Reload to get fresh data
@@ -244,7 +243,8 @@ class AuthenticationRepoImpl implements AuthenticationRepo {
           logger.e("Google account already linked to another user");
           return left(
             FirebaseGoogleAuthFailure(
-              errorMsg: "This Google account is already linked to another account",
+              errorMsg:
+                  "This Google account is already linked to another account",
             ),
           );
         } else if (e.code == 'provider-already-linked') {
@@ -268,10 +268,12 @@ class AuthenticationRepoImpl implements AuthenticationRepo {
       log("❌ Firebase Auth Error: ${err.code} - ${err.message}");
       logger.e("❌ Firebase Auth Error: ${err.code} - ${err.message}");
       return left(FirebaseGoogleAuthFailure.fromFirebaseAuthException(err));
-    } catch (error) {
+    } on GoogleSignInException catch (error) {
       log("❌ General Error: ${error.toString()}");
       logger.e("❌ General Error: ${error.toString()}");
-      return left(FirebaseGoogleAuthFailure(errorMsg: error.toString()));
+      return left(FirebaseGoogleAuthFailure.fromGoogleSignInException(error));
+    } catch (err) {
+      return left(FirebaseAuthFailure(errorMsg: err.toString()));
     }
   }
 
@@ -307,7 +309,7 @@ class AuthenticationRepoImpl implements AuthenticationRepo {
               ]);
               final googleAccessToken = authorization.accessToken;
               await _saveGoogleBooksToken(googleAccessToken);
-                        } catch (e) {
+            } catch (e) {
               log('⚠️ Could not obtain Google Books authorization: $e');
             }
           }
@@ -322,6 +324,10 @@ class AuthenticationRepoImpl implements AuthenticationRepo {
     } on FirebaseAuthException catch (err) {
       log("❌ Firebase Auth Error: ${err.code}, ${err.message}");
       return left(FirebaseGoogleAuthFailure.fromFirebaseAuthException(err));
+    }on GoogleSignInException catch (error) {
+      log("❌ General Error: ${error.toString()}");
+      logger.e("❌ General Error: ${error.toString()}");
+      return left(FirebaseGoogleAuthFailure.fromGoogleSignInException(error));
     } catch (error) {
       log("❌ General Error: ${error.toString()}");
       return left(
