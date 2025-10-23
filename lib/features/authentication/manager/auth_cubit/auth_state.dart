@@ -1,32 +1,32 @@
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-enum RegisterStatus { initial, loading, success, failure,emailSent }
+enum AuthStatus { initial, loading, success, failure,emailSent }
 
-class RegisterState extends Equatable {
-  final RegisterStatus status;
+class AuthState extends Equatable {
+  final AuthStatus status;
   final String? errorMessage;
   final User? user;
 
-  const RegisterState({
-    this.status = RegisterStatus.initial,
+  const AuthState({
+    this.status = AuthStatus.initial,
     this.errorMessage ,
     this.user,
   });
 
-  factory RegisterState.initial() {
-    return const RegisterState(
-      status: RegisterStatus.initial,
+  factory AuthState.initial() {
+    return const AuthState(
+      status: AuthStatus.initial,
      
     );
   }
 
-  RegisterState copyWith({
-    RegisterStatus? status,
+  AuthState copyWith({
+    AuthStatus? status,
     String? errorMessage,
     User? user,
   }) {
-    return RegisterState(
+    return AuthState(
       status: status ?? this.status,
       errorMessage: errorMessage ?? this.errorMessage,
       user: user ?? this.user,

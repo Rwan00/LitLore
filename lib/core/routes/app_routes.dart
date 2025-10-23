@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:litlore/core/network/local/cache_helper.dart';
 import 'package:litlore/core/network/local/navigation_services.dart';
+import 'package:litlore/features/authentication/presentation/views/login_view.dart';
 import 'package:litlore/features/authentication/presentation/views/register_view.dart';
 import 'package:litlore/features/authentication/presentation/views/onboarding_view.dart';
 import 'package:litlore/features/home/presentation/views/book_details_view.dart';
@@ -42,23 +43,25 @@ class AppRouter {
 
           case PageRouteAnimation.Slide:
             return SlideTransition(
-              position: Tween<Offset>(
-                begin: const Offset(1.0, 0.0),
-                end: Offset.zero,
-              ).animate(
-                CurvedAnimation(parent: animation, curve: Curves.easeInOut),
-              ),
+              position:
+                  Tween<Offset>(
+                    begin: const Offset(1.0, 0.0),
+                    end: Offset.zero,
+                  ).animate(
+                    CurvedAnimation(parent: animation, curve: Curves.easeInOut),
+                  ),
               child: child,
             );
 
           case PageRouteAnimation.SlideBottomTop:
             return SlideTransition(
-              position: Tween<Offset>(
-                begin: const Offset(0.0, 1.0),
-                end: Offset.zero,
-              ).animate(
-                CurvedAnimation(parent: animation, curve: Curves.easeInOut),
-              ),
+              position:
+                  Tween<Offset>(
+                    begin: const Offset(0.0, 1.0),
+                    end: Offset.zero,
+                  ).animate(
+                    CurvedAnimation(parent: animation, curve: Curves.easeInOut),
+                  ),
               child: child,
             );
 
@@ -125,7 +128,8 @@ class AppRouter {
               state.extra as Map<String, dynamic>? ?? {};
           return _animateRouteBuilder(
             const SplashView(),
-            pageRouteAnimation: args['pageAnimation'] ?? PageRouteAnimation.Fade,
+            pageRouteAnimation:
+                args['pageAnimation'] ?? PageRouteAnimation.Fade,
           );
         },
       ),
@@ -136,7 +140,8 @@ class AppRouter {
               state.extra as Map<String, dynamic>? ?? {};
           return _animateRouteBuilder(
             const HomeView(),
-            pageRouteAnimation: args['pageAnimation'] ?? PageRouteAnimation.Fade,
+            pageRouteAnimation:
+                args['pageAnimation'] ?? PageRouteAnimation.Fade,
           );
         },
       ),
@@ -147,7 +152,8 @@ class AppRouter {
               state.extra as Map<String, dynamic>? ?? {};
           return _animateRouteBuilder(
             const BookDetailsView(),
-            pageRouteAnimation: args['pageAnimation'] ?? PageRouteAnimation.Fade,
+            pageRouteAnimation:
+                args['pageAnimation'] ?? PageRouteAnimation.Fade,
           );
         },
       ),
@@ -158,7 +164,8 @@ class AppRouter {
               state.extra as Map<String, dynamic>? ?? {};
           return _animateRouteBuilder(
             const SearchView(),
-            pageRouteAnimation: args['pageAnimation'] ?? PageRouteAnimation.Fade,
+            pageRouteAnimation:
+                args['pageAnimation'] ?? PageRouteAnimation.Fade,
           );
         },
       ),
@@ -169,7 +176,8 @@ class AppRouter {
               state.extra as Map<String, dynamic>? ?? {};
           return _animateRouteBuilder(
             const OnBoardingScreen(),
-            pageRouteAnimation: args['pageAnimation'] ?? PageRouteAnimation.Fade,
+            pageRouteAnimation:
+                args['pageAnimation'] ?? PageRouteAnimation.Fade,
           );
         },
       ),
@@ -180,7 +188,20 @@ class AppRouter {
               state.extra as Map<String, dynamic>? ?? {};
           return _animateRouteBuilder(
             const RegisterView(),
-            pageRouteAnimation: args['pageAnimation'] ?? PageRouteAnimation.Fade,
+            pageRouteAnimation:
+                args['pageAnimation'] ?? PageRouteAnimation.Fade,
+          );
+        },
+      ),
+      GoRoute(
+        path: LoginView.routeName,
+        pageBuilder: (context, state) {
+          final Map<String, dynamic> args =
+              state.extra as Map<String, dynamic>? ?? {};
+          return _animateRouteBuilder(
+            const LoginView(),
+            pageRouteAnimation:
+                args['pageAnimation'] ?? PageRouteAnimation.Fade,
           );
         },
       ),
@@ -194,7 +215,7 @@ class AppRouter {
 
         // 1. If user is authenticated and tries to access auth screens,
         // redirect to home (except for splash which handles the transition)
-        if (isAuthenticated && 
+        if (isAuthenticated &&
             authScreens.contains(currentLocation) &&
             currentLocation != SplashView.routeName) {
           _logRedirectDebug(

@@ -3,14 +3,14 @@ import 'dart:developer';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:litlore/core/network/local/cache_helper.dart';
 import 'package:litlore/core/network/local/navigation_services.dart';
-import 'package:litlore/features/authentication/data/repos/authentication_repo/authentication_repo.dart';
+import 'package:litlore/features/authentication/data/repos/authentication_repo.dart';
 import 'package:litlore/features/home/presentation/views/home_view.dart';
 import 'package:litlore/features/authentication/presentation/views/onboarding_view.dart';
 
-import 'register_state.dart';
+import 'auth_state.dart';
 
-class RegisterCubit extends Cubit<RegisterState> {
-  RegisterCubit(this.authenticationRepo) : super(RegisterState.initial());
+class AuthCubit extends Cubit<AuthState> {
+  AuthCubit(this.authenticationRepo) : super(AuthState.initial());
 
   final AuthenticationRepo authenticationRepo;
 
@@ -65,7 +65,7 @@ class RegisterCubit extends Cubit<RegisterState> {
     required String email,
     required String password,
   }) async {
-    emit(state.copyWith(status: RegisterStatus.loading));
+    emit(state.copyWith(status: AuthStatus.loading));
 
     try {
       var result = await authenticationRepo.signUpWithEmail(
@@ -78,7 +78,7 @@ class RegisterCubit extends Cubit<RegisterState> {
           log('❌ Sign up failed: ${failure.errorMsg}');
           emit(
             state.copyWith(
-              status: RegisterStatus.failure,
+              status: AuthStatus.failure,
               errorMessage: failure.errorMsg,
             ),
           );
@@ -87,15 +87,54 @@ class RegisterCubit extends Cubit<RegisterState> {
           log('✅ Sign up successful');
 
           await checkEmailVerification();
-          emit(state.copyWith(status: RegisterStatus.success, user: user));
+          emit(state.copyWith(status: AuthStatus.success, user: user));
         },
       );
     } catch (e) {
       log('❌ Exception in signUpWithEmail: $e');
       emit(
         state.copyWith(
-          status: RegisterStatus.failure,
+          status: AuthStatus.failure,
           errorMessage: 'Sign up failed: $e',
+        ),
+      );
+    }
+  }
+  Future<void> signInWithEmail({
+    required String email,
+    required String password,
+  }) async {
+    emit(state.copyWith(status: AuthStatus.loading));
+
+    try {
+      var result = await authenticationRepo.signInWithEmail(
+        email: email,
+        password: password,
+      );
+
+      result.fold(
+        (failure) {
+          log('❌ Sign in failed: ${failure.errorMsg}');
+          emit(
+            state.copyWith(
+              status: AuthStatus.failure,
+              errorMessage: failure.errorMsg,
+            ),
+          );
+        },
+        (user) async {
+          log('✅ Sign in successful');
+
+          await checkEmailVerification();
+          emit(state.copyWith(status: AuthStatus.success, user: user));
+        },
+      );
+    } catch (e) {
+      log('❌ Exception in signinWithEmail: $e');
+      emit(
+        state.copyWith(
+          status: AuthStatus.failure,
+          errorMessage: 'Sign in failed: $e',
         ),
       );
     }
@@ -103,7 +142,7 @@ class RegisterCubit extends Cubit<RegisterState> {
 
   /// Verify email and link Google account
   Future<void> checkEmailVerification() async {
-    emit(state.copyWith(status: RegisterStatus.loading));
+    emit(state.copyWith(status: AuthStatus.loading));
 
     try {
       var result = await authenticationRepo.checkEmailVerification();
@@ -113,14 +152,14 @@ class RegisterCubit extends Cubit<RegisterState> {
           log('❌ Email verification failed: $failure');
           emit(
             state.copyWith(
-              status: RegisterStatus.failure,
+              status: AuthStatus.failure,
               errorMessage: failure,
             ),
           );
         },
         (done) {
           log('✅ Email verified and Google account linked successfully');
-          emit(state.copyWith(status: RegisterStatus.success));
+          emit(state.copyWith(status: AuthStatus.success));
           
           // Navigate to home after successful verification
           _navigateToHome();
@@ -130,7 +169,7 @@ class RegisterCubit extends Cubit<RegisterState> {
       log('❌ Exception in checkEmailVerification: $e');
       emit(
         state.copyWith(
-          status: RegisterStatus.failure,
+          status: AuthStatus.failure,
           errorMessage: 'Verification check failed: $e',
         ),
       );
@@ -139,7 +178,7 @@ class RegisterCubit extends Cubit<RegisterState> {
 
   /// Sign in with Google
   Future<void> signInWithGoogle() async {
-    emit(state.copyWith(status: RegisterStatus.loading));
+    emit(state.copyWith(status: AuthStatus.loading));
 
     try {
       var result = await authenticationRepo.signInWithGoogle();
@@ -147,7 +186,7 @@ class RegisterCubit extends Cubit<RegisterState> {
       // User cancelled Google sign-in
       if (result == null) {
         log('ℹ️ Google sign-in cancelled by user');
-        emit(state.copyWith(status: RegisterStatus.initial));
+        emit(state.copyWith(status: AuthStatus.initial));
         return;
       }
 
@@ -156,7 +195,7 @@ class RegisterCubit extends Cubit<RegisterState> {
           log('❌ Google sign-in failed: ${failure.errorMsg}');
           emit(
             state.copyWith(
-              status: RegisterStatus.failure,
+              status: AuthStatus.failure,
               errorMessage: failure.errorMsg,
             ),
           );
@@ -167,7 +206,7 @@ class RegisterCubit extends Cubit<RegisterState> {
           // Handle authentication and save tokens
           await _handleUserAuthentication(user);
 
-          emit(state.copyWith(status: RegisterStatus.success, user: user));
+          emit(state.copyWith(status: AuthStatus.success, user: user));
 
           // Navigate to home
           _navigateToHome();
@@ -177,7 +216,7 @@ class RegisterCubit extends Cubit<RegisterState> {
       log('❌ Exception in signInWithGoogle: $e');
       emit(
         state.copyWith(
-          status: RegisterStatus.failure,
+          status: AuthStatus.failure,
           errorMessage: 'Google sign-in failed: $e',
         ),
       );
@@ -196,7 +235,7 @@ class RegisterCubit extends Cubit<RegisterState> {
     try {
       log('🚪 Signing out user...');
       await AppCacheHelper.signOut();
-      emit(RegisterState.initial());
+      emit(AuthState.initial());
 
       // Navigate to onboarding
       NavigationService.pushReplacement(OnBoardingScreen.routeName);
@@ -205,7 +244,7 @@ class RegisterCubit extends Cubit<RegisterState> {
       log('❌ Error during sign out: $e');
       emit(
         state.copyWith(
-          status: RegisterStatus.failure,
+          status: AuthStatus.failure,
           errorMessage: 'Sign out failed: $e',
         ),
       );

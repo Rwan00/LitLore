@@ -12,7 +12,7 @@ import 'package:litlore/core/network/remote/google_signin_service.dart';
 import 'package:litlore/core/utils/app_consts.dart' show logger;
 
 import 'package:litlore/features/authentication/data/models/onboarding_model.dart';
-import 'package:litlore/features/authentication/data/repos/authentication_repo/authentication_repo.dart';
+import 'package:litlore/features/authentication/data/repos/authentication_repo.dart';
 
 class AuthenticationRepoImpl implements AuthenticationRepo {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -97,6 +97,25 @@ class AuthenticationRepoImpl implements AuthenticationRepo {
   }) async {
     try {
       final userCredential = await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      final user = userCredential.user;
+
+      return right(user);
+    } on FirebaseAuthException catch (err) {
+      log('❌ Firebase Auth Error: ${err.toString()}');
+      return left(FirebaseAuthFailure.fromFirebaseAuthException(err));
+    }
+  }
+  @override
+  Future<Either<Failures, User?>> signInWithEmail({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      final userCredential = await _auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );

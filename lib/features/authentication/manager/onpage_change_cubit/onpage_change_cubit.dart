@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:litlore/features/authentication/data/repos/authentication_repo/authentication_repo.dart';
+import 'package:litlore/features/authentication/data/repos/authentication_repo.dart';
 
 
 

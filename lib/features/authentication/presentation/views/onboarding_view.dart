@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 
-import 'package:litlore/features/authentication/data/repos/authentication_repo/authentication_repo_impl.dart';
+import 'package:litlore/features/authentication/data/repos/authentication_repo_impl.dart';
 import 'package:litlore/features/authentication/manager/onpage_change_cubit/onpage_change_cubit.dart';
 import 'package:litlore/features/authentication/presentation/widgets/onboarding_view_body.dart';
 

@@ -9,31 +9,30 @@ import 'package:litlore/features/authentication/manager/auth_cubit/auth_cubit.da
 import 'package:litlore/features/authentication/manager/auth_cubit/auth_state.dart';
 import 'package:litlore/features/authentication/presentation/widgets/custom_container_widget.dart';
 import 'package:litlore/features/authentication/presentation/widgets/form_title_widget.dart';
-import 'package:litlore/features/authentication/presentation/widgets/register_form.dart';
-import 'package:litlore/features/authentication/presentation/views/login_view.dart';
+
+import 'package:litlore/features/authentication/presentation/views/register_view.dart';
+import 'package:litlore/features/authentication/presentation/widgets/login_form.dart';
 
 import '../../../../core/functions/show_bottom_sheet_function.dart';
 
 import 'google_signing_btn.dart';
 
-class RegisterViewBody extends StatefulWidget {
-  const RegisterViewBody({super.key});
+class LoginViewBody extends StatefulWidget {
+  const LoginViewBody({super.key});
 
   @override
-  State<RegisterViewBody> createState() => _RegisterViewBodyState();
+  State<LoginViewBody> createState() => _LoginViewBodyState();
 }
 
-class _RegisterViewBodyState extends State<RegisterViewBody> {
+class _LoginViewBodyState extends State<LoginViewBody> {
   final formKey = GlobalKey<FormState>();
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
-  final TextEditingController _confirmPassword = TextEditingController();
 
   @override
   void dispose() {
     _email.dispose();
     _password.dispose();
-    _confirmPassword.dispose();
     super.dispose();
   }
 
@@ -48,11 +47,7 @@ class _RegisterViewBodyState extends State<RegisterViewBody> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const FormTitleWidget(),
-              RegisterForm(
-                email: _email,
-                password: _password,
-                confirmPassword: _confirmPassword,
-              ),
+              LoginForm(email: _email, password: _password),
               const SizedBox(height: 12),
               BlocConsumer<AuthCubit, AuthState>(
                 listener: (context, state) {
@@ -70,10 +65,10 @@ class _RegisterViewBodyState extends State<RegisterViewBody> {
                               width: double.infinity,
                               height: 45,
                               child: AppButtonWidget(
-                                label: 'Join the Story!',
+                                label: 'Open the Book!',
                                 onPressed: () async {
                                   if (formKey.currentState!.validate()) {
-                                    await cubit.signUpWithEmail(
+                                    await cubit.signInWithEmail(
                                       email: _email.text,
                                       password: _password.text,
                                     );
@@ -91,7 +86,7 @@ class _RegisterViewBodyState extends State<RegisterViewBody> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  'Already have a library card?',
+                                  'New reader in town?',
                                   style: MyFonts.titleMediumStyle18.copyWith(
                                     fontSize: 16,
                                   ),
@@ -99,11 +94,11 @@ class _RegisterViewBodyState extends State<RegisterViewBody> {
                                 TextButton(
                                   onPressed: () {
                                     NavigationService.pushReplacement(
-                                      LoginView.routeName,
+                                      RegisterView.routeName,
                                     );
                                   },
                                   child: Text(
-                                    'Login and reunite!',
+                                    'Get your library card!',
                                     style: MyFonts.subTiltleStyle14,
                                   ),
                                 ),
