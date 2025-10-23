@@ -4,15 +4,13 @@ import 'package:go_router/go_router.dart';
 import 'package:litlore/features/home/data/models/book_model/book_model.dart';
 import 'package:litlore/features/home/presentation/widgets/book_details_view_body.dart';
 
-
-
 class BookDetailsView extends StatelessWidget {
-  static const routeName = "Book Details View";
-  const BookDetailsView({super.key});
+  static const routeName = "/BookDetailsView";
+  final BookModel book;
+  const BookDetailsView({super.key, required this.book});
 
   @override
   Widget build(BuildContext context) {
-    final book = ModalRoute.of(context)?.settings.arguments as BookModel;
     return Scaffold(
       appBar: AppBar(
         surfaceTintColor: Colors.white,

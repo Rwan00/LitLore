@@ -23,8 +23,8 @@ class ReleaseOverViewSection extends StatelessWidget {
           Column(
             children: [
               BookRating(
-                rating: book.volumeInfo.averageRating!,
-                count: book.volumeInfo.ratingsCount!,
+                rating: book.volumeInfo?.averageRating??0,
+                count: book.volumeInfo?.ratingsCount??0,
               ),
               const Text(
                 "Review",
@@ -36,7 +36,7 @@ class ReleaseOverViewSection extends StatelessWidget {
           Column(
             children: [
               Text(
-                book.volumeInfo.language ?? "Unknown",
+                book.volumeInfo?.language ?? "emotions only",
                 style: MyFonts.subTiltleStyle12.copyWith(
                   color: Colors.black,
                 ),
@@ -51,7 +51,7 @@ class ReleaseOverViewSection extends StatelessWidget {
           Column(
             children: [
               Text(
-                "${book.volumeInfo.pageCount}",
+                "${book.volumeInfo?.pageCount}",
                 style: MyFonts.subTiltleStyle12.copyWith(
                   color: Colors.black,
                 ),
@@ -83,7 +83,7 @@ class ReleaseOverViewSection extends StatelessWidget {
               SizedBox(
                 width: 65,
                 child: Text(
-                  book.volumeInfo.publisher ?? "Unknown",
+                  book.volumeInfo?.publisher ?? "the universe itself",
                   style: MyFonts.subTiltleStyle12.copyWith(
                     color: Colors.black,
                   ),

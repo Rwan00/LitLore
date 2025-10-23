@@ -23,7 +23,7 @@ class BookDetailsSection extends StatelessWidget {
             width: width(context) * 0.3,
             child: Hero(
               tag: book.id,
-              child: BookImage(imgUrl: book.volumeInfo.imageLinks?.smallThumbnail??"",),
+              child: BookImage(imgUrl: book.volumeInfo?.imageLinks?.smallThumbnail??"",),
             ),
           ),
           const SizedBox(

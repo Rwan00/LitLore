@@ -35,10 +35,10 @@ class BookDetailsViewBody extends StatelessWidget {
             price: book.saleInfo?.saleability == "FOR_SALE"
                 ? "Buy For ${book.saleInfo?.listPrice?.amount} ${book.saleInfo?.listPrice?.currencyCode}"
                 : "Not for sale",
-                url: book.volumeInfo.previewLink!,
+                url: book.volumeInfo?.previewLink??"",
           ),
           AboutBookSection(
-            description: book.volumeInfo.description ?? "",
+            description: book.volumeInfo?.description ?? "No description. Let your imagination do the work!",
           ),
           const SizedBox(
             height: 18,
@@ -48,7 +48,7 @@ class BookDetailsViewBody extends StatelessWidget {
             child: CategoryTitle(title: "Similar Books"),
           ),
           SimilarBooksList(
-            category: book.volumeInfo.categories?[0] ?? "",
+            category: book.volumeInfo?.categories?[0] ?? "undefined chaos",
           ),
         ],
       ),

@@ -4,6 +4,7 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 
 import 'package:litlore/core/errors/failures.dart';
+import 'package:litlore/core/utils/urls.dart';
 
 import 'package:litlore/features/home/data/models/book_model/book_model.dart';
 
@@ -22,7 +23,7 @@ class BookDetailsRepoImpl implements BookDetailsRepo {
  
     try {
       var response = await apiService.get(
-        path: "volumes?q=$category+subject:&orderBy=relevance",
+        path: Urls.similarBooks(category),
       );
       List<BookModel> books = [];
       for (var item in response.data["items"]) {

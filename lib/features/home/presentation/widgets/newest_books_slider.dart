@@ -29,7 +29,7 @@ class NewestBooksSlider extends StatelessWidget {
                 CarouselSlider(
                   items: state.books.map((book) {
                     return BookImage(
-                      imgUrl: book.volumeInfo.imageLinks?.smallThumbnail ?? "",
+                      imgUrl: book.volumeInfo?.imageLinks?.smallThumbnail ?? "",
                       
                     );
                   }).toList(),

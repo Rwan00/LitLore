@@ -9,7 +9,6 @@ import 'package:litlore/features/home/data/models/book_model/book_model.dart';
 import 'package:litlore/features/home/presentation/views/book_details_view.dart';
 import 'package:litlore/features/home/presentation/widgets/book_image.dart';
 
-
 import '../../../../core/functions/size_functions.dart';
 import 'book_rating.dart';
 
@@ -21,7 +20,7 @@ class BookItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        context.push(BookDetailsView.routeName,extra: book);
+        context.push(BookDetailsView.routeName, extra: {"book": book});
       },
       child: Padding(
         padding: const EdgeInsets.only(left: 12.0, right: 12, bottom: 2),
@@ -31,21 +30,17 @@ class BookItem extends StatelessWidget {
           height: height(context) * 0.17,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(7),
-            border: Border.all(
-              color: MyColors.kPrimaryColor,
-            ),
+            border: Border.all(color: MyColors.kPrimaryColor),
           ),
           child: Row(
             children: [
               Hero(
                 tag: book.id,
                 child: BookImage(
-                  imgUrl: book.volumeInfo.imageLinks?.smallThumbnail ?? "",
+                  imgUrl: book.volumeInfo?.imageLinks?.smallThumbnail ?? "",
                 ),
               ),
-              const SizedBox(
-                width: 8,
-              ),
+              const SizedBox(width: 8),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -53,27 +48,25 @@ class BookItem extends StatelessWidget {
                     SizedBox(
                       width: width(context) * 0.54,
                       child: Text(
-                        book.volumeInfo.title,
+                        book.volumeInfo?.title ??
+                            "Nameless, but still legendary.",
                         style: MyFonts.textStyleStyle16,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                    const SizedBox(
-                      height: 6,
-                    ),
+                    const SizedBox(height: 6),
                     Text(
-                      book.volumeInfo.authors?.take(2).join(', ') ?? '',
+                      book.volumeInfo?.authors?.join(', ') ??
+                          "Anonymous genius",
                       style: MyFonts.subTiltleStyle14,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    const SizedBox(
-                      height: 6,
-                    ),
+                    const SizedBox(height: 6),
                     BookRating(
-                      rating: book.volumeInfo.averageRating!,
-                      count: book.volumeInfo.ratingsCount!,
+                      rating: book.volumeInfo?.averageRating ?? 0,
+                      count: book.volumeInfo?.ratingsCount ?? 0,
                     ),
                     const Spacer(),
                     Align(
@@ -87,7 +80,7 @@ class BookItem extends StatelessWidget {
                     ),
                   ],
                 ),
-              )
+              ),
             ],
           ),
         ),

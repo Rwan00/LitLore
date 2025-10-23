@@ -5,6 +5,7 @@ import 'package:litlore/core/network/local/navigation_services.dart';
 import 'package:litlore/features/authentication/presentation/views/login_view.dart';
 import 'package:litlore/features/authentication/presentation/views/register_view.dart';
 import 'package:litlore/features/authentication/presentation/views/onboarding_view.dart';
+import 'package:litlore/features/home/data/models/book_model/book_model.dart';
 import 'package:litlore/features/home/presentation/views/book_details_view.dart';
 import 'package:litlore/features/home/presentation/views/home_view.dart';
 import 'package:litlore/features/search/presentation/views/search_view.dart';
@@ -150,8 +151,9 @@ class AppRouter {
         pageBuilder: (context, state) {
           final Map<String, dynamic> args =
               state.extra as Map<String, dynamic>? ?? {};
+             
           return _animateRouteBuilder(
-            const BookDetailsView(),
+             BookDetailsView(book: args['book'],),
             pageRouteAnimation:
                 args['pageAnimation'] ?? PageRouteAnimation.Fade,
           );

@@ -23,7 +23,7 @@ class BookBasicDetails extends StatelessWidget {
           SizedBox(
             width: width(context) * 0.6,
             child: Text(
-             book.volumeInfo.title,
+             book.volumeInfo?.title??"Nameless, but still legendary.",
               style: MyFonts.titleMediumStyle18,
               softWrap: true,
               maxLines: 5,
@@ -34,23 +34,25 @@ class BookBasicDetails extends StatelessWidget {
             height: 6,
           ),
           Text(
-            book.volumeInfo.authors?.join(', ') ?? '',
-            style: MyFonts.subTiltleStyle14,
-          ),
+  book.volumeInfo?.authors?.join(', ') ?? "Anonymous genius",
+  style: MyFonts.subTiltleStyle14,
+),
+
           const SizedBox(
             height: 6,
           ),
            Text(
-            "Released on: ${book.volumeInfo.publishedDate}",
-            style: MyFonts.subTiltleStyle12,
-          ),
+  "Released on: ${book.volumeInfo?.publishedDate ?? "a day lost to history"}",
+  style: MyFonts.subTiltleStyle12,
+),
+
           const SizedBox(
             height: 6,
           ),
           Wrap(
             direction: Axis.horizontal,
             children: List.generate(
-              book.volumeInfo.categories?.length??0,
+              book.volumeInfo?.categories?.length??0,
               (index) {
                 return Padding(
                   padding: const EdgeInsets.all(2.0),
@@ -62,7 +64,7 @@ class BookBasicDetails extends StatelessWidget {
                       color: MyColors.kPrimaryColor.withOpacity(0.3),
                     ),
                     child: Text(
-                      book.volumeInfo.categories?[index]??"",
+                      book.volumeInfo?.categories?[index]??"undefined chaos",
                       style: MyFonts.subTiltleStyle12,
                     ),
                   ),
