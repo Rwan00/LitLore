@@ -13,12 +13,35 @@ class SearchCubit extends Cubit<SearchState> {
   void toggleSearching(bool isSearching) {
     emit(state.copyWith(isSearching: isSearching));
   }
+
   void toggleFilter(AnimationController controller) {
     emit(state.copyWith(showFilter: !state.showFilter));
-     if (state.showFilter) {
-        controller.forward();
-      } else {
-        controller.reverse();
-      }
+    if (state.showFilter) {
+      controller.forward();
+    } else {
+      controller.reverse();
+    }
+  }
+
+  void setFilter(String filter) {
+    emit(state.copyWith(selectedFilter: filter));
+  }
+
+  void setOrderBy(String orderBy) {
+    emit(state.copyWith(selectedOrderBy: orderBy));
+  }
+
+  void setPrintType(String printType) {
+    emit(state.copyWith(selectedPrintType: printType));
+  }
+
+  void resetFilters() {
+    emit(
+      state.copyWith(
+        selectedPrintType: "all",
+        selectedFilter: "all",
+        selectedOrderBy: "relevance",
+      ),
+    );
   }
 }
