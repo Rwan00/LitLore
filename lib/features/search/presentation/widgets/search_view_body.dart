@@ -105,7 +105,13 @@ class _SearchViewBodyState extends State<SearchViewBody>
                           state.selectedOrderBy != 'relevance' ||
                           state.selectedPrintType != 'all'))
                     const SizedBox(height: 16),
-                  //_isSearching ? _buildSearchResults() : _buildEmptyState(),
+                  state.isSearching ?? false
+                      ? _buildSearchResults(
+                          state.selectedFilter,
+                          state.selectedOrderBy,
+                          state.selectedPrintType,
+                        )
+                      : _buildEmptyState(),
 
                   // Content Area
                 ],
@@ -116,8 +122,6 @@ class _SearchViewBodyState extends State<SearchViewBody>
       },
     );
   }
-
-  
 
   Widget _buildEmptyState() {
     return Center(
@@ -159,18 +163,15 @@ class _SearchViewBodyState extends State<SearchViewBody>
           const SizedBox(height: 32),
 
           // Quick Search Suggestions
-         
         ],
       ),
     );
   }
 
- 
-
   Widget _buildSearchResults(
-      String selectedFilter,
-   String selectedOrderBy,
-   String selectedPrintType,
+    String selectedFilter,
+    String selectedOrderBy,
+    String selectedPrintType,
   ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -209,12 +210,10 @@ class _SearchViewBodyState extends State<SearchViewBody>
             ),
           ),
         const SizedBox(height: 16),
-        Expanded(
-          child: Center(
-            child: FlappingOwlLoading(
-              loadingText:
-                  'Our wisest owls are searching...\n Flipping through ${(_searchController.text.length * 1000)} pages!',
-            ),
+        Center(
+          child: FlappingOwlLoading(
+            loadingText:
+                'Our wisest owls are searching...\n Flipping through ${(_searchController.text.length * 1000)} pages!',
           ),
         ),
       ],
