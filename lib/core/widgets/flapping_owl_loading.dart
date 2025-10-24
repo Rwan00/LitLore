@@ -3,7 +3,8 @@ import 'package:litlore/core/theme/fonts.dart';
 import 'package:litlore/core/utils/app_assets.dart';
 
 class FlappingOwlLoading extends StatefulWidget {
-  const FlappingOwlLoading({super.key});
+  final String? loadingText;
+  const FlappingOwlLoading({super.key, this.loadingText});
 
   @override
   State<FlappingOwlLoading> createState() => _FlappingOwlLoadingState();
@@ -29,16 +30,14 @@ class _FlappingOwlLoadingState extends State<FlappingOwlLoading>
       children: [
         RotationTransition(
           turns: Tween(begin: -0.1, end: 0.1).animate(_controller),
-          child: Image.asset(
-            AppAssets.owlLoading,
-            height: 50,
-          ),
+          child: Image.asset(AppAssets.owlLoading, height: 50),
         ),
         const SizedBox(height: 5),
         Text(
+          widget.loadingText??
           "Owl says: 'Patience, young reader!'",
           style: MyFonts.subTiltleStyle14,
-        )
+        ),
       ],
     );
   }

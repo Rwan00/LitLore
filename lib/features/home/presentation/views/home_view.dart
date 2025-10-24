@@ -6,7 +6,6 @@ import 'package:litlore/core/utils/app_assets.dart';
 
 import 'package:litlore/features/home/presentation/widgets/home_view_body.dart';
 
-
 import '../../../search/presentation/views/search_view.dart';
 
 class HomeView extends StatelessWidget {
@@ -20,28 +19,14 @@ class HomeView extends StatelessWidget {
         surfaceTintColor: Colors.white,
         backgroundColor: Colors.transparent,
         leading: Image.asset(AppAssets.logo),
-        title: Text(
-          "LitLoRe",
-          style: MyFonts.logoStyle.copyWith(fontSize: 16),
-        ),
+        title: Text("LitLoRe", style: MyFonts.logoStyle.copyWith(fontSize: 16)),
         actions: [
-          const Image(
-            image: AssetImage(
-              AppAssets.wizard,
-            ),
-            width: 32,
-          ),
+          const Image(image: AssetImage(AppAssets.wizard), width: 32),
           IconButton(
             onPressed: () {
-              context.push(
-                 SearchView.routeName,
-                
-              );
+              context.push(SearchView.routeName);
             },
-            icon: const Icon(
-              Icons.search,
-              size: 32,
-            ),
+            icon: Image(image: AssetImage(AppAssets.search), width: 26),
           ),
         ],
       ),

@@ -6,6 +6,7 @@ import 'package:litlore/features/authentication/data/repos/authentication_repo_i
 
 import 'package:litlore/features/home/data/repos/book_details_repo/book_details_repo_impl.dart';
 import 'package:litlore/features/home/data/repos/home_repo/home_repo_impl.dart';
+import 'package:litlore/features/search/data/repo/search_repo_impl.dart';
 
 abstract class ServiceLocator {
   static final getIt = GetIt.instance;
@@ -28,6 +29,9 @@ abstract class ServiceLocator {
     );
     getIt.registerSingleton<AuthenticationRepoImpl>(
      AuthenticationRepoImpl(),
+    );
+    getIt.registerSingleton<SearchRepoImpl>(
+     SearchRepoImpl(),
     );
   }
 }

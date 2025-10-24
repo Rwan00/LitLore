@@ -18,4 +18,9 @@ class AppAssets {
   static const owlError = "assets/images/horror.png";
   static const owlLoading = "assets/images/owl_loading.png";
   static const google = "assets/images/google.png";
+  static const search = "assets/images/search.png";
+  static const cancel = "assets/images/cross.png";
+  static const noBook = "assets/images/no_book.png";
+  static const book = "assets/images/book.png";
+  static const filter = "assets/images/filter.png";
 }

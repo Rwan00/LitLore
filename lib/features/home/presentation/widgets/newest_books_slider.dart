@@ -7,7 +7,6 @@ import 'package:litlore/core/widgets/custom_error_widget.dart';
 import 'package:litlore/features/home/data/repos/home_repo/home_repo_impl.dart';
 import 'package:litlore/features/home/manager/newest_books_cubit/newest_books_cubit.dart';
 
-
 import '../../../../core/widgets/flapping_owl_loading.dart';
 import 'book_image.dart';
 
@@ -28,21 +27,42 @@ class NewestBooksSlider extends StatelessWidget {
               children: [
                 CarouselSlider(
                   items: state.books.map((book) {
-                    return BookImage(
-                      imgUrl: book.volumeInfo?.imageLinks?.smallThumbnail ?? "",
-                      
+                    return Transform(
+                      transform: Matrix4.identity()
+                        ..setEntry(3, 2, 0.001), // perspective
+                      alignment: Alignment.center,
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(vertical: 10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.3),
+                              blurRadius: 20,
+                              spreadRadius: 2,
+                              offset: const Offset(0, 10),
+                            ),
+                          ],
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: BookImage(
+                            imgUrl:
+                                book.volumeInfo?.imageLinks?.smallThumbnail ??
+                                "",
+                          ),
+                        ),
+                      ),
                     );
                   }).toList(),
                   options: CarouselOptions(
-                    aspectRatio: 2.4,
-                    viewportFraction: 0.3,
-                    initialPage: 0,
+                    //height: 280,
+                    viewportFraction: 0.4,
                     enlargeCenterPage: true,
-                    pauseAutoPlayOnManualNavigate: true,
-                    enlargeStrategy: CenterPageEnlargeStrategy.zoom,
-                    disableCenter: true,
+                    enlargeFactor: 0.25,
                     autoPlay: true,
-                    autoPlayInterval: const Duration(seconds: 4),
+                    autoPlayInterval: const Duration(seconds: 5),
+                    pauseAutoPlayOnTouch: true,
                   ),
                 ),
               ],
@@ -54,8 +74,7 @@ class NewestBooksSlider extends StatelessWidget {
                 NewestBooksCubit.get(context).fetchNewestBooks();
               },
             );
-          } 
-          else {
+          } else {
             return const FlappingOwlLoading();
           }
         },
