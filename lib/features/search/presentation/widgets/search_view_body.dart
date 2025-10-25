@@ -3,11 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:litlore/core/theme/colors.dart';
 import 'package:litlore/core/theme/fonts.dart';
 import 'package:litlore/core/utils/app_assets.dart';
-import 'package:litlore/core/widgets/flapping_owl_loading.dart';
 import 'package:litlore/features/search/manager/search_cubit.dart';
 import 'package:litlore/features/search/manager/search_state.dart';
 import 'package:litlore/features/search/presentation/widgets/active_filter_bar.dart';
 import 'package:litlore/features/search/presentation/widgets/custom_search_bar.dart';
+import 'package:litlore/features/search/presentation/widgets/empty_search_widget.dart';
 import 'package:litlore/features/search/presentation/widgets/searching_results.dart';
 
 import 'filter_panel.dart';
@@ -108,7 +108,7 @@ class _SearchViewBodyState extends State<SearchViewBody>
                     const SizedBox(height: 16),
                   state.isSearching ?? false
                       ? SearchingResults(searchController: _searchController)
-                      : _buildEmptyState(),
+                      : EmptySearchWidget(),
 
                   // Content Area
                 ],
@@ -120,48 +120,5 @@ class _SearchViewBodyState extends State<SearchViewBody>
     );
   }
 
-  Widget _buildEmptyState() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          // Animated Book Icon
-          TweenAnimationBuilder(
-            tween: Tween<double>(begin: 0, end: 1),
-            duration: const Duration(milliseconds: 800),
-            builder: (context, double value, child) {
-              return Transform.scale(
-                scale: value,
-                child: Image(image: AssetImage(AppAssets.book), width: 150),
-              );
-            },
-          ),
-          const SizedBox(height: 24),
-          Text(
-            'The shelves are waiting...',
-            style: MyFonts.titleMediumStyle18.copyWith(
-              fontSize: 20,
-              color: MyColors.kPrimaryColor,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 12),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 40),
-            child: Text(
-              'Start typing to summon books from the magical library!',
-              style: MyFonts.subTiltleStyle14.copyWith(
-                fontSize: 14,
-                color: MyColors.kAccentBrown,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ),
-          const SizedBox(height: 32),
-
-          // Quick Search Suggestions
-        ],
-      ),
-    );
-  }
+ 
 }
