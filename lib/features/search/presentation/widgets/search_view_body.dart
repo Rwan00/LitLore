@@ -10,6 +10,7 @@ import 'package:litlore/features/search/presentation/widgets/custom_search_bar.d
 import 'package:litlore/features/search/presentation/widgets/empty_search_widget.dart';
 import 'package:litlore/features/search/presentation/widgets/searching_results.dart';
 
+
 import 'filter_panel.dart';
 
 class SearchViewBody extends StatefulWidget {
@@ -22,7 +23,7 @@ class SearchViewBody extends StatefulWidget {
 class _SearchViewBodyState extends State<SearchViewBody>
     with SingleTickerProviderStateMixin {
   final TextEditingController _searchController = TextEditingController();
-
+  final ScrollController _scrollController = ScrollController();
   late AnimationController _filterAnimationController;
   late Animation<double> _filterAnimation;
 
@@ -37,12 +38,26 @@ class _SearchViewBodyState extends State<SearchViewBody>
       parent: _filterAnimationController,
       curve: Curves.easeInOut,
     );
+    _onScroll();
+  }
+
+  _onScroll() {
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        if (!context.read<SearchCubit>().state.hadReachedMax) {
+          context.read<SearchCubit>().searchBooks(context.read<SearchCubit>().state.searchKey!);
+        }
+      }
+    });
   }
 
   @override
   void dispose() {
     _searchController.dispose();
     _filterAnimationController.dispose();
+    _scrollController.removeListener(_onScroll);
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -54,6 +69,7 @@ class _SearchViewBodyState extends State<SearchViewBody>
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: SingleChildScrollView(
+              controller: _scrollController,
               // ✅ مهم جدًا
               physics: const ClampingScrollPhysics(),
               child: Column(

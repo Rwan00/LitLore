@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:litlore/core/theme/colors.dart';
 import 'package:litlore/core/theme/fonts.dart';
+
 import 'package:litlore/core/widgets/custom_error_widget.dart';
 import 'package:litlore/core/widgets/flapping_owl_loading.dart';
 import 'package:litlore/features/home/presentation/widgets/book_item.dart';
@@ -20,7 +21,6 @@ class SearchingResults extends StatelessWidget {
       builder: (context, state) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-         
 
           children: [
             Row(
@@ -45,18 +45,31 @@ class SearchingResults extends StatelessWidget {
             const SizedBox(height: 16),
             if (state.status == SearchStatus.success)
               ListView.builder(
-                itemCount: state.books.length,
+                itemCount: state.hadReachedMax
+                    ? state.books?.books?.length
+                    : state.books?.books?.length ?? 0 + 1,
+
                 shrinkWrap: true, // ✅ مهم جدًا
                 physics: const ClampingScrollPhysics(),
                 itemBuilder: (BuildContext context, int index) {
-                  if (state.books.isNotEmpty) {
+                  if (index + 1 == state.books?.books?.length) {
+                    return Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: FlappingOwlLoading(loadingText: ""),
+                      ),
+                    );
+                  }
+                  if (state.books != null ||
+                      state.books?.books != null ||
+                      state.books!.books!.isNotEmpty) {
                     return AnimationConfiguration.staggeredList(
                       duration: const Duration(milliseconds: 500),
                       position: index,
                       child: SlideAnimation(
                         horizontalOffset: 100,
                         child: FadeInAnimation(
-                          child: BookItem(book: state.books[index]),
+                          child: BookItem(book: state.books!.books![index]),
                         ),
                       ),
                     );

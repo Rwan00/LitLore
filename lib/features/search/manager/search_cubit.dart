@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:litlore/features/home/data/models/book_model/book_model.dart';
 import 'package:litlore/features/search/data/repo/search_repo.dart';
 import 'package:litlore/features/search/manager/search_state.dart';
 
@@ -50,12 +51,47 @@ class SearchCubit extends Cubit<SearchState> {
   }
 
   Future<void> searchBooks(String query) async {
-    emit(state.copyWith(status: SearchStatus.loading));
-    var result = await searchRepo.searchBooks(query,filter: state.selectedFilter,orderBy: state.selectedOrderBy,contentType: state.selectedPrintType,);
-    result.fold((failure) {
-      emit(state.copyWith(errorMessage: failure.errorMsg,status: SearchStatus.failure,));
-    }, (books) {
-      emit(state.copyWith(status: SearchStatus.success,books: books));
-    });
+    if (state.startIndex == 0)
+      emit(state.copyWith(status: SearchStatus.loading));
+    var result = await searchRepo.searchBooks(
+      query,
+      state.startIndex,
+      filter: state.selectedFilter,
+      orderBy: state.selectedOrderBy,
+      contentType: state.selectedPrintType,
+    );
+    result.fold(
+      (failure) {
+        emit(
+          state.copyWith(
+            errorMessage: failure.errorMsg,
+            status: SearchStatus.failure,
+          ),
+        );
+      },
+      (books) {
+        if (state.books == null) {
+          emit(state.copyWith(status: SearchStatus.success, books: books));
+        } else {
+          final existingList = state.books!.books ?? [];
+          final incomingList = books.books ?? [];
+          final mergedList = [...existingList, ...incomingList];
+          final mergedResponse = BooksResponse(
+            kind: state.books!.kind,
+            totalCount: state.books!.totalCount,
+            books: mergedList,
+          );
+          emit(
+            state.copyWith(
+              status: SearchStatus.success,
+              books: mergedResponse,
+             
+              hadReachedMax: state.startIndex >= books.totalCount!,
+               startIndex: state.startIndex + 10,
+            ),
+          );
+        }
+      },
+    );
   }
 }

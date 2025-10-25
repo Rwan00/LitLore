@@ -14,8 +14,9 @@ class SearchRepoImpl implements SearchRepo {
 
   SearchRepoImpl({required this.apiService});
   @override
-  Future<Either<Failures, List<BookModel>>> searchBooks(
-    String query, {
+  Future<Either<Failures, BooksResponse>> searchBooks(
+    String query,
+    int startIndex, {
     String? filter,
     String? orderBy,
     String? contentType,
@@ -28,12 +29,10 @@ class SearchRepoImpl implements SearchRepo {
           orderBy: orderBy,
           contentType: contentType,
         ),
+        queryParams: {"startIndex": startIndex},
       );
-      List<BookModel> books = [];
-      for (var item in response.data["items"]) {
-        books.add(BookModel.fromJson(item));
-      }
-      return right(books);
+      BooksResponse booksResponse = BooksResponse.fromJson(response.data);
+      return right(booksResponse);
     } on DioException catch (error) {
       log(error.message ?? "");
       return left(ServerFailure.fromDioError(error));

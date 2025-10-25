@@ -12,7 +12,9 @@ class SearchState extends Equatable {
   final String selectedOrderBy;
   final String selectedPrintType;
   final String? searchKey;
-  final List<BookModel> books;
+  final BooksResponse? books;
+  final bool hadReachedMax;
+  final int startIndex;
 
   const SearchState({
     this.status = SearchStatus.initial,
@@ -23,7 +25,9 @@ class SearchState extends Equatable {
     this.selectedOrderBy = "relevance",
     this.selectedPrintType = "all",
     this.searchKey,
-    this.books = const [],
+    this.books ,
+    this.hadReachedMax= false,
+    this.startIndex = 0,
   });
 
   factory SearchState.initial() {
@@ -39,7 +43,9 @@ class SearchState extends Equatable {
     String? selectedOrderBy,
     String? selectedPrintType,
     String? searchKey,
-    List<BookModel>? books, 
+    BooksResponse? books,
+    bool? hadReachedMax,
+    int? startIndex,
   }) {
     return SearchState(
       status: status ?? this.status,
@@ -50,7 +56,9 @@ class SearchState extends Equatable {
       selectedOrderBy: selectedOrderBy ?? this.selectedOrderBy,
       selectedPrintType: selectedPrintType ?? this.selectedPrintType,
       searchKey: searchKey ?? this.searchKey,
-      books: books??this.books,
+      books: books ?? this.books,
+      hadReachedMax: hadReachedMax ?? this.hadReachedMax,
+      startIndex: startIndex ?? this.startIndex,
     );
   }
 
@@ -65,5 +73,7 @@ class SearchState extends Equatable {
     selectedPrintType,
     searchKey,
     books,
+    hadReachedMax,
+    startIndex,
   ];
 }
