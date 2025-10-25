@@ -44,4 +44,8 @@ class SearchCubit extends Cubit<SearchState> {
       ),
     );
   }
+
+  void setSearchingKey(String searchKey) {
+    emit(state.copyWith(searchKey: searchKey));
+  }
 }

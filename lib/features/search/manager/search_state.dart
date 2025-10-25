@@ -10,6 +10,7 @@ class SearchState extends Equatable {
   final String selectedFilter;
   final String selectedOrderBy;
   final String selectedPrintType;
+  final String? searchKey;
 
   const SearchState({
     this.status = SearchStatus.initial,
@@ -19,6 +20,7 @@ class SearchState extends Equatable {
     this.selectedFilter = "all",
     this.selectedOrderBy = "relevance",
     this.selectedPrintType = "all",
+    this.searchKey,
   });
 
   factory SearchState.initial() {
@@ -33,6 +35,7 @@ class SearchState extends Equatable {
     String? selectedFilter,
     String? selectedOrderBy,
     String? selectedPrintType,
+    String? searchKey,
   }) {
     return SearchState(
       status: status ?? this.status,
@@ -42,6 +45,7 @@ class SearchState extends Equatable {
       selectedFilter: selectedFilter ?? this.selectedFilter,
       selectedOrderBy: selectedOrderBy ?? this.selectedOrderBy,
       selectedPrintType: selectedPrintType ?? this.selectedPrintType,
+      searchKey:searchKey??this.searchKey,
     );
   }
 
@@ -54,5 +58,6 @@ class SearchState extends Equatable {
     selectedFilter,
     selectedOrderBy,
     selectedPrintType,
+    searchKey,
   ];
 }

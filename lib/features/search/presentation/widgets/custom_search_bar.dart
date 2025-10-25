@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:litlore/core/theme/colors.dart';
@@ -9,7 +11,11 @@ class CustomSearchBar extends StatefulWidget {
   final TextEditingController searchController;
   final AnimationController animationController;
 
-  const CustomSearchBar({super.key, required this.searchController, required this.animationController});
+  const CustomSearchBar({
+    super.key,
+    required this.searchController,
+    required this.animationController,
+  });
 
   @override
   State<CustomSearchBar> createState() => _CustomSearchBarState();
@@ -35,7 +41,9 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
           child: TextField(
             controller: widget.searchController,
             onChanged: (value) {
+              log(value);
               cubit.toggleSearching(value.isNotEmpty);
+              cubit.setSearchingKey(value);
             },
             decoration: InputDecoration(
               hintText: 'Type a title, author, or just random words...',
@@ -55,7 +63,6 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
                       },
                     )
                   : IconButton(
-                      
                       onPressed: () {
                         cubit.toggleFilter(widget.animationController);
                       },

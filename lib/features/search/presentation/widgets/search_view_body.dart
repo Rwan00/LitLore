@@ -8,6 +8,7 @@ import 'package:litlore/features/search/manager/search_cubit.dart';
 import 'package:litlore/features/search/manager/search_state.dart';
 import 'package:litlore/features/search/presentation/widgets/active_filter_bar.dart';
 import 'package:litlore/features/search/presentation/widgets/custom_search_bar.dart';
+import 'package:litlore/features/search/presentation/widgets/searching_results.dart';
 
 import 'filter_panel.dart';
 
@@ -85,9 +86,9 @@ class _SearchViewBodyState extends State<SearchViewBody>
                     searchController: _searchController,
                     animationController: _filterAnimationController,
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 8),
                   FilterPanel(filterAnimation: _filterAnimation),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 8),
 
                   // Active Filters Summary (when collapsed)
                   if (!state.showFilter &&
@@ -106,11 +107,7 @@ class _SearchViewBodyState extends State<SearchViewBody>
                           state.selectedPrintType != 'all'))
                     const SizedBox(height: 16),
                   state.isSearching ?? false
-                      ? _buildSearchResults(
-                          state.selectedFilter,
-                          state.selectedOrderBy,
-                          state.selectedPrintType,
-                        )
+                      ? SearchingResults(searchController: _searchController)
                       : _buildEmptyState(),
 
                   // Content Area
@@ -165,58 +162,6 @@ class _SearchViewBodyState extends State<SearchViewBody>
           // Quick Search Suggestions
         ],
       ),
-    );
-  }
-
-  Widget _buildSearchResults(
-    String selectedFilter,
-    String selectedOrderBy,
-    String selectedPrintType,
-  ) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-
-      children: [
-        Row(
-          children: [
-            Text(
-              'Searching for: ',
-              style: MyFonts.subTiltleStyle14.copyWith(
-                fontSize: 14,
-                color: MyColors.kAccentBrown,
-              ),
-            ),
-            Text(
-              '"${_searchController.text}"',
-              style: MyFonts.titleMediumStyle18.copyWith(
-                fontSize: 16,
-                color: MyColors.kPrimaryColor,
-              ),
-            ),
-          ],
-        ),
-        if (selectedFilter != 'all' ||
-            selectedOrderBy != 'relevance' ||
-            selectedPrintType != 'all')
-          Padding(
-            padding: const EdgeInsets.only(top: 4),
-            child: Text(
-              'with special filters 🎯',
-              style: TextStyle(
-                fontSize: 12,
-                color: MyColors.kAccentBrown,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-        const SizedBox(height: 16),
-        Center(
-          child: FlappingOwlLoading(
-            loadingText:
-                'Our wisest owls are searching...\n Flipping through ${(_searchController.text.length * 1000)} pages!',
-          ),
-        ),
-      ],
     );
   }
 }
