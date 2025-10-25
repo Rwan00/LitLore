@@ -22,67 +22,64 @@ class BookItem extends StatelessWidget {
       onTap: () {
         context.push(BookDetailsView.routeName, extra: {"book": book});
       },
-      child: Padding(
-        padding: const EdgeInsets.only(left: 12.0, right: 12, bottom: 2),
-        child: Container(
-          padding: const EdgeInsets.all(4),
-          width: double.infinity,
-          height: height(context) * 0.17,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(7),
-            border: Border.all(color: MyColors.kPrimaryColor),
-          ),
-          child: Row(
-            children: [
-              Hero(
-                tag: book.id,
-                child: BookImage(
-                  imgUrl: book.volumeInfo?.imageLinks?.smallThumbnail ?? "",
-                ),
+      child: Container(
+        padding: const EdgeInsets.all(4),
+        margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+        width: double.infinity,
+        height: height(context) * 0.17,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(7),
+          border: Border.all(color: MyColors.kPrimaryColor),
+        ),
+        child: Row(
+          children: [
+            Hero(
+              tag: book.id,
+              child: BookImage(
+                imgUrl: book.volumeInfo?.imageLinks?.smallThumbnail ?? "",
               ),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: width(context) * 0.54,
-                      child: Text(
-                        book.volumeInfo?.title ??
-                            "Nameless, but still legendary.",
-                        style: MyFonts.textStyleStyle16,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      book.volumeInfo?.authors?.join(', ') ??
-                          "Anonymous genius",
-                      style: MyFonts.subTiltleStyle14,
-                      maxLines: 1,
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: width(context) * 0.54,
+                    child: Text(
+                      book.volumeInfo?.title ??
+                          "Nameless, but still legendary.",
+                      style: MyFonts.textStyleStyle16,
+                      maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    const SizedBox(height: 6),
-                    BookRating(
-                      rating: book.volumeInfo?.averageRating ?? 0,
-                      count: book.volumeInfo?.ratingsCount ?? 0,
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    book.volumeInfo?.authors?.join(', ') ?? "Anonymous genius",
+                    style: MyFonts.subTiltleStyle14,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 6),
+                  BookRating(
+                    rating: book.volumeInfo?.averageRating ?? 0,
+                    count: book.volumeInfo?.ratingsCount ?? 0,
+                  ),
+                  const Spacer(),
+                  Align(
+                    alignment: AlignmentDirectional.bottomEnd,
+                    child: Text(
+                      book.saleInfo?.saleability == "FOR_SALE"
+                          ? "${book.saleInfo?.listPrice?.amount} ${book.saleInfo?.listPrice?.currencyCode}"
+                          : "Not for sale",
+                      style: MyFonts.textStyleStyle16,
                     ),
-                    const Spacer(),
-                    Align(
-                      alignment: AlignmentDirectional.bottomEnd,
-                      child: Text(
-                        book.saleInfo?.saleability == "FOR_SALE"
-                            ? "${book.saleInfo?.listPrice?.amount} ${book.saleInfo?.listPrice?.currencyCode}"
-                            : "Not for sale",
-                        style: MyFonts.textStyleStyle16,
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

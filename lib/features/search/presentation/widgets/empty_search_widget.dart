@@ -4,7 +4,9 @@ import 'package:litlore/core/theme/fonts.dart';
 import 'package:litlore/core/utils/app_assets.dart';
 
 class EmptySearchWidget extends StatelessWidget {
-  const EmptySearchWidget({super.key});
+  final String title;
+  final String discreption;
+  const EmptySearchWidget({super.key, required this.title, required this.discreption});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,7 @@ class EmptySearchWidget extends StatelessWidget {
           ),
           const SizedBox(height: 24),
           Text(
-            'The shelves are waiting...',
+            title,
             style: MyFonts.titleMediumStyle18.copyWith(
               fontSize: 20,
               color: MyColors.kPrimaryColor,
@@ -36,7 +38,7 @@ class EmptySearchWidget extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 40),
             child: Text(
-              'Start typing to summon books from the magical library!',
+              discreption,
               style: MyFonts.subTiltleStyle14.copyWith(
                 fontSize: 14,
                 color: MyColors.kAccentBrown,

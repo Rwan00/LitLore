@@ -54,6 +54,8 @@ class _SearchViewBodyState extends State<SearchViewBody>
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: SingleChildScrollView(
+              // ✅ مهم جدًا
+              physics: const ClampingScrollPhysics(),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
 
@@ -108,7 +110,7 @@ class _SearchViewBodyState extends State<SearchViewBody>
                     const SizedBox(height: 16),
                   state.isSearching ?? false
                       ? SearchingResults(searchController: _searchController)
-                      : EmptySearchWidget(),
+                      : EmptySearchWidget(title: 'The shelves are waiting...',discreption: 'Start typing to summon books from the magical library!',),
 
                   // Content Area
                 ],
@@ -119,6 +121,4 @@ class _SearchViewBodyState extends State<SearchViewBody>
       },
     );
   }
-
- 
 }
