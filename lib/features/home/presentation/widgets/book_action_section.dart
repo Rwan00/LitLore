@@ -55,7 +55,7 @@ class BookActionSection extends StatelessWidget {
               ),
             ),
             backgroundColor: WidgetStatePropertyAll(
-              MyColors.kPrimaryColor.withOpacity(0.7),
+              MyColors.kPrimaryColor.withAlpha(70),
             ),
           ),
           child: Text(

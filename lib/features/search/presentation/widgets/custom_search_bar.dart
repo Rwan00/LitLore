@@ -81,7 +81,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16),
                 borderSide: BorderSide(
-                  color: MyColors.kLightBrown.withOpacity(0.3),
+                  color: MyColors.kLightBrown.withAlpha(30),
                   width: 1,
                 ),
               ),

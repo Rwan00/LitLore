@@ -76,28 +76,28 @@ class FilterSection extends StatelessWidget {
                             : LinearGradient(
                                 colors: [
                                   MyColors.kCreamyWhite,
-                                  MyColors.kCreamyWhite.withOpacity(0.8),
+                                  MyColors.kCreamyWhite.withAlpha(80),
                                 ],
                               ),
                         borderRadius: BorderRadius.circular(25),
                         border: Border.all(
                           color: isSelected
-                              ? MyColors.kPrimaryColor.withOpacity(0.8)
-                              : MyColors.kLightBrown.withOpacity(0.4),
+                              ? MyColors.kPrimaryColor.withAlpha(80)
+                              : MyColors.kLightBrown.withAlpha(40),
                           width: isSelected ? 2.5 : 1.5,
                         ),
                         boxShadow: isSelected
                             ? [
                                 BoxShadow(
-                                  color: MyColors.kPrimaryColor.withOpacity(
-                                    0.4,
+                                  color: MyColors.kPrimaryColor.withAlpha(
+                                    40,
                                   ),
                                   blurRadius: 12,
                                   spreadRadius: 1,
                                   offset: const Offset(0, 4),
                                 ),
                                 BoxShadow(
-                                  color: MyColors.kAccentBrown.withOpacity(0.2),
+                                  color: MyColors.kAccentBrown.withAlpha(20),
                                   blurRadius: 8,
                                   spreadRadius: -2,
                                   offset: const Offset(0, 2),
@@ -105,7 +105,7 @@ class FilterSection extends StatelessWidget {
                               ]
                             : [
                                 BoxShadow(
-                                  color: MyColors.kLightBrown.withOpacity(0.15),
+                                  color: MyColors.kLightBrown.withAlpha(150),
                                   blurRadius: 6,
                                   offset: const Offset(0, 2),
                                 ),

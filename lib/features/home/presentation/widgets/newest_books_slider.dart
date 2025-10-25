@@ -37,7 +37,7 @@ class NewestBooksSlider extends StatelessWidget {
                           borderRadius: BorderRadius.circular(20),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.3),
+                              color: Colors.black.withAlpha(30),
                               blurRadius: 20,
                               spreadRadius: 2,
                               offset: const Offset(0, 10),

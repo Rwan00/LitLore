@@ -61,7 +61,7 @@ class BookBasicDetails extends StatelessWidget {
                         const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(7),
-                      color: MyColors.kPrimaryColor.withOpacity(0.3),
+                      color: MyColors.kPrimaryColor.withAlpha(30),
                     ),
                     child: Text(
                       book.volumeInfo?.categories?[index]??"undefined chaos",
