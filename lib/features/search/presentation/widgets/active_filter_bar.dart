@@ -1,74 +1,103 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:litlore/core/theme/colors.dart';
+import 'package:litlore/core/utils/app_assets.dart';
+import 'package:litlore/features/search/manager/search_cubit.dart';
 
 class ActiveFilterBar extends StatelessWidget {
-   final String selectedFilter;
+  final String selectedFilter;
   final String selectedOrderBy;
   final String selectedPrintType;
-  const ActiveFilterBar({super.key, required this.selectedFilter, required this.selectedOrderBy, required this.selectedPrintType,});
+  final AnimationController animationController;
+
+  const ActiveFilterBar({
+    super.key,
+    required this.selectedFilter,
+    required this.selectedOrderBy,
+    required this.selectedPrintType,
+    required this.animationController,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 8,
-                      ),
-                      decoration: BoxDecoration(
-                        color: MyColors.kLightBrown.withAlpha(30),
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(
-                          color: MyColors.kAccentBrown.withAlpha(30),
-                        ),
-                      ),
-                      child: Row(
-                        children: [
-                          Text(
-                            'Active: ',
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600,
-                              color: MyColors.kPrimaryColor,
-                            ),
-                          ),
-                          Expanded(
-                            child: Text(
-                              [
-                                if (selectedFilter != 'all')
-                                  _getFilterLabel(selectedFilter),
-                                if (selectedOrderBy != 'relevance')
-                                  _getOrderByLabel(selectedOrderBy),
-                                if (selectedPrintType != 'all')
-                                  _getPrintTypeLabel(selectedPrintType),
-                              ].join(' • '),
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: MyColors.kAccentBrown,
-                              ),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+      padding: const EdgeInsets.symmetric(horizontal: 12),
+      decoration: BoxDecoration(
+        color: MyColors.kLightBrown.withAlpha(30),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: MyColors.kAccentBrown.withAlpha(30)),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: Row(
+              children: [
+                Text(
+                  'Active: ',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                    color: MyColors.kPrimaryColor,
+                  ),
+                ),
+                Expanded(
+                  child: Text(
+                    [
+                      if (selectedFilter != 'all')
+                        _getFilterLabel(selectedFilter),
+                      if (selectedOrderBy != 'relevance')
+                        _getOrderByLabel(selectedOrderBy),
+                      if (selectedPrintType != 'all')
+                        _getPrintTypeLabel(selectedPrintType),
+                    ].join(' • '),
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: MyColors.kAccentBrown,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          RotationTransition(
+            turns: Tween(begin: 0.0, end: 0.5).animate(
+              CurvedAnimation(
+                parent: animationController,
+                curve: Curves.easeInOut,
+              ),
+            ),
+            child: IconButton(
+              onPressed: () {
+                context.read<SearchCubit>().toggleFilter(animationController);
+              },
+              icon: Image(image: AssetImage(AppAssets.arrow)),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
 String _getFilterLabel(String filter) {
-    return {
-          'partial': 'Partial',
-          'full': 'Full View',
-          'free-ebooks': 'Free',
-          'paid-ebooks': 'Paid',
-          'ebooks': 'E-Books',
-        }[filter] ??
-        filter;
-  }
+  return {
+        'partial': 'Partial',
+        'full': 'Full View',
+        'free-ebooks': 'Free',
+        'paid-ebooks': 'Paid',
+        'ebooks': 'E-Books',
+      }[filter] ??
+      filter;
+}
 
-  String _getOrderByLabel(String order) {
-    return order == 'newest' ? 'Newest' : 'Relevant';
-  }
+String _getOrderByLabel(String order) {
+  return order == 'newest' ? 'Newest' : 'Relevant';
+}
 
-  String _getPrintTypeLabel(String type) {
-    return {'books': 'Books', 'magazines': 'Magazines'}[type] ?? type;
-  }
+String _getPrintTypeLabel(String type) {
+  return {'books': 'Books', 'magazines': 'Magazines'}[type] ?? type;
+}

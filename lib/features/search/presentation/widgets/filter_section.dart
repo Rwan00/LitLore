@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:litlore/core/theme/colors.dart';
 import 'package:litlore/features/search/data/model/filter_options.dart';
 
@@ -7,7 +8,13 @@ class FilterSection extends StatelessWidget {
   final List<FilterOption> options;
   final String selectedValue;
   final Function(String) onChanged;
-  const FilterSection({super.key, required this.title, required this.options, required this.selectedValue, required this.onChanged,});
+  const FilterSection({
+    super.key,
+    required this.title,
+    required this.options,
+    required this.selectedValue,
+    required this.onChanged,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -15,34 +22,14 @@ class FilterSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Fancy animated title with icon
-        Row(
-          children: [
-            TweenAnimationBuilder(
-              tween: Tween<double>(begin: 0, end: 1),
-              duration: const Duration(milliseconds: 500),
-              builder: (context, double value, child) {
-                return Transform.rotate(
-                  angle: value * 0.1,
-                  child: Text(
-                    title.split(' ')[0],
-                    style: const TextStyle(fontSize: 20),
-                  ),
-                );
-              },
-            ),
-            const SizedBox(width: 8),
-            Expanded(
-              child: Text(
-                title.substring(title.indexOf(' ') + 1),
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15,
-                  color: MyColors.kPrimaryColor,
-                  letterSpacing: 0.5,
-                ),
-              ),
-            ),
-          ],
+        Text(
+          title,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 15,
+            color: MyColors.kPrimaryColor,
+            letterSpacing: 0.5,
+          ),
         ),
         const SizedBox(height: 12),
 
@@ -66,7 +53,7 @@ class FilterSection extends StatelessWidget {
                     onTap: () {
                       onChanged(option.value);
                       // Optional: Add haptic feedback
-                      // HapticFeedback.lightImpact();
+                      HapticFeedback.lightImpact();
                     },
                     borderRadius: BorderRadius.circular(25),
                     child: AnimatedContainer(

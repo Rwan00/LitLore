@@ -89,19 +89,21 @@ class _SearchViewBodyState extends State<SearchViewBody>
                     animationController: _filterAnimationController,
                   ),
                   const SizedBox(height: 8),
-                  FilterPanel(filterAnimation: _filterAnimation),
-                  const SizedBox(height: 8),
-
                   // Active Filters Summary (when collapsed)
-                  if (!state.showFilter &&
-                      (state.selectedFilter != 'all' ||
-                          state.selectedOrderBy != 'relevance' ||
-                          state.selectedPrintType != 'all'))
+                  if ((state.selectedFilter != 'all' ||
+                      state.selectedOrderBy != 'relevance' ||
+                      state.selectedPrintType != 'all'))
                     ActiveFilterBar(
                       selectedFilter: state.selectedFilter,
                       selectedOrderBy: state.selectedOrderBy,
                       selectedPrintType: state.selectedPrintType,
+                      animationController: _filterAnimationController,
                     ),
+                  FilterPanel(
+                    filterAnimation: _filterAnimation,
+                    animationController: _filterAnimationController,
+                  ),
+                  const SizedBox(height: 8),
 
                   if (!state.showFilter &&
                       (state.selectedFilter != 'all' ||
@@ -110,7 +112,11 @@ class _SearchViewBodyState extends State<SearchViewBody>
                     const SizedBox(height: 16),
                   state.isSearching ?? false
                       ? SearchingResults(searchController: _searchController)
-                      : EmptySearchWidget(title: 'The shelves are waiting...',discreption: 'Start typing to summon books from the magical library!',),
+                      : EmptySearchWidget(
+                          title: 'The shelves are waiting...',
+                          discreption:
+                              'Start typing to summon books from the magical library!',
+                        ),
 
                   // Content Area
                 ],

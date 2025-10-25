@@ -8,7 +8,12 @@ import 'package:litlore/features/search/presentation/widgets/filter_section.dart
 
 class FilterPanel extends StatelessWidget {
   final Animation<double> filterAnimation;
-  const FilterPanel({super.key, required this.filterAnimation});
+  final AnimationController animationController;
+  const FilterPanel({
+    super.key,
+    required this.filterAnimation,
+    required this.animationController,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -54,21 +59,8 @@ class FilterPanel extends StatelessWidget {
               children: [
                 // Playful header
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            MyColors.kPrimaryColor.withAlpha(2),
-                            MyColors.kAccentBrown.withAlpha(2),
-                          ],
-                        ),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Text('🎨', style: const TextStyle(fontSize: 24)),
-                    ),
-                    const SizedBox(width: 12),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -86,11 +78,40 @@ class FilterPanel extends StatelessWidget {
                             'Mix & match to find your perfect read!',
                             style: TextStyle(
                               fontSize: 11,
-                              color: MyColors.kAccentBrown.withAlpha(8),
+                              color: MyColors.kAccentBrown.withAlpha(80),
                               fontStyle: FontStyle.italic,
                             ),
                           ),
                         ],
+                      ),
+                    ),
+                    Center(
+                      child: InkWell(
+                        onTap: () {
+                          cubit.resetFilters();
+                          cubit.toggleFilter(animationController);
+                        },
+                        borderRadius: BorderRadius.circular(30),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.refresh_rounded,
+                              size: 20,
+                              color: MyColors.kPrimaryColor,
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              'Start Fresh',
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                color: MyColors.kPrimaryColor,
+                                letterSpacing: 0.3,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],
@@ -99,7 +120,7 @@ class FilterPanel extends StatelessWidget {
 
                 // Filter sections with enhanced styling
                 FilterSection(
-                  title: '📚 Book Type',
+                  title: 'Book Type',
                   options: [
                     FilterOption('all', 'All Books', '📖'),
                     FilterOption('partial', 'Partial Preview', '👀'),
@@ -156,7 +177,7 @@ class FilterPanel extends StatelessWidget {
                 ),
 
                 FilterSection(
-                  title: '🎲 Sort Results By',
+                  title: 'Sort Results By',
                   options: [
                     FilterOption('relevance', 'Most Relevant', '🎯'),
                     FilterOption('newest', 'Newest First', '✨'),
@@ -208,7 +229,7 @@ class FilterPanel extends StatelessWidget {
                 ),
 
                 FilterSection(
-                  title: '📰 Content Type',
+                  title: 'Content Type',
                   options: [
                     FilterOption('all', 'Everything', '🌟'),
                     FilterOption('books', 'Books Only', '📚'),
@@ -219,64 +240,6 @@ class FilterPanel extends StatelessWidget {
                 ),
 
                 const SizedBox(height: 20),
-
-                // Enhanced Reset Button
-                Center(
-                  child: InkWell(
-                    onTap: () {
-                      cubit.resetFilters();
-                    },
-                    borderRadius: BorderRadius.circular(30),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 24,
-                        vertical: 12,
-                      ),
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            MyColors.kLightBrown.withAlpha(30),
-                            MyColors.kLightBrown.withAlpha(20),
-                          ],
-                        ),
-                        borderRadius: BorderRadius.circular(30),
-                        border: Border.all(
-                          color: MyColors.kAccentBrown.withAlpha(40),
-                          width: 1.5,
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: MyColors.kPrimaryColor.withAlpha(10),
-                            blurRadius: 8,
-                            offset: const Offset(0, 3),
-                          ),
-                        ],
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(
-                            Icons.refresh_rounded,
-                            size: 20,
-                            color: MyColors.kPrimaryColor,
-                          ),
-                          const SizedBox(width: 8),
-                          Text(
-                            'Start Fresh',
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                              color: MyColors.kPrimaryColor,
-                              letterSpacing: 0.3,
-                            ),
-                          ),
-                          const SizedBox(width: 4),
-                          Text('🔄', style: const TextStyle(fontSize: 14)),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
               ],
             ),
           ),
