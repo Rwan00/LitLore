@@ -3,6 +3,6 @@ import 'package:litlore/core/errors/failures.dart';
 import 'package:litlore/features/home/data/models/book_model/book_model.dart';
 
 abstract class SearchRepo {
-  Future<Either<Failures, List<BookModel>>> searchBooks();
+  Future<Either<Failures, List<BookModel>>> searchBooks(String query, {String? filter, String? orderBy, String? contentType,});
  
 }

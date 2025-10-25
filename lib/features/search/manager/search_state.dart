@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:litlore/features/home/data/models/book_model/book_model.dart';
 
 enum SearchStatus { initial, loading, success, failure, emailSent }
 
@@ -11,6 +12,7 @@ class SearchState extends Equatable {
   final String selectedOrderBy;
   final String selectedPrintType;
   final String? searchKey;
+  final List<BookModel> books;
 
   const SearchState({
     this.status = SearchStatus.initial,
@@ -21,6 +23,7 @@ class SearchState extends Equatable {
     this.selectedOrderBy = "relevance",
     this.selectedPrintType = "all",
     this.searchKey,
+    this.books = const [],
   });
 
   factory SearchState.initial() {
@@ -36,6 +39,7 @@ class SearchState extends Equatable {
     String? selectedOrderBy,
     String? selectedPrintType,
     String? searchKey,
+    List<BookModel>? books, 
   }) {
     return SearchState(
       status: status ?? this.status,
@@ -45,7 +49,8 @@ class SearchState extends Equatable {
       selectedFilter: selectedFilter ?? this.selectedFilter,
       selectedOrderBy: selectedOrderBy ?? this.selectedOrderBy,
       selectedPrintType: selectedPrintType ?? this.selectedPrintType,
-      searchKey:searchKey??this.searchKey,
+      searchKey: searchKey ?? this.searchKey,
+      books: books??this.books,
     );
   }
 
@@ -59,5 +64,6 @@ class SearchState extends Equatable {
     selectedOrderBy,
     selectedPrintType,
     searchKey,
+    books,
   ];
 }

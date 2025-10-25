@@ -3,12 +3,12 @@ class Urls {
 
   // 🔍 Search for books
   // Example: volumes?q=flutter
-  static String searchBooks(String query, {String? filter, String? orderBy, int? startIndex, int? maxResults}) {
+  static String searchBooks(String query, {String? filter, String? orderBy, String? contentType,}) {
     final buffer = StringBuffer("volumes?q=$query");
-    if (filter != null) buffer.write("&filter=$filter");
+    if (filter != null && filter != "all") buffer.write("&filter=$filter");
     if (orderBy != null) buffer.write("&orderBy=$orderBy");
-    if (startIndex != null) buffer.write("&startIndex=$startIndex");
-    if (maxResults != null) buffer.write("&maxResults=$maxResults");
+    if (contentType != null) buffer.write("&contentType=$contentType");
+   
     return buffer.toString();
   }
 

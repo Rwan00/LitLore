@@ -31,7 +31,7 @@ abstract class ServiceLocator {
      AuthenticationRepoImpl(),
     );
     getIt.registerSingleton<SearchRepoImpl>(
-     SearchRepoImpl(),
+     SearchRepoImpl( apiService: getIt.get<AppDio>(),),
     );
   }
 }

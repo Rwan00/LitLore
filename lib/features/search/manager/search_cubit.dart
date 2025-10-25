@@ -48,4 +48,14 @@ class SearchCubit extends Cubit<SearchState> {
   void setSearchingKey(String searchKey) {
     emit(state.copyWith(searchKey: searchKey));
   }
+
+  Future<void> searchBooks(String query) async {
+    emit(state.copyWith(status: SearchStatus.loading));
+    var result = await searchRepo.searchBooks(query,filter: state.selectedFilter,orderBy: state.selectedOrderBy,contentType: state.selectedPrintType,);
+    result.fold((failure) {
+      emit(state.copyWith(errorMessage: failure.errorMsg,status: SearchStatus.failure,));
+    }, (books) {
+      emit(state.copyWith(status: SearchStatus.success,books: books));
+    });
+  }
 }

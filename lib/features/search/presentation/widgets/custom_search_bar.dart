@@ -44,6 +44,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
               log(value);
               cubit.toggleSearching(value.isNotEmpty);
               cubit.setSearchingKey(value);
+              cubit.searchBooks(value);
             },
             decoration: InputDecoration(
               hintText: 'Type a title, author, or just random words...',
