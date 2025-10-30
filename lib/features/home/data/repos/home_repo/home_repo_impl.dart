@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:math' hide log;
 
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
@@ -19,9 +20,65 @@ class HomeRepoImpl implements HomeRepo {
   HomeRepoImpl({required this.apiService});
   @override
   Future<Either<Failures, List<BookModel>>> fetchDiscoverBooks() async {
+    List<String> googleBooksSubjects = [
+  'Reference',
+  'Encyclopedias',
+  'Dictionaries',
+  'Education',
+  'Study Aids',
+  'Science',
+  'Mathematics',
+  'Technology & Engineering',
+  'Computers',
+  'Medical',
+  'Nature',
+  'Fiction',
+  'Poetry',
+  'Drama',
+  'Literary Criticism',
+  'Language Arts & Disciplines',
+  'History',
+  'Philosophy',
+  'Psychology',
+  'Political Science',
+  'Religion',
+  'Social Science',
+  'Business & Economics',
+  'Management',
+  'Finance',
+  'Marketing',
+  'Art',
+  'Design',
+  'Performing Arts',
+  'Music',
+  'Photography',
+  'Health & Fitness',
+  'Cooking',
+  'Family & Relationships',
+  'Self-Help',
+  'House & Home',
+  'Sports & Recreation',
+  'Games',
+  'Crafts & Hobbies',
+  'Travel',
+  'Juvenile Fiction',
+  'Juvenile Nonfiction',
+  'Young Adult Fiction',
+  'Young Adult Nonfiction',
+  'Comics & Graphic Novels',
+  'True Crime',
+  'Transportation',
+  'Gardening',
+  'Pets',
+  'Body, Mind & Spirit',
+];
+
+    Random random = Random();
+    int randomIndex = random.nextInt(googleBooksSubjects.length);
+    String randomSubject = googleBooksSubjects[randomIndex];
     try {
       var response = await apiService.get(
-        path: Urls.discoverBooksBySubject("general"),
+        path: Urls.discoverBooksBySubject(randomSubject),
       );
       List<BookModel> books = [];
       for (var item in response.data["items"]) {
@@ -46,7 +103,7 @@ class HomeRepoImpl implements HomeRepo {
       }
       return right(books);
     } on DioException catch (error) {
-       logger.e(error);
+      logger.e(error);
       return left(ServerFailure.fromDioError(error));
     } catch (error) {
       logger.e(error);

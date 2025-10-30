@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:litlore/core/theme/colors.dart';
 import 'package:litlore/core/utils/app_assets.dart';
-import 'package:litlore/features/search/manager/search_cubit.dart';
+
+import 'package:litlore/features/search/presentation/widgets/filter_panel.dart';
 
 class ActiveFilterBar extends StatelessWidget {
   final String selectedFilter;
   final String selectedOrderBy;
   final String selectedPrintType;
   final AnimationController animationController;
+  final Animation<double> filterAnimation;
 
   const ActiveFilterBar({
     super.key,
     required this.selectedFilter,
     required this.selectedOrderBy,
     required this.selectedPrintType,
-    required this.animationController,
+    required this.animationController, required this.filterAnimation,
   });
 
   @override
@@ -72,7 +74,18 @@ class ActiveFilterBar extends StatelessWidget {
             ),
             child: IconButton(
               onPressed: () {
-                context.read<SearchCubit>().toggleFilter(animationController);
+                showBottomSheet(
+                  context: context,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(20),
+                    ),
+                  ),
+                  builder: (context) => FilterPanel(
+                    filterAnimation: filterAnimation,
+                    animationController: animationController,
+                  ),
+                );
               },
               icon: Image(image: AssetImage(AppAssets.arrow)),
             ),

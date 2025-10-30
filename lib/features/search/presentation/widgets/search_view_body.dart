@@ -10,9 +10,6 @@ import 'package:litlore/features/search/presentation/widgets/custom_search_bar.d
 import 'package:litlore/features/search/presentation/widgets/empty_search_widget.dart';
 import 'package:litlore/features/search/presentation/widgets/searching_results.dart';
 
-
-import 'filter_panel.dart';
-
 class SearchViewBody extends StatefulWidget {
   const SearchViewBody({super.key});
 
@@ -46,7 +43,9 @@ class _SearchViewBodyState extends State<SearchViewBody>
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
         if (!context.read<SearchCubit>().state.hadReachedMax) {
-          context.read<SearchCubit>().searchBooks(context.read<SearchCubit>().state.searchKey!);
+          context.read<SearchCubit>().searchBooks(
+            context.read<SearchCubit>().state.searchKey!,
+          );
         }
       }
     });
@@ -103,6 +102,7 @@ class _SearchViewBodyState extends State<SearchViewBody>
                   CustomSearchBar(
                     searchController: _searchController,
                     animationController: _filterAnimationController,
+                    filterAnimation: _filterAnimation,
                   ),
                   const SizedBox(height: 8),
                   // Active Filters Summary (when collapsed)
@@ -114,11 +114,9 @@ class _SearchViewBodyState extends State<SearchViewBody>
                       selectedOrderBy: state.selectedOrderBy,
                       selectedPrintType: state.selectedPrintType,
                       animationController: _filterAnimationController,
+                      filterAnimation: _filterAnimation,
                     ),
-                  FilterPanel(
-                    filterAnimation: _filterAnimation,
-                    animationController: _filterAnimationController,
-                  ),
+
                   const SizedBox(height: 8),
 
                   if (!state.showFilter &&

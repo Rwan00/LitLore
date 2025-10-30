@@ -21,42 +21,53 @@ class FilterPanel extends StatelessWidget {
     BlocBuilder<SearchCubit, SearchState>(
       builder: (context, state) {
         final cubit = context.read<SearchCubit>();
-        return SizeTransition(
-          sizeFactor: filterAnimation,
-          child: Container(
-            margin: const EdgeInsets.only(top: 16),
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  MyColors.kCreamyWhite,
-                  MyColors.kCreamyWhite.withAlpha(95),
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(
-                color: MyColors.kPrimaryColor.withAlpha(3),
-                width: 2,
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: MyColors.kPrimaryColor.withAlpha(15),
-                  blurRadius: 20,
-                  spreadRadius: 2,
-                  offset: const Offset(0, 6),
-                ),
-                BoxShadow(
-                  color: MyColors.kAccentBrown.withAlpha(1),
-                  blurRadius: 12,
-                  offset: const Offset(0, 3),
-                ),
+        return Container(
+          margin: const EdgeInsets.only(top: 16),
+          padding: const EdgeInsets.all(20),
+          height: MediaQuery.of(context).size.height * 0.5,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                MyColors.kCreamyWhite,
+                MyColors.kCreamyWhite.withAlpha(95),
               ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
             ),
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+              color: MyColors.kPrimaryColor.withAlpha(3),
+              width: 2,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: MyColors.kPrimaryColor.withAlpha(15),
+                blurRadius: 20,
+                spreadRadius: 2,
+                offset: const Offset(0, 6),
+              ),
+              BoxShadow(
+                color: MyColors.kAccentBrown.withAlpha(1),
+                blurRadius: 12,
+                offset: const Offset(0, 3),
+              ),
+            ],
+          ),
+          child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Center(
+                  child: Container(
+                    height: 3,
+                    width: 77,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: MyColors.kAccentBrown,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
                 // Playful header
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,

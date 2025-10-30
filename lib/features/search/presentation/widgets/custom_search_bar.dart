@@ -4,17 +4,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:litlore/core/theme/colors.dart';
 import 'package:litlore/core/utils/app_assets.dart';
+
 import 'package:litlore/features/search/manager/search_cubit.dart';
 import 'package:litlore/features/search/manager/search_state.dart';
+
+import 'package:litlore/features/search/presentation/widgets/filter_panel.dart';
 
 class CustomSearchBar extends StatefulWidget {
   final TextEditingController searchController;
   final AnimationController animationController;
+  final Animation<double> filterAnimation;
 
   const CustomSearchBar({
     super.key,
     required this.searchController,
     required this.animationController,
+    required this.filterAnimation,
   });
 
   @override
@@ -50,6 +55,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
               hintText: 'Type a title, author, or just random words...',
               hintStyle: TextStyle(color: Colors.grey, fontSize: 14),
               prefixIcon: Image(image: AssetImage(AppAssets.search), width: 18),
+
               suffixIcon: widget.searchController.text.isNotEmpty
                   ? IconButton(
                       icon: Image(
@@ -64,14 +70,23 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
                       },
                     )
                   : IconButton(
-                      onPressed: () {
-                        cubit.toggleFilter(widget.animationController);
-                      },
-                      icon: Image(
-                        image: AssetImage(AppAssets.filter),
-                        width: 24,
+                onPressed: () {
+                  showBottomSheet(
+                    context: context,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(20),
                       ),
                     ),
+                    builder: (context) => FilterPanel(
+                      filterAnimation: widget.filterAnimation,
+                      animationController: widget.animationController,
+                    ),
+                  );
+                },
+                icon: Image(image: AssetImage(AppAssets.filter), width: 24),
+              ),
+
               filled: true,
               fillColor: MyColors.kCreamyWhite,
               border: OutlineInputBorder(
