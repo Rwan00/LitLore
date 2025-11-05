@@ -43,7 +43,7 @@ class _SearchViewBodyState extends State<SearchViewBody>
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
         if (!context.read<SearchCubit>().state.hadReachedMax) {
-          context.read<SearchCubit>().searchBooks(
+          context.read<SearchCubit>().loadMore(
             context.read<SearchCubit>().state.searchKey!,
           );
         }

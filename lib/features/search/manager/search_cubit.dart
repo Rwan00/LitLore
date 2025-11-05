@@ -26,14 +26,23 @@ class SearchCubit extends Cubit<SearchState> {
 
   void setFilter(String filter) {
     emit(state.copyWith(selectedFilter: filter));
+    if (state.searchKey != null) {
+      searchBooks(state.searchKey!);
+    }
   }
 
   void setOrderBy(String orderBy) {
     emit(state.copyWith(selectedOrderBy: orderBy));
+    if (state.searchKey != null) {
+      searchBooks(state.searchKey!);
+    }
   }
 
   void setPrintType(String printType) {
     emit(state.copyWith(selectedPrintType: printType));
+    if (state.searchKey != null) {
+      searchBooks(state.searchKey!);
+    }
   }
 
   void resetFilters() {
@@ -50,9 +59,12 @@ class SearchCubit extends Cubit<SearchState> {
     emit(state.copyWith(searchKey: searchKey));
   }
 
-  Future<void> searchBooks(String query) async {
-    if (state.startIndex == 0)
-      emit(state.copyWith(status: SearchStatus.loading));
+  Future<void> searchBooks(String query, {bool isLoadingMore = false}) async {
+    if (state.status == SearchStatus.loading) return;
+    final meta = state.books;
+    if (isLoadingMore && (state.startIndex ?? 0) >= (meta?.totalCount ?? 0))
+      return;
+    emit(state.copyWith(status: SearchStatus.loading));
     var result = await searchRepo.searchBooks(
       query,
       state.startIndex,
@@ -70,27 +82,60 @@ class SearchCubit extends Cubit<SearchState> {
         );
       },
       (books) {
-        if (state.books == null) {
-          emit(state.copyWith(status: SearchStatus.success, books: books));
-        } else {
-          final existingList = state.books!.books ?? [];
-          final incomingList = books.books ?? [];
-          final mergedList = [...existingList, ...incomingList];
-          final mergedResponse = BooksResponse(
-            kind: state.books!.kind,
-            totalCount: state.books!.totalCount,
-            books: mergedList,
-          );
-          emit(
-            state.copyWith(
-              status: SearchStatus.success,
-              books: mergedResponse,
-             
-              hadReachedMax: state.startIndex >= books.totalCount!,
-               startIndex: state.startIndex + 10,
-            ),
-          );
-        }
+        
+        emit(
+          state.copyWith(
+            status: SearchStatus.success,
+            books: books,
+            startIndex: 10,
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> loadMore(String query) async {
+    if (state.status == SearchStatus.loading) return;
+    final current = state.books;
+    if (current == null) return;
+
+    var result = await searchRepo.searchBooks(
+      query,
+      state.startIndex,
+      filter: state.selectedFilter,
+      orderBy: state.selectedOrderBy,
+      contentType: state.selectedPrintType,
+    );
+
+    result.fold(
+      (failure) {
+        emit(
+          state.copyWith(
+            errorMessage: failure.errorMsg,
+            status: SearchStatus.failure,
+          ),
+        );
+      },
+      (incoming) {
+        final existingList = current.books ?? [];
+        final incomingList = incoming.books ?? [];
+        final mergedList = [...existingList, ...incomingList];
+        final mergedResponse = BooksResponse(
+          kind: incoming.kind ?? current.kind,
+          totalCount: incoming.totalCount ?? current.totalCount,
+          books: mergedList,
+        );
+
+        final hadReachedMax =
+            (state.startIndex ?? 0) >= (mergedResponse.totalCount ?? 0);
+        emit(
+          state.copyWith(
+            status: SearchStatus.success,
+            books: mergedResponse,
+            hadReachedMax: hadReachedMax,
+            startIndex: (state.startIndex ?? 0) + 10,
+          ),
+        );
       },
     );
   }

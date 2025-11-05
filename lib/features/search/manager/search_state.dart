@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:litlore/features/home/data/models/book_model/book_model.dart';
 
-enum SearchStatus { initial, loading, success, failure, emailSent }
+enum SearchStatus { initial, loading, success, failure, emailSent,loadingMore }
 
 class SearchState extends Equatable {
   final SearchStatus status;
