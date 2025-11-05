@@ -42,9 +42,7 @@ class SimilarBooksList extends StatelessWidget {
                           horizontal: 4,
                         ),
                         child: BookImage(
-                          imgUrl: state.books[index].volumeInfo?.imageLinks
-                                  ?.smallThumbnail ??
-                              "",
+                          book: state.books[index],
                         ),
                       );
                     },

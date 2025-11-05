@@ -36,7 +36,7 @@ class BookItem extends StatelessWidget {
             Hero(
               tag: book.id,
               child: BookImage(
-                imgUrl: book.volumeInfo?.imageLinks?.smallThumbnail ?? "",
+                book:book ,
               ),
             ),
             const SizedBox(width: 8),

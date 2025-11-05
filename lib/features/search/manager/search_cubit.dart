@@ -62,8 +62,9 @@ class SearchCubit extends Cubit<SearchState> {
   Future<void> searchBooks(String query, {bool isLoadingMore = false}) async {
     if (state.status == SearchStatus.loading) return;
     final meta = state.books;
-    if (isLoadingMore && (state.startIndex ?? 0) >= (meta?.totalCount ?? 0))
+    if (isLoadingMore && (state.startIndex) >= (meta?.totalCount ?? 0)) {
       return;
+    }
     emit(state.copyWith(status: SearchStatus.loading));
     var result = await searchRepo.searchBooks(
       query,
@@ -127,13 +128,13 @@ class SearchCubit extends Cubit<SearchState> {
         );
 
         final hadReachedMax =
-            (state.startIndex ?? 0) >= (mergedResponse.totalCount ?? 0);
+            (state.startIndex) >= (mergedResponse.totalCount ?? 0);
         emit(
           state.copyWith(
             status: SearchStatus.success,
             books: mergedResponse,
             hadReachedMax: hadReachedMax,
-            startIndex: (state.startIndex ?? 0) + 10,
+            startIndex: (state.startIndex) + 10,
           ),
         );
       },
