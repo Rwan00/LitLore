@@ -84,57 +84,15 @@ class DrawerWidget extends StatelessWidget {
                     return Expanded(
                       child: ListView(
                         padding: const EdgeInsets.symmetric(vertical: 8),
-                        children: [
-                          DrawerItem(
-                            icon: Icons.library_books_rounded,
-                            title: "My Library",
-                            onTap: () {
-                              Navigator.pop(context);
-                              // Navigate to library
-                            },
-                          ),
-                          DrawerItem(
-                            icon: Icons.bookmark_rounded,
-                            title: "Bookmarks",
-                            onTap: () {
-                              Navigator.pop(context);
-                              // Navigate to bookmarks
-                            },
-                          ),
-                          DrawerItem(
-                            icon: Icons.favorite_rounded,
-                            title: "Favorites",
-                            onTap: () {
-                              Navigator.pop(context);
-                              // Navigate to favorites
-                            },
-                          ),
-                          DrawerItem(
-                            icon: Icons.history_rounded,
-                            title: "Reading History",
-                            onTap: () {
-                              Navigator.pop(context);
-                              // Navigate to history
-                            },
-                          ),
-                          const Divider(height: 32, indent: 16, endIndent: 16),
-                          DrawerItem(
-                            icon: Icons.settings_rounded,
-                            title: "Settings",
-                            onTap: () {
-                              Navigator.pop(context);
-                              // Navigate to settings
-                            },
-                          ),
-                          DrawerItem(
-                            icon: Icons.info_rounded,
-                            title: "About",
-                            onTap: () {
-                              Navigator.pop(context);
-                              // Navigate to about
-                            },
-                          ),
-                        ],
+                        children: state.shelves!
+                            .map(
+                              (shelf) => DrawerItem(
+                                icon: Icons.abc,
+                                title: shelf.title ?? "",
+                                onTap: () {},
+                              ),
+                            )
+                            .toList(),
                       ),
                     );
                   } else if (state.status == BookShelvesStatus.loading) {
@@ -144,9 +102,7 @@ class DrawerWidget extends StatelessWidget {
                       child: CustomErrorWidget(
                         error: state.errorMessage!,
                         retryFunction: () async {
-                          context.read<BookShelvesCubit>().fetchBookShelves(
-                            
-                          );
+                          context.read<BookShelvesCubit>().fetchBookShelves();
                         },
                       ),
                     );
