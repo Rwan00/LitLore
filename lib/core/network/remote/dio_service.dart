@@ -200,7 +200,7 @@ class DioService {
   }
 
   /// Send HTTP request with Firebase authentication
-  Future<Response> sendRequest({
+  Future<Response> sendReques({
     required String method,
     required String path,
     dynamic data,
@@ -247,6 +247,7 @@ class DioService {
     required String path,
     dynamic data,
     Map<String, dynamic>? queryParams,
+   
   }) async {
     try {
       // Get Google Books access token (not Firebase token)

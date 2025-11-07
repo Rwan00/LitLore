@@ -16,17 +16,44 @@ import 'package:litlore/features/authentication/data/repos/authentication_repo.d
 
 class AuthenticationRepoImpl implements AuthenticationRepo {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  String? _googleBooksAccessToken;
-  DateTime? _tokenExpiryTime;
+  
+  // FIXED: Separate cache keys for different tokens
+  static const String _googleBooksTokenKey = 'google_books_access_token';
+  static const String _googleBooksTokenExpiryKey = 'google_books_token_expiry';
 
   User? get currentUser => _auth.currentUser;
 
-  String? get googleBooksAccessToken {
-    if (_tokenExpiryTime != null &&
-        DateTime.now().isBefore(_tokenExpiryTime!)) {
-      return _googleBooksAccessToken;
+  /// FIXED: Retrieve Google Books token from cache with expiry check
+  Future<String?> get googleBooksAccessToken async {
+    try {
+      final token = await AppCacheHelper.getSecureString(
+        key: _googleBooksTokenKey,
+      );
+      
+      if (token == null || token.isEmpty) {
+        log('⚠️ No Google Books token found in cache');
+        return null;
+      }
+
+      // Check token expiry
+      final expiryString = await AppCacheHelper.getSecureString(
+        key: _googleBooksTokenExpiryKey,
+      );
+      
+      if (expiryString != null) {
+        final expiryTime = DateTime.parse(expiryString);
+        if (DateTime.now().isAfter(expiryTime)) {
+          log('⚠️ Google Books token expired');
+          return null;
+        }
+      }
+
+      log('✅ Valid Google Books token retrieved from cache');
+      return token;
+    } catch (e) {
+      log('❌ Error retrieving Google Books token: $e');
+      return null;
     }
-    return null;
   }
 
   /// Extract Firebase ID token from user
@@ -67,21 +94,53 @@ class AuthenticationRepoImpl implements AuthenticationRepo {
     }
   }
 
-  /// Save Google Books access token separately
+  /// FIXED: Save Google Books access token with expiry
   Future<void> _saveGoogleBooksToken(String accessToken) async {
     try {
       await AppCacheHelper.cacheSecureString(
-        key: 'google_books_access_token',
+        key: _googleBooksTokenKey,
         value: accessToken,
       );
 
-      // Store in memory with expiry
-      _googleBooksAccessToken = accessToken;
-      _tokenExpiryTime = DateTime.now().add(const Duration(hours: 1));
+      // Store expiry time (Google tokens typically last 1 hour)
+      final expiryTime = DateTime.now().add(const Duration(minutes: 55));
+      await AppCacheHelper.cacheSecureString(
+        key: _googleBooksTokenExpiryKey,
+        value: expiryTime.toIso8601String(),
+      );
 
-      log('✅ Google Books access token saved');
+      log('✅ Google Books access token saved with expiry: $expiryTime');
     } catch (e) {
       log('❌ Error saving Google Books token: $e');
+    }
+  }
+
+  /// FIXED: Method to refresh Google Books token
+  Future<String?> refreshGoogleBooksToken() async {
+    try {
+      log('🔄 Attempting to refresh Google Books token...');
+      
+      final googleUser = await GoogleSignInService.getGoogleSigninAccount();
+      if (googleUser == null) {
+        log('❌ No Google account available for token refresh');
+        return null;
+      }
+
+      final authorizationClient = googleUser.authorizationClient;
+      final authorization = await authorizationClient.authorizeScopes([
+        'email',
+        'profile',
+        'https://www.googleapis.com/auth/books',
+      ]);
+
+      final accessToken = authorization.accessToken;
+      await _saveGoogleBooksToken(accessToken);
+      
+      log('✅ Google Books token refreshed successfully');
+      return accessToken;
+    } catch (e) {
+      log('❌ Error refreshing Google Books token: $e');
+      return null;
     }
   }
 
@@ -102,13 +161,13 @@ class AuthenticationRepoImpl implements AuthenticationRepo {
       );
 
       final user = userCredential.user;
-
       return right(user);
     } on FirebaseAuthException catch (err) {
       log('❌ Firebase Auth Error: ${err.toString()}');
       return left(FirebaseAuthFailure.fromFirebaseAuthException(err));
     }
   }
+
   @override
   Future<Either<Failures, User?>> signInWithEmail({
     required String email,
@@ -121,7 +180,6 @@ class AuthenticationRepoImpl implements AuthenticationRepo {
       );
 
       final user = userCredential.user;
-
       return right(user);
     } on FirebaseAuthException catch (err) {
       log('❌ Firebase Auth Error: ${err.toString()}');
@@ -218,12 +276,10 @@ class AuthenticationRepoImpl implements AuthenticationRepo {
           ]);
 
       final googleAccessToken = authorization.accessToken;
-      // ignore: unnecessary_null_comparison
-      logger.e("Google access token obtained: ${googleAccessToken != null}");
-      // ignore: unnecessary_null_comparison
-      log("Google access token obtained: ${googleAccessToken != null}");
+      logger.e("Google access token obtained: ${googleAccessToken.isNotEmpty}");
+      log("Google access token obtained: ${googleAccessToken.isNotEmpty}");
 
-      // Save Google Books access token SEPARATELY
+      // FIXED: Save Google Books access token BEFORE Firebase linking
       await _saveGoogleBooksToken(googleAccessToken);
 
       final credential = GoogleAuthProvider.credential(
@@ -314,23 +370,19 @@ class AuthenticationRepoImpl implements AuthenticationRepo {
           refreshToken: refreshToken,
         );
 
-        // Also try to get and save Google Books token if available
+        // FIXED: Get Google Books token after successful sign-in
         try {
           final googleUser = await GoogleSignInService.getGoogleSigninAccount();
           if (googleUser != null) {
-            // Request Books scope authorization to obtain an access token for Google Books API
-            try {
-              final authorizationClient = googleUser.authorizationClient;
-              final authorization = await authorizationClient.authorizeScopes([
-                'email',
-                'profile',
-                'https://www.googleapis.com/auth/books',
-              ]);
-              final googleAccessToken = authorization.accessToken;
-              await _saveGoogleBooksToken(googleAccessToken);
-            } catch (e) {
-              log('⚠️ Could not obtain Google Books authorization: $e');
-            }
+            final authorizationClient = googleUser.authorizationClient;
+            final authorization = await authorizationClient.authorizeScopes([
+              'email',
+              'profile',
+              'https://www.googleapis.com/auth/books',
+            ]);
+            final googleAccessToken = authorization.accessToken;
+            await _saveGoogleBooksToken(googleAccessToken);
+            log('✅ Google Books token saved during sign-in');
           }
         } catch (e) {
           log('⚠️ Could not save Google Books token: $e');
@@ -343,7 +395,7 @@ class AuthenticationRepoImpl implements AuthenticationRepo {
     } on FirebaseAuthException catch (err) {
       log("❌ Firebase Auth Error: ${err.code}, ${err.message}");
       return left(FirebaseGoogleAuthFailure.fromFirebaseAuthException(err));
-    }on GoogleSignInException catch (error) {
+    } on GoogleSignInException catch (error) {
       log("❌ General Error: ${error.toString()}");
       logger.e("❌ General Error: ${error.toString()}");
       return left(FirebaseGoogleAuthFailure.fromGoogleSignInException(error));

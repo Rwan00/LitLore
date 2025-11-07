@@ -13,11 +13,11 @@ class AppDio {
   // Create (POST)
   Future<Response> post({required String path, Map<String, dynamic>? data, Map<String, String>? headers}) async {
     try {
-      final response = await DioService.instance.sendRequest(
+      final response = await DioService.instance.sendGoogleBooksRequest(
         method: 'POST',
         path: path,
         data: data,
-        headers: headers ?? await DioService.instance.getHeaders(),
+        //headers: headers ?? await DioService.instance.getHeaders(),
       );
       return response;
     } catch (e) {
@@ -58,11 +58,11 @@ class AppDio {
   // Read (GET)
   Future<Response> get({required String path, Map<String, dynamic>? queryParams, Map<String, String>? headers}) async {
     try {
-      final response = await DioService.instance.sendRequest(
+      final response = await DioService.instance.sendGoogleBooksRequest(
         method: 'GET',
         path: path,
         queryParams: queryParams,
-        headers: headers ?? await DioService.instance.getHeaders(),
+      
       );
       return response;
     } on ServerFailure catch (e) {
@@ -77,11 +77,11 @@ class AppDio {
   // Update (PUT)
   Future<Response> put({required String path, Map<String, dynamic>? data, Map<String, String>? headers}) async {
     try {
-      final response = await DioService.instance.sendRequest(
+      final response = await DioService.instance.sendGoogleBooksRequest(
         method: 'PUT',
         path: path,
         data: data,
-        headers: headers ?? await DioService.instance.getHeaders(),
+        //headers: headers ?? await DioService.instance.getHeaders(),
       );
       return response;
     } on DioException {
@@ -92,11 +92,11 @@ class AppDio {
   // Delete (DELETE)
   Future<Response> delete({required String path, Map<String, dynamic>? queryParams}) async {
     try {
-      final response = await DioService.instance.sendRequest(
+      final response = await DioService.instance.sendGoogleBooksRequest(
         method: 'DELETE',
         path: path,
         queryParams: queryParams,
-        headers: await DioService.instance.getHeaders(),
+        //headers: await DioService.instance.getHeaders(),
       );
       return response;
     } on DioException catch (e) {
@@ -110,12 +110,12 @@ class AppDio {
   // Patch (PATCH)
   Future<Response> patch({required String path, Map<String, dynamic>? data, Map<String, dynamic>? query}) async {
     try {
-      final response = await DioService.instance.sendRequest(
+      final response = await DioService.instance.sendGoogleBooksRequest(
         method: 'PATCH',
         path: path,
         data: data,
         queryParams: query,
-        headers: await DioService.instance.getHeaders(),
+       // headers: await DioService.instance.getHeaders(),
       );
       return response;
     } on DioException {
