@@ -124,7 +124,7 @@ class DioService {
     try {
       final user = _auth.currentUser;
       if (user == null) {
-        print('❌ No authenticated Firebase user');
+        print('âŒ No authenticated Firebase user');
         return null;
       }
 
@@ -137,12 +137,12 @@ class DioService {
           key: AppCacheHelper.accessTokenKey,
           value: idToken,
         );
-        print('✅ Firebase ID token retrieved successfully');
+        print('âœ… Firebase ID token retrieved successfully');
       }
 
       return idToken;
     } catch (e) {
-      print('❌ Error getting Firebase ID token: $e');
+      print('âŒ Error getting Firebase ID token: $e');
       return null;
     }
   }
@@ -150,7 +150,7 @@ class DioService {
   /// Refresh Firebase ID token
   Future<String?> refreshFirebaseToken() async {
     try {
-      print('🔄 Refreshing Firebase ID token...');
+      print('ðŸ”„ Refreshing Firebase ID token...');
 
       // Force refresh the Firebase ID token
       final newToken = await getFirebaseIdToken(forceRefresh: true);
@@ -159,14 +159,14 @@ class DioService {
         // Update AppConsts if you're using it
         AppConsts.accessToken = newToken;
 
-        print('✅ Firebase ID token refreshed successfully');
+        print('âœ… Firebase ID token refreshed successfully');
         return newToken;
       } else {
-        print('❌ Failed to refresh Firebase ID token');
+        print('âŒ Failed to refresh Firebase ID token');
         return null;
       }
     } catch (e) {
-      print('❌ Error refreshing Firebase token: $e');
+      print('âŒ Error refreshing Firebase token: $e');
       return null;
     }
   }
@@ -193,9 +193,9 @@ class DioService {
 
       await AppCacheHelper.signOut();
 
-      print('🚪 User logged out due to authentication failure');
+      print('ðŸšª User logged out due to authentication failure');
     } catch (e) {
-      print('❌ Error during authentication failure handling: $e');
+      print('âŒ Error during authentication failure handling: $e');
     }
   }
 
@@ -236,38 +236,40 @@ class DioService {
 
       return token.isNotEmpty ? token : null;
     } catch (e) {
-      print('❌ Error getting Google Books access token: $e');
+      print('âŒ Error getting Google Books access token: $e');
       return null;
     }
   }
 
   /// Send request to Google Books API with Google access token
-  Future<Response> sendGoogleBooksRequest({
-    required String method,
-    required String path,
-    dynamic data,
-    Map<String, dynamic>? queryParams,
-  }) async {
-    try {
-      // Get Google Books access token (not Firebase token)
-      final googleToken = await getGoogleBooksAccessToken();
+  /// Send request to Google Books API with Google access token
+Future<Response> sendGoogleBooksRequest({
+  required String method,
+  required String path,
+  dynamic data,
+  Map<String, dynamic>? queryParams,
+}) async {
+  try {
+    // Get Google Books access token (not Firebase token)
+    final googleToken = await getGoogleBooksAccessToken();
 
-      final headers = <String, String>{'Content-Type': 'application/json'};
+    final headers = <String, String>{'Content-Type': 'application/json'};
 
-      if (googleToken != null && googleToken.isNotEmpty) {
-        headers['Authorization'] = '$googleToken';
-      }
-
-      final response = await _dio.request(
-        path,
-        data: data,
-        queryParameters: queryParams,
-        options: Options(method: method, headers: headers),
-      );
-
-      return response;
-    } on DioException {
-      rethrow;
+    if (googleToken != null && googleToken.isNotEmpty) {
+      // ✅ FIXED: Add "Bearer" prefix for OAuth 2.0
+      headers['Authorization'] = 'Bearer $googleToken';
     }
+
+    final response = await _dio.request(
+      path,
+      data: data,
+      queryParameters: queryParams,
+      options: Options(method: method, headers: headers),
+    );
+
+    return response;
+  } on DioException {
+    rethrow;
   }
+}
 }
