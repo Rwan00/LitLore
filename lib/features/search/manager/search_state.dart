@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:litlore/features/home/data/models/book_model/book_model.dart';
 
-enum SearchStatus { initial, loading, success, failure, emailSent,loadingMore }
+enum SearchStatus { initial, loading, success, failure, emailSent, loadingMore }
 
 class SearchState extends Equatable {
   final SearchStatus status;
@@ -25,8 +25,8 @@ class SearchState extends Equatable {
     this.selectedOrderBy = "relevance",
     this.selectedPrintType = "all",
     this.searchKey,
-    this.books ,
-    this.hadReachedMax= false,
+    this.books,
+    this.hadReachedMax = false,
     this.startIndex = 0,
   });
 

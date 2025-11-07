@@ -152,9 +152,9 @@ class AppRouter {
         pageBuilder: (context, state) {
           final Map<String, dynamic> args =
               state.extra as Map<String, dynamic>? ?? {};
-             
+
           return _animateRouteBuilder(
-             BookDetailsView(book: args['book'],),
+            BookDetailsView(book: args['book']),
             pageRouteAnimation:
                 args['pageAnimation'] ?? PageRouteAnimation.Fade,
           );
@@ -165,9 +165,9 @@ class AppRouter {
         pageBuilder: (context, state) {
           final Map<String, dynamic> args =
               state.extra as Map<String, dynamic>? ?? {};
-             
+
           return _animateRouteBuilder(
-             CategoryBooksView(title: args['title'],),
+            CategoryBooksView(title: args['title']),
             pageRouteAnimation:
                 args['pageAnimation'] ?? PageRouteAnimation.Fade,
           );

@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-enum AuthStatus { initial, loading, success, failure,emailSent }
+enum AuthStatus { initial, loading, success, failure, emailSent }
 
 class AuthState extends Equatable {
   final AuthStatus status;
@@ -10,22 +10,15 @@ class AuthState extends Equatable {
 
   const AuthState({
     this.status = AuthStatus.initial,
-    this.errorMessage ,
+    this.errorMessage,
     this.user,
   });
 
   factory AuthState.initial() {
-    return const AuthState(
-      status: AuthStatus.initial,
-     
-    );
+    return const AuthState(status: AuthStatus.initial);
   }
 
-  AuthState copyWith({
-    AuthStatus? status,
-    String? errorMessage,
-    User? user,
-  }) {
+  AuthState copyWith({AuthStatus? status, String? errorMessage, User? user}) {
     return AuthState(
       status: status ?? this.status,
       errorMessage: errorMessage ?? this.errorMessage,
@@ -36,5 +29,3 @@ class AuthState extends Equatable {
   @override
   List<Object?> get props => [status, errorMessage, user];
 }
-
-

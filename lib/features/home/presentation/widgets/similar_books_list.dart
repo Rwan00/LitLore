@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:litlore/features/home/data/repos/book_details_repo/book_details_repo_impl.dart';
 
-
 import '../../../../core/functions/size_functions.dart';
 import '../../../../core/utils/service_locator.dart';
 
@@ -14,10 +13,7 @@ import 'book_image.dart';
 
 class SimilarBooksList extends StatelessWidget {
   final String category;
-  const SimilarBooksList({
-    super.key,
-    required this.category,
-  });
+  const SimilarBooksList({super.key, required this.category});
 
   @override
   Widget build(BuildContext context) {
@@ -38,12 +34,8 @@ class SimilarBooksList extends StatelessWidget {
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
                       return Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 4,
-                        ),
-                        child: BookImage(
-                          book: state.books[index],
-                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
+                        child: BookImage(book: state.books[index]),
                       );
                     },
                     itemCount: 10,
@@ -57,8 +49,9 @@ class SimilarBooksList extends StatelessWidget {
               child: CustomErrorWidget(
                 error: state.errorMsg,
                 retryFunction: () async {
-                  SimilarBooksCubit.get(context)
-                      .fetchSimilarBooks(category: category);
+                  SimilarBooksCubit.get(
+                    context,
+                  ).fetchSimilarBooks(category: category);
                 },
               ),
             );

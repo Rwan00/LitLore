@@ -9,8 +9,9 @@ class ServerFailure extends Failures {
     switch (dioException.type) {
       case DioExceptionType.connectionTimeout:
         return ServerFailure(
-            errorMsg:
-                "Conneection Timeout,\n Don't worry, the server just play hide and seek with you.");
+          errorMsg:
+              "Conneection Timeout,\n Don't worry, the server just play hide and seek with you.",
+        );
       case DioExceptionType.sendTimeout:
         return ServerFailure(
           errorMsg: "This request took too long,\n We gave up.",
@@ -51,16 +52,15 @@ class ServerFailure extends Failures {
       return ServerFailure(errorMsg: response["error"]["message"]);
     } else if (statusCode == 404) {
       return ServerFailure(
-          errorMsg: "Your request not found, Please try again later!");
+        errorMsg: "Your request not found, Please try again later!",
+      );
     } else if (statusCode == 500) {
       return ServerFailure(
         errorMsg:
             "Server Error..Don't worry it's our mistake, Go touch the grass until we fix the problem.",
       );
     } else {
-      return ServerFailure(
-        errorMsg: "Oops! Something went wrong.",
-      );
+      return ServerFailure(errorMsg: "Oops! Something went wrong.");
     }
   }
 }

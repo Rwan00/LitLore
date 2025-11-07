@@ -7,14 +7,14 @@ class Layer extends Equatable {
   const Layer({this.layerId, this.volumeAnnotationsVersion});
 
   factory Layer.fromJson(Map<String, dynamic> json) => Layer(
-        layerId: json['layerId'] as String?,
-        volumeAnnotationsVersion: json['volumeAnnotationsVersion'] as String?,
-      );
+    layerId: json['layerId'] as String?,
+    volumeAnnotationsVersion: json['volumeAnnotationsVersion'] as String?,
+  );
 
   Map<String, dynamic> toJson() => {
-        'layerId': layerId,
-        'volumeAnnotationsVersion': volumeAnnotationsVersion,
-      };
+    'layerId': layerId,
+    'volumeAnnotationsVersion': volumeAnnotationsVersion,
+  };
 
   @override
   List<Object?> get props => [layerId, volumeAnnotationsVersion];

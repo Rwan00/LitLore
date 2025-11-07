@@ -5,8 +5,6 @@ import 'package:litlore/core/utils/app_assets.dart';
 
 import 'package:litlore/features/authentication/presentation/views/onboarding_view.dart';
 
-
-
 class SplashViewBody extends StatefulWidget {
   const SplashViewBody({super.key});
 
@@ -25,26 +23,15 @@ class _SplashViewBodyState extends State<SplashViewBody> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Image.asset(
-        AppAssets.splash,
-        width: 250,
-        fit: BoxFit.cover,
-      ),
+      child: Image.asset(AppAssets.splash, width: 250, fit: BoxFit.cover),
     );
   }
 
   void navigateToHome() {
-    Future.delayed(
-      const Duration(
-        seconds: 3,
-      ),
-      () {
-        if (mounted) {
-          context.pushReplacement(
-               OnBoardingScreen.routeName,
-              );
-        }
-      },
-    );
+    Future.delayed(const Duration(seconds: 3), () {
+      if (mounted) {
+        context.pushReplacement(OnBoardingScreen.routeName);
+      }
+    });
   }
 }

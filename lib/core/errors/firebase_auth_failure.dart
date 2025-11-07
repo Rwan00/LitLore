@@ -52,8 +52,10 @@ class FirebaseAuthFailure extends Failures {
               "No internet detected. Maybe try shouting at your router—it works 60% of the time.",
         );
       case "invalid-credential":
-        return FirebaseAuthFailure(errorMsg:  "Invalid credentials! Are you sure you didn’t borrow someone else’s secret identity?"
-);
+        return FirebaseAuthFailure(
+          errorMsg:
+              "Invalid credentials! Are you sure you didn’t borrow someone else’s secret identity?",
+        );
       default:
         return FirebaseAuthFailure(
           errorMsg:

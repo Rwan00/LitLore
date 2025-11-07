@@ -65,8 +65,8 @@ class AppCacheHelper {
   }) async {
     try {
       // Try to save in secure storage first
-  await _storage.write(key: key, value: value);
-       
+      await _storage.write(key: key, value: value);
+
       print('Successfully saved $key to secure storage');
     } catch (e) {
       logger.e(

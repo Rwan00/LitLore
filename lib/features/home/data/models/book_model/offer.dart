@@ -17,30 +17,25 @@ class Offer extends Equatable {
   });
 
   factory Offer.fromJson(Map<String, dynamic> json) => Offer(
-        finskyOfferType: json['finskyOfferType'] as int?,
-        listPrice: json['listPrice'] == null
-            ? null
-            : ListPrice.fromJson(json['listPrice'] as Map<String, dynamic>),
-        retailPrice: json['retailPrice'] == null
-            ? null
-            : RetailPrice.fromJson(json['retailPrice'] as Map<String, dynamic>),
-        giftable: json['giftable'] as bool?,
-      );
+    finskyOfferType: json['finskyOfferType'] as int?,
+    listPrice: json['listPrice'] == null
+        ? null
+        : ListPrice.fromJson(json['listPrice'] as Map<String, dynamic>),
+    retailPrice: json['retailPrice'] == null
+        ? null
+        : RetailPrice.fromJson(json['retailPrice'] as Map<String, dynamic>),
+    giftable: json['giftable'] as bool?,
+  );
 
   Map<String, dynamic> toJson() => {
-        'finskyOfferType': finskyOfferType,
-        'listPrice': listPrice?.toJson(),
-        'retailPrice': retailPrice?.toJson(),
-        'giftable': giftable,
-      };
+    'finskyOfferType': finskyOfferType,
+    'listPrice': listPrice?.toJson(),
+    'retailPrice': retailPrice?.toJson(),
+    'giftable': giftable,
+  };
 
   @override
   List<Object?> get props {
-    return [
-      finskyOfferType,
-      listPrice,
-      retailPrice,
-      giftable,
-    ];
+    return [finskyOfferType, listPrice, retailPrice, giftable];
   }
 }

@@ -7,10 +7,7 @@ import 'book_rating.dart';
 import 'custom_vertical_divider.dart';
 
 class ReleaseOverViewSection extends StatelessWidget {
-  const ReleaseOverViewSection({
-    super.key,
-    required this.book,
-  });
+  const ReleaseOverViewSection({super.key, required this.book});
   final BookModel book;
 
   @override
@@ -23,13 +20,10 @@ class ReleaseOverViewSection extends StatelessWidget {
           Column(
             children: [
               BookRating(
-                rating: book.volumeInfo?.averageRating??0,
-                count: book.volumeInfo?.ratingsCount??0,
+                rating: book.volumeInfo?.averageRating ?? 0,
+                count: book.volumeInfo?.ratingsCount ?? 0,
               ),
-              const Text(
-                "Review",
-                style: MyFonts.subTiltleStyle12,
-              ),
+              const Text("Review", style: MyFonts.subTiltleStyle12),
             ],
           ),
           const CustomVerticalDivider(),
@@ -37,14 +31,9 @@ class ReleaseOverViewSection extends StatelessWidget {
             children: [
               Text(
                 book.volumeInfo?.language ?? "emotions only",
-                style: MyFonts.subTiltleStyle12.copyWith(
-                  color: Colors.black,
-                ),
+                style: MyFonts.subTiltleStyle12.copyWith(color: Colors.black),
               ),
-              const Text(
-                "Language",
-                style: MyFonts.subTiltleStyle12,
-              ),
+              const Text("Language", style: MyFonts.subTiltleStyle12),
             ],
           ),
           const CustomVerticalDivider(),
@@ -52,14 +41,9 @@ class ReleaseOverViewSection extends StatelessWidget {
             children: [
               Text(
                 "${book.volumeInfo?.pageCount}",
-                style: MyFonts.subTiltleStyle12.copyWith(
-                  color: Colors.black,
-                ),
+                style: MyFonts.subTiltleStyle12.copyWith(color: Colors.black),
               ),
-              const Text(
-                "Pages",
-                style: MyFonts.subTiltleStyle12,
-              ),
+              const Text("Pages", style: MyFonts.subTiltleStyle12),
             ],
           ),
           const CustomVerticalDivider(),
@@ -67,14 +51,9 @@ class ReleaseOverViewSection extends StatelessWidget {
             children: [
               Text(
                 "${book.saleInfo?.country}",
-                style: MyFonts.subTiltleStyle12.copyWith(
-                  color: Colors.black,
-                ),
+                style: MyFonts.subTiltleStyle12.copyWith(color: Colors.black),
               ),
-              const Text(
-                "Country",
-                style: MyFonts.subTiltleStyle12,
-              ),
+              const Text("Country", style: MyFonts.subTiltleStyle12),
             ],
           ),
           const CustomVerticalDivider(),
@@ -84,16 +63,11 @@ class ReleaseOverViewSection extends StatelessWidget {
                 width: 65,
                 child: Text(
                   book.volumeInfo?.publisher ?? "the universe itself",
-                  style: MyFonts.subTiltleStyle12.copyWith(
-                    color: Colors.black,
-                  ),
+                  style: MyFonts.subTiltleStyle12.copyWith(color: Colors.black),
                   textAlign: TextAlign.center,
                 ),
               ),
-              const Text(
-                "Publisher",
-                style: MyFonts.subTiltleStyle12,
-              ),
+              const Text("Publisher", style: MyFonts.subTiltleStyle12),
             ],
           ),
         ],

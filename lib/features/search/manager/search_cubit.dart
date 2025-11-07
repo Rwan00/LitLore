@@ -83,7 +83,6 @@ class SearchCubit extends Cubit<SearchState> {
         );
       },
       (books) {
-        
         emit(
           state.copyWith(
             status: SearchStatus.success,

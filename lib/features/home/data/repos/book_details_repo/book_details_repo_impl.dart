@@ -8,7 +8,6 @@ import 'package:litlore/core/utils/urls.dart';
 
 import 'package:litlore/features/home/data/models/book_model/book_model.dart';
 
-
 import '../../../../../core/errors/server_failure.dart';
 import '../../../../../core/network/remote/app_dio.dart';
 import 'book_details_repo.dart';
@@ -19,12 +18,11 @@ class BookDetailsRepoImpl implements BookDetailsRepo {
   BookDetailsRepoImpl({required this.apiService});
 
   @override
-  Future<Either<Failures, List<BookModel>>> fetchSimilarBooks({required String category}) async{
- 
+  Future<Either<Failures, List<BookModel>>> fetchSimilarBooks({
+    required String category,
+  }) async {
     try {
-      var response = await apiService.get(
-        path: Urls.similarBooks(category),
-      );
+      var response = await apiService.get(path: Urls.similarBooks(category));
       List<BookModel> books = [];
       for (var item in response.data["items"]) {
         books.add(BookModel.fromJson(item));
@@ -34,12 +32,7 @@ class BookDetailsRepoImpl implements BookDetailsRepo {
       log(error.message ?? "");
       return left(ServerFailure.fromDioError(error));
     } catch (error) {
-      return left(
-        ServerFailure(
-          errorMsg: error.toString(),
-        ),
-      );
+      return left(ServerFailure(errorMsg: error.toString()));
     }
   }
 }
-

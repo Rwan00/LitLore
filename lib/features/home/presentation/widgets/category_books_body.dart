@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:litlore/core/widgets/custom_error_widget.dart';
 import 'package:litlore/core/widgets/flapping_owl_loading.dart';
-import 'package:litlore/features/home/manager/category_books_cubit.dart/category_books_cubit.dart';
-import 'package:litlore/features/home/manager/category_books_cubit.dart/category_books_state.dart';
+import 'package:litlore/features/home/manager/category_books_cubit/category_books_cubit.dart';
+import 'package:litlore/features/home/manager/category_books_cubit/category_books_state.dart';
 import 'package:litlore/features/home/presentation/widgets/book_item.dart';
 import 'package:litlore/features/search/presentation/widgets/empty_search_widget.dart';
 

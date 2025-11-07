@@ -247,7 +247,6 @@ class DioService {
     required String path,
     dynamic data,
     Map<String, dynamic>? queryParams,
-   
   }) async {
     try {
       // Get Google Books access token (not Firebase token)

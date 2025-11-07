@@ -64,8 +64,10 @@ class DefaultFirebaseOptions {
     messagingSenderId: '437111373823',
     projectId: 'litlore-62236',
     storageBucket: 'litlore-62236.firebasestorage.app',
-    androidClientId: '437111373823-0oincm7o0k1afiabtr5lj70pbr4gi9og.apps.googleusercontent.com',
-    iosClientId: '437111373823-kjv1ng3l8qfbu0su2pvoj5jbbjtasnu4.apps.googleusercontent.com',
+    androidClientId:
+        '437111373823-0oincm7o0k1afiabtr5lj70pbr4gi9og.apps.googleusercontent.com',
+    iosClientId:
+        '437111373823-kjv1ng3l8qfbu0su2pvoj5jbbjtasnu4.apps.googleusercontent.com',
     iosBundleId: 'com.example.litlore',
   );
 
@@ -75,8 +77,10 @@ class DefaultFirebaseOptions {
     messagingSenderId: '437111373823',
     projectId: 'litlore-62236',
     storageBucket: 'litlore-62236.firebasestorage.app',
-    androidClientId: '437111373823-0oincm7o0k1afiabtr5lj70pbr4gi9og.apps.googleusercontent.com',
-    iosClientId: '437111373823-kjv1ng3l8qfbu0su2pvoj5jbbjtasnu4.apps.googleusercontent.com',
+    androidClientId:
+        '437111373823-0oincm7o0k1afiabtr5lj70pbr4gi9og.apps.googleusercontent.com',
+    iosClientId:
+        '437111373823-kjv1ng3l8qfbu0su2pvoj5jbbjtasnu4.apps.googleusercontent.com',
     iosBundleId: 'com.example.litlore',
   );
 

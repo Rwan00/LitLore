@@ -9,6 +9,7 @@ import 'package:litlore/core/utils/app_consts.dart';
 
 import 'package:litlore/core/utils/urls.dart';
 import 'package:litlore/features/home/data/models/book_model/book_model.dart';
+import 'package:litlore/features/home/data/models/book_shelves_model/book_shelves_model/item.dart';
 
 import 'package:litlore/features/home/data/repos/home_repo/home_repo.dart';
 
@@ -21,57 +22,57 @@ class HomeRepoImpl implements HomeRepo {
   @override
   Future<Either<Failures, List<BookModel>>> fetchDiscoverBooks() async {
     List<String> googleBooksSubjects = [
-  'Reference',
-  'Encyclopedias',
-  'Dictionaries',
-  'Education',
-  'Study Aids',
-  'Science',
-  'Mathematics',
-  'Technology & Engineering',
-  'Computers',
-  'Medical',
-  'Nature',
-  'Fiction',
-  'Poetry',
-  'Drama',
-  'Literary Criticism',
-  'Language Arts & Disciplines',
-  'History',
-  'Philosophy',
-  'Psychology',
-  'Political Science',
-  'Religion',
-  'Social Science',
-  'Business & Economics',
-  'Management',
-  'Finance',
-  'Marketing',
-  'Art',
-  'Design',
-  'Performing Arts',
-  'Music',
-  'Photography',
-  'Health & Fitness',
-  'Cooking',
-  'Family & Relationships',
-  'Self-Help',
-  'House & Home',
-  'Sports & Recreation',
-  'Games',
-  'Crafts & Hobbies',
-  'Travel',
-  'Juvenile Fiction',
-  'Juvenile Nonfiction',
-  'Young Adult Fiction',
-  'Young Adult Nonfiction',
-  'Comics & Graphic Novels',
-  'True Crime',
-  'Transportation',
-  'Gardening',
-  'Pets',
-  'Body, Mind & Spirit',
-];
+      'Reference',
+      'Encyclopedias',
+      'Dictionaries',
+      'Education',
+      'Study Aids',
+      'Science',
+      'Mathematics',
+      'Technology & Engineering',
+      'Computers',
+      'Medical',
+      'Nature',
+      'Fiction',
+      'Poetry',
+      'Drama',
+      'Literary Criticism',
+      'Language Arts & Disciplines',
+      'History',
+      'Philosophy',
+      'Psychology',
+      'Political Science',
+      'Religion',
+      'Social Science',
+      'Business & Economics',
+      'Management',
+      'Finance',
+      'Marketing',
+      'Art',
+      'Design',
+      'Performing Arts',
+      'Music',
+      'Photography',
+      'Health & Fitness',
+      'Cooking',
+      'Family & Relationships',
+      'Self-Help',
+      'House & Home',
+      'Sports & Recreation',
+      'Games',
+      'Crafts & Hobbies',
+      'Travel',
+      'Juvenile Fiction',
+      'Juvenile Nonfiction',
+      'Young Adult Fiction',
+      'Young Adult Nonfiction',
+      'Comics & Graphic Novels',
+      'True Crime',
+      'Transportation',
+      'Gardening',
+      'Pets',
+      'Body, Mind & Spirit',
+    ];
 
     Random random = Random();
     int randomIndex = random.nextInt(googleBooksSubjects.length);
@@ -110,17 +111,32 @@ class HomeRepoImpl implements HomeRepo {
       return left(ServerFailure(errorMsg: error.toString()));
     }
   }
+  @override
+  Future<Either<Failures, List<ShelfItem>>> fetchBookShelves() async {
+    try {
+      var response = await apiService.get(path: Urls.myLibraryBookshelves);
+      List<ShelfItem> shelves = [];
+      for (var item in response.data["items"]) {
+        shelves.add(ShelfItem.fromJson(item));
+      }
+      return right(shelves);
+    } on DioException catch (error) {
+      logger.e(error);
+      return left(ServerFailure.fromDioError(error));
+    } catch (error) {
+      logger.e(error);
+      return left(ServerFailure(errorMsg: error.toString()));
+    }
+  }
 
-   @override
+  @override
   Future<Either<Failures, BooksResponse>> fetchCategoryBooks(
     String category,
-    int startIndex) async {
+    int startIndex,
+  ) async {
     try {
       var response = await apiService.get(
-        path: Urls.similarBooks(
-          category,
-         
-        ),
+        path: Urls.similarBooks(category),
         queryParams: {"startIndex": startIndex},
       );
       BooksResponse booksResponse = BooksResponse.fromJson(response.data);
@@ -132,6 +148,4 @@ class HomeRepoImpl implements HomeRepo {
       return left(ServerFailure(errorMsg: error.toString()));
     }
   }
-  
- 
 }

@@ -16,7 +16,7 @@ import 'package:litlore/features/authentication/data/repos/authentication_repo.d
 
 class AuthenticationRepoImpl implements AuthenticationRepo {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  
+
   // FIXED: Separate cache keys for different tokens
   static const String _googleBooksTokenKey = 'google_books_access_token';
   static const String _googleBooksTokenExpiryKey = 'google_books_token_expiry';
@@ -29,7 +29,7 @@ class AuthenticationRepoImpl implements AuthenticationRepo {
       final token = await AppCacheHelper.getSecureString(
         key: _googleBooksTokenKey,
       );
-      
+
       if (token == null || token.isEmpty) {
         log('⚠️ No Google Books token found in cache');
         return null;
@@ -39,7 +39,7 @@ class AuthenticationRepoImpl implements AuthenticationRepo {
       final expiryString = await AppCacheHelper.getSecureString(
         key: _googleBooksTokenExpiryKey,
       );
-      
+
       if (expiryString != null) {
         final expiryTime = DateTime.parse(expiryString);
         if (DateTime.now().isAfter(expiryTime)) {
@@ -119,7 +119,7 @@ class AuthenticationRepoImpl implements AuthenticationRepo {
   Future<String?> refreshGoogleBooksToken() async {
     try {
       log('🔄 Attempting to refresh Google Books token...');
-      
+
       final googleUser = await GoogleSignInService.getGoogleSigninAccount();
       if (googleUser == null) {
         log('❌ No Google account available for token refresh');
@@ -135,7 +135,7 @@ class AuthenticationRepoImpl implements AuthenticationRepo {
 
       final accessToken = authorization.accessToken;
       await _saveGoogleBooksToken(accessToken);
-      
+
       log('✅ Google Books token refreshed successfully');
       return accessToken;
     } catch (e) {

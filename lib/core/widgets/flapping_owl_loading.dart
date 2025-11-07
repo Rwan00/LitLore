@@ -34,8 +34,7 @@ class _FlappingOwlLoadingState extends State<FlappingOwlLoading>
         ),
         const SizedBox(height: 5),
         Text(
-          widget.loadingText??
-          "Owl says: 'Patience, young reader!'",
+          widget.loadingText ?? "Owl says: 'Patience, young reader!'",
           style: MyFonts.subTiltleStyle14,
         ),
       ],

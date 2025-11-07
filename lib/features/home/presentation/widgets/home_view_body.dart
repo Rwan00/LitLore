@@ -16,26 +16,18 @@ class HomeViewBody extends StatelessWidget {
             child: Column(
               children: [
                 Padding(
-                  padding: EdgeInsets.only(
-                    left: 12,
-                  ),
-                  child: CategoryTitle(
-                    title: "Newest Books",
-                  ),
+                  padding: EdgeInsets.only(left: 12),
+                  child: CategoryTitle(title: "Newest Books"),
                 ),
                 NewestBooksSlider(),
                 Padding(
-                  padding: EdgeInsets.only(
-                    left: 12,
-                  ),
+                  padding: EdgeInsets.only(left: 12),
                   child: CategoryTitle(title: "Discover Books"),
                 ),
               ],
             ),
           ),
-          SliverToBoxAdapter(
-            child: DiscoverBooksList(),
-          ),
+          SliverToBoxAdapter(child: DiscoverBooksList()),
         ],
       ),
     );

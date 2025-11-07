@@ -5,7 +5,6 @@ import 'package:go_router/go_router.dart';
 import 'package:litlore/features/authentication/manager/onpage_change_cubit/onpage_change_cubit.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-
 import '../../../../core/theme/colors.dart';
 
 import '../../data/models/onboarding_model.dart';
@@ -35,10 +34,7 @@ class OnboardingStackItems extends StatelessWidget {
               backgroundColor: MyColors.kPrimaryColor,
               onPressed: () {
                 if (cubit.isLast) {
-                  context.pushReplacement(
-                    RegisterView.routeName,
-                    
-                  );
+                  context.pushReplacement(RegisterView.routeName);
                 } else {
                   cubit.pageController.nextPage(
                     duration: const Duration(milliseconds: 900),
@@ -46,10 +42,7 @@ class OnboardingStackItems extends StatelessWidget {
                   );
                 }
               },
-              child: const Icon(
-                Icons.arrow_forward_ios,
-                color: Colors.white,
-              ),
+              child: const Icon(Icons.arrow_forward_ios, color: Colors.white),
             ),
           ],
         );

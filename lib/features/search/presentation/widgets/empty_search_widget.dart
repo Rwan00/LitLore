@@ -6,7 +6,11 @@ import 'package:litlore/core/utils/app_assets.dart';
 class EmptySearchWidget extends StatelessWidget {
   final String title;
   final String discreption;
-  const EmptySearchWidget({super.key, required this.title, required this.discreption});
+  const EmptySearchWidget({
+    super.key,
+    required this.title,
+    required this.discreption,
+  });
 
   @override
   Widget build(BuildContext context) {

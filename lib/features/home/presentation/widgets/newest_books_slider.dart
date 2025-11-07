@@ -46,10 +46,7 @@ class NewestBooksSlider extends StatelessWidget {
                         ),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(20),
-                          child: BookImage(
-                            book:
-                                book,
-                          ),
+                          child: BookImage(book: book),
                         ),
                       ),
                     );

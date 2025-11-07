@@ -16,11 +16,7 @@ void showBottomSheetFunction(BuildContext context, String message) {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Image.asset(
-              AppAssets.owlError,
-              height: 60,
-              width: 60,
-            ),
+            Image.asset(AppAssets.owlError, height: 60, width: 60),
             const SizedBox(height: 10),
             Text(
               message,

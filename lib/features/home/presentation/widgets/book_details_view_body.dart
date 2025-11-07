@@ -19,30 +19,22 @@ class BookDetailsViewBody extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          BookDetailsSection(
-            book: book,
-          ),
-          const SizedBox(
-            height: 55,
-          ),
-          ReleaseOverViewSection(
-            book: book,
-          ),
-          const SizedBox(
-            height: 45,
-          ),
+          BookDetailsSection(book: book),
+          const SizedBox(height: 55),
+          ReleaseOverViewSection(book: book),
+          const SizedBox(height: 45),
           BookActionSection(
             price: book.saleInfo?.saleability == "FOR_SALE"
                 ? "Buy For ${book.saleInfo?.listPrice?.amount} ${book.saleInfo?.listPrice?.currencyCode}"
                 : "Not for sale",
-                url: book.volumeInfo?.previewLink??"",
+            url: book.volumeInfo?.previewLink ?? "",
           ),
           AboutBookSection(
-            description: book.volumeInfo?.description ?? "No description. Let your imagination do the work!",
+            description:
+                book.volumeInfo?.description ??
+                "No description. Let your imagination do the work!",
           ),
-          const SizedBox(
-            height: 18,
-          ),
+          const SizedBox(height: 18),
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 12.0),
             child: CategoryTitle(title: "Similar Books"),

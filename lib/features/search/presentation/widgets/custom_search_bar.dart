@@ -70,22 +70,25 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
                       },
                     )
                   : IconButton(
-                onPressed: () {
-                  showBottomSheet(
-                    context: context,
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(20),
+                      onPressed: () {
+                        showBottomSheet(
+                          context: context,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(20),
+                            ),
+                          ),
+                          builder: (context) => FilterPanel(
+                            filterAnimation: widget.filterAnimation,
+                            animationController: widget.animationController,
+                          ),
+                        );
+                      },
+                      icon: Image(
+                        image: AssetImage(AppAssets.filter),
+                        width: 24,
                       ),
                     ),
-                    builder: (context) => FilterPanel(
-                      filterAnimation: widget.filterAnimation,
-                      animationController: widget.animationController,
-                    ),
-                  );
-                },
-                icon: Image(image: AssetImage(AppAssets.filter), width: 24),
-              ),
 
               filled: true,
               fillColor: MyColors.kCreamyWhite,

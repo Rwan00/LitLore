@@ -43,23 +43,18 @@ class _CustomInputFieldState extends State<CustomInputField> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (widget.title != null)
-          Text(
-            widget.title!,
-            style: MyFonts.titleMediumStyle18,
-          ),
-        const SizedBox(
-          height: 4,
-        ),
+          Text(widget.title!, style: MyFonts.titleMediumStyle18),
+        const SizedBox(height: 4),
         TextFormField(
           validator: widget.validator,
           obscureText: widget.isPassword && !showPwd,
           controller: widget.controller,
           keyboardType: widget.textType,
           autofocus: false,
-          style: MyFonts.subTiltleStyle14
-              .copyWith(color: MyColors.kPrimaryColor),
+          style: MyFonts.subTiltleStyle14.copyWith(
+            color: MyColors.kPrimaryColor,
+          ),
           decoration: InputDecoration(
-        
             filled: true,
             fillColor: Colors.white,
             suffixIcon: widget.isPassword
@@ -89,10 +84,7 @@ class _CustomInputFieldState extends State<CustomInputField> {
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(7),
-              borderSide: const BorderSide(
-                color: Colors.red,
-                width: 2,
-              ),
+              borderSide: const BorderSide(color: Colors.red, width: 2),
             ),
           ),
         ),

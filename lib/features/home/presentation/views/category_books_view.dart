@@ -5,7 +5,7 @@ import 'package:litlore/core/theme/fonts.dart';
 import 'package:litlore/core/utils/service_locator.dart';
 
 import 'package:litlore/features/home/data/repos/home_repo/home_repo_impl.dart';
-import 'package:litlore/features/home/manager/category_books_cubit.dart/category_books_cubit.dart';
+import 'package:litlore/features/home/manager/category_books_cubit/category_books_cubit.dart';
 
 import 'package:litlore/features/home/presentation/widgets/category_books_body.dart';
 

@@ -17,7 +17,8 @@ class ActiveFilterBar extends StatelessWidget {
     required this.selectedFilter,
     required this.selectedOrderBy,
     required this.selectedPrintType,
-    required this.animationController, required this.filterAnimation,
+    required this.animationController,
+    required this.filterAnimation,
   });
 
   @override

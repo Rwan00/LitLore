@@ -1,13 +1,19 @@
 import 'package:equatable/equatable.dart';
 import 'package:litlore/features/home/data/models/book_model/book_model.dart';
 
-enum CategoryBooksStatus { initial, loading, success, failure, emailSent,loadingMore }
+enum CategoryBooksStatus {
+  initial,
+  loading,
+  success,
+  failure,
+  emailSent,
+  loadingMore,
+}
 
 class CategoryBooksState extends Equatable {
   final CategoryBooksStatus status;
   final String? errorMessage;
-  
-  
+
   final BooksResponse? books;
   final bool hadReachedMax;
   final int startIndex;
@@ -15,9 +21,9 @@ class CategoryBooksState extends Equatable {
   const CategoryBooksState({
     this.status = CategoryBooksStatus.initial,
     this.errorMessage,
-   
-    this.books ,
-    this.hadReachedMax= false,
+
+    this.books,
+    this.hadReachedMax = false,
     this.startIndex = 0,
   });
 
@@ -28,7 +34,7 @@ class CategoryBooksState extends Equatable {
   CategoryBooksState copyWith({
     CategoryBooksStatus? status,
     String? errorMessage,
-  
+
     BooksResponse? books,
     bool? hadReachedMax,
     int? startIndex,
@@ -36,7 +42,7 @@ class CategoryBooksState extends Equatable {
     return CategoryBooksState(
       status: status ?? this.status,
       errorMessage: errorMessage ?? this.errorMessage,
-      
+
       books: books ?? this.books,
       hadReachedMax: hadReachedMax ?? this.hadReachedMax,
       startIndex: startIndex ?? this.startIndex,
@@ -47,7 +53,7 @@ class CategoryBooksState extends Equatable {
   List<Object?> get props => [
     status,
     errorMessage,
-    
+
     books,
     hadReachedMax,
     startIndex,

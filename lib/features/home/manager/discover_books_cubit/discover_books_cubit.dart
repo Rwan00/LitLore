@@ -15,10 +15,13 @@ class DiscoverBooksCubit extends Cubit<DiscoverBooksState> {
   Future<void> fetchDiscoverBooks() async {
     emit(DiscoverBooksLoading());
     var result = await homeRepo.fetchDiscoverBooks();
-    result.fold((failure) {
-      emit(DiscoverBooksFailure(errorMsg: failure.errorMsg));
-    }, (books) {
-      emit(DiscoverBooksSuccess(books: books));
-    });
+    result.fold(
+      (failure) {
+        emit(DiscoverBooksFailure(errorMsg: failure.errorMsg));
+      },
+      (books) {
+        emit(DiscoverBooksSuccess(books: books));
+      },
+    );
   }
 }

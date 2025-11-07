@@ -100,6 +100,7 @@ class AuthCubit extends Cubit<AuthState> {
       );
     }
   }
+
   Future<void> signInWithEmail({
     required String email,
     required String password,
@@ -151,16 +152,13 @@ class AuthCubit extends Cubit<AuthState> {
         (failure) {
           log('❌ Email verification failed: $failure');
           emit(
-            state.copyWith(
-              status: AuthStatus.failure,
-              errorMessage: failure,
-            ),
+            state.copyWith(status: AuthStatus.failure, errorMessage: failure),
           );
         },
         (done) {
           log('✅ Email verified and Google account linked successfully');
           emit(state.copyWith(status: AuthStatus.success));
-          
+
           // Navigate to home after successful verification
           _navigateToHome();
         },

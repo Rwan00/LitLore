@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/theme/colors.dart';
 
 class CustomVerticalDivider extends StatelessWidget {
-  const CustomVerticalDivider({
-    super.key,
-  });
+  const CustomVerticalDivider({super.key});
 
   @override
   Widget build(BuildContext context) {

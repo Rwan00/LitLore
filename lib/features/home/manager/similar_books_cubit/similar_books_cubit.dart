@@ -7,18 +7,21 @@ part 'similar_books_state.dart';
 
 class SimilarBooksCubit extends Cubit<SimilarBooksState> {
   SimilarBooksCubit(this.bookDetailsRepo) : super(SimilarBooksInitial());
-  
+
   static SimilarBooksCubit get(context) => BlocProvider.of(context);
 
   final BookDetailsRepo bookDetailsRepo;
 
-   Future<void> fetchSimilarBooks({required String category}) async {
+  Future<void> fetchSimilarBooks({required String category}) async {
     emit(SimilarBooksLoading());
     var result = await bookDetailsRepo.fetchSimilarBooks(category: category);
-    result.fold((failure) {
-      emit(SimilarBooksFailure(errorMsg: failure.errorMsg));
-    }, (books) {
-      emit(SimilarBooksSuccess(books: books));
-    });
+    result.fold(
+      (failure) {
+        emit(SimilarBooksFailure(errorMsg: failure.errorMsg));
+      },
+      (books) {
+        emit(SimilarBooksSuccess(books: books));
+      },
+    );
   }
 }

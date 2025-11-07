@@ -14,7 +14,8 @@ class BookImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: ()=> context.push(BookDetailsView.routeName, extra: {"book": book}),
+      onTap: () =>
+          context.push(BookDetailsView.routeName, extra: {"book": book}),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(7),
         child: AspectRatio(
@@ -27,11 +28,8 @@ class BookImage extends StatelessWidget {
               color: MyColors.kPrimaryColor,
               size: 36,
             ),
-            placeholder: (context, url) => const Image(
-              image: AssetImage(
-                AppAssets.loading,
-              ),
-            ),
+            placeholder: (context, url) =>
+                const Image(image: AssetImage(AppAssets.loading)),
           ),
         ),
       ),

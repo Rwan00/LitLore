@@ -46,11 +46,11 @@ class GoogleSignInService {
         accessToken: accessToken,
         idToken: idToken,
       );
-      
+
       final UserCredential userCredential = await FirebaseAuth.instance
           .signInWithCredential(credential);
       final User? user = userCredential.user;
-      
+
       if (user != null) {
         final userDoc = FirebaseFirestore.instance
             .collection("users")
@@ -82,9 +82,6 @@ class GoogleSignInService {
       // Perform Google Sign-In
       final GoogleSignInAccount googleUser = await signIn.authenticate();
 
-
-     
-      
       return googleUser;
     } on GoogleSignInException catch (e) {
       logger.e(e);

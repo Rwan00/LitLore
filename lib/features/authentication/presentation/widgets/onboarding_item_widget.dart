@@ -13,13 +13,8 @@ class OnboardingItemWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Text(
-          onBoardingModel.title,
-          style: MyFonts.logoStyle,
-        ),
-        const SizedBox(
-          height: 15,
-        ),
+        Text(onBoardingModel.title, style: MyFonts.logoStyle),
+        const SizedBox(height: 15),
         Text(
           onBoardingModel.body,
           style: MyFonts.textStyleStyle16,

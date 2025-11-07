@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:litlore/features/authentication/manager/onpage_change_cubit/onpage_change_cubit.dart';
@@ -19,7 +17,6 @@ class PageViewWidget extends StatelessWidget {
           child: PageView.builder(
             controller: cubit.pageController,
             onPageChanged: (int index) {
-
               cubit.onPageChange(index: index);
             },
             physics: const BouncingScrollPhysics(),

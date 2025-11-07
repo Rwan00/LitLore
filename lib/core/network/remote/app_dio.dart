@@ -1,5 +1,3 @@
-
-
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:litlore/core/errors/server_failure.dart';
@@ -11,7 +9,11 @@ class AppDio {
   final Dio _dio = DioService.dio;
 
   // Create (POST)
-  Future<Response> post({required String path, Map<String, dynamic>? data, Map<String, String>? headers}) async {
+  Future<Response> post({
+    required String path,
+    Map<String, dynamic>? data,
+    Map<String, String>? headers,
+  }) async {
     try {
       final response = await DioService.instance.sendGoogleBooksRequest(
         method: 'POST',
@@ -34,7 +36,10 @@ class AppDio {
   }) async {
     try {
       final Map<String, dynamic> formDataMap = {
-        fileField: await MultipartFile.fromFile(filePath, filename: filePath.split('/').last),
+        fileField: await MultipartFile.fromFile(
+          filePath,
+          filename: filePath.split('/').last,
+        ),
       };
 
       if (additionalData != null) {
@@ -56,13 +61,16 @@ class AppDio {
   }
 
   // Read (GET)
-  Future<Response> get({required String path, Map<String, dynamic>? queryParams, Map<String, String>? headers}) async {
+  Future<Response> get({
+    required String path,
+    Map<String, dynamic>? queryParams,
+    Map<String, String>? headers,
+  }) async {
     try {
       final response = await DioService.instance.sendGoogleBooksRequest(
         method: 'GET',
         path: path,
         queryParams: queryParams,
-      
       );
       return response;
     } on ServerFailure catch (e) {
@@ -75,7 +83,11 @@ class AppDio {
   }
 
   // Update (PUT)
-  Future<Response> put({required String path, Map<String, dynamic>? data, Map<String, String>? headers}) async {
+  Future<Response> put({
+    required String path,
+    Map<String, dynamic>? data,
+    Map<String, String>? headers,
+  }) async {
     try {
       final response = await DioService.instance.sendGoogleBooksRequest(
         method: 'PUT',
@@ -90,7 +102,10 @@ class AppDio {
   }
 
   // Delete (DELETE)
-  Future<Response> delete({required String path, Map<String, dynamic>? queryParams}) async {
+  Future<Response> delete({
+    required String path,
+    Map<String, dynamic>? queryParams,
+  }) async {
     try {
       final response = await DioService.instance.sendGoogleBooksRequest(
         method: 'DELETE',
@@ -108,14 +123,18 @@ class AppDio {
   }
 
   // Patch (PATCH)
-  Future<Response> patch({required String path, Map<String, dynamic>? data, Map<String, dynamic>? query}) async {
+  Future<Response> patch({
+    required String path,
+    Map<String, dynamic>? data,
+    Map<String, dynamic>? query,
+  }) async {
     try {
       final response = await DioService.instance.sendGoogleBooksRequest(
         method: 'PATCH',
         path: path,
         data: data,
         queryParams: query,
-       // headers: await DioService.instance.getHeaders(),
+        // headers: await DioService.instance.getHeaders(),
       );
       return response;
     } on DioException {

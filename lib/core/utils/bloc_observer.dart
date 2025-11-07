@@ -1,9 +1,8 @@
 import 'dart:developer';
 
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class SimpleBlocObserver implements BlocObserver{
+class SimpleBlocObserver implements BlocObserver {
   @override
   void onChange(BlocBase bloc, Change change) {
     log("changes = $change");
@@ -33,5 +32,4 @@ class SimpleBlocObserver implements BlocObserver{
   void onTransition(Bloc bloc, Transition transition) {
     // TODO: implement onTransition
   }
-
 }

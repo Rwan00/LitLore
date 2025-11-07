@@ -6,11 +6,7 @@ class LoginForm extends StatelessWidget {
   final TextEditingController email;
   final TextEditingController password;
 
-  const LoginForm({
-    super.key,
-    required this.email,
-    required this.password,
-  });
+  const LoginForm({super.key, required this.email, required this.password});
 
   @override
   Widget build(BuildContext context) {

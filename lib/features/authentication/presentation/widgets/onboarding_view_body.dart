@@ -16,12 +16,7 @@ class OnboardingViewBody extends StatelessWidget {
       child: const Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Image(
-            image: AssetImage(
-              AppAssets.logo,
-            ),
-            width: 80,
-          ),
+          Image(image: AssetImage(AppAssets.logo), width: 80),
           PageViewWidget(),
           OnboardingStackItems(),
         ],

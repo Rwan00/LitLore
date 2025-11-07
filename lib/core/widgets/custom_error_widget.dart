@@ -15,12 +15,7 @@ class CustomErrorWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const Image(
-          image: AssetImage(
-            AppAssets.sad,
-          ),
-          width: 64,
-        ),
+        const Image(image: AssetImage(AppAssets.sad), width: 64),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 34.0),
           child: Text(
@@ -31,13 +26,8 @@ class CustomErrorWidget extends StatelessWidget {
         ),
         TextButton.icon(
           onPressed: retryFunction,
-          label: Text(
-            "Try again",
-            style: MyFonts.subTiltleStyle14,
-          ),
-          icon: const Icon(
-            Icons.restart_alt_sharp,
-          ),
+          label: Text("Try again", style: MyFonts.subTiltleStyle14),
+          icon: const Icon(Icons.restart_alt_sharp),
         ),
       ],
     );

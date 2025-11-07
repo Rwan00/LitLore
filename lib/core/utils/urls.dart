@@ -3,18 +3,24 @@ class Urls {
 
   // 🔍 Search for books
   // Example: volumes?q=flutter
-  static String searchBooks(String query, {String? filter, String? orderBy, String? contentType,}) {
+  static String searchBooks(
+    String query, {
+    String? filter,
+    String? orderBy,
+    String? contentType,
+  }) {
     final buffer = StringBuffer("volumes?q=$query");
     if (filter != null && filter != "all") buffer.write("&filter=$filter");
     if (orderBy != null) buffer.write("&orderBy=$orderBy");
     if (contentType != null) buffer.write("&contentType=$contentType");
-   
+
     return buffer.toString();
   }
 
   // 🎭 Discover books by subject (category)
   // Example: volumes?q=subject:Drama
-  static String discoverBooksBySubject(String subject) => "volumes?q=subject:$subject";
+  static String discoverBooksBySubject(String subject) =>
+      "volumes?q=subject:$subject";
 
   // 🆕 Get newest books
   // Example: volumes?q=*&orderBy=newest
@@ -26,7 +32,8 @@ class Urls {
 
   // ❤️ Get books similar to a category
   // Example: volumes?q=Science+subject:&orderBy=relevance
-  static String similarBooks(String category) => "volumes?q=$category+subject:&orderBy=relevance";
+  static String similarBooks(String category) =>
+      "volumes?q=$category+subject:&orderBy=relevance";
 
   // 👤 Get books by author
   // Example: volumes?q=inauthor:J.K. Rowling
@@ -34,7 +41,8 @@ class Urls {
 
   // 🏢 Get books by publisher
   // Example: volumes?q=inpublisher:Penguin
-  static String booksByPublisher(String publisher) => "volumes?q=inpublisher:$publisher";
+  static String booksByPublisher(String publisher) =>
+      "volumes?q=inpublisher:$publisher";
 
   // 🔢 Get books by ISBN
   // Example: volumes?q=isbn:9781451648546
@@ -50,7 +58,8 @@ class Urls {
 
   // 📚 Get Books in a specific bookshelf
   // Example: mylibrary/bookshelves/{shelfId}/volumes
-  static String myLibraryBooks(String shelfId) => "mylibrary/bookshelves/$shelfId/volumes";
+  static String myLibraryBooks(String shelfId) =>
+      "mylibrary/bookshelves/$shelfId/volumes";
 
   // 📘 Get Volume annotations (requires OAuth)
   // Example: mylibrary/annotations
@@ -61,5 +70,6 @@ class Urls {
 
   // 📈 Recommended or related volumes (sometimes used with API key)
   // Example: volumes/recommended?volumeId={id}
-  static String recommendedBooks(String volumeId) => "volumes/recommended?volumeId=$volumeId";
+  static String recommendedBooks(String volumeId) =>
+      "volumes/recommended?volumeId=$volumeId";
 }

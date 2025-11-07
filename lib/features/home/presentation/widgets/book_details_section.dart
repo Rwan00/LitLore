@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 
-
 import '../../../../core/functions/size_functions.dart';
 import '../../data/models/book_model/book_model.dart';
 import 'book_basic_details.dart';
 import 'book_image.dart';
 
 class BookDetailsSection extends StatelessWidget {
-  const BookDetailsSection({
-    super.key, required this.book,
-  });
+  const BookDetailsSection({super.key, required this.book});
 
   final BookModel book;
 
@@ -26,9 +23,7 @@ class BookDetailsSection extends StatelessWidget {
               child: BookImage(book: book),
             ),
           ),
-          const SizedBox(
-            width: 12,
-          ),
+          const SizedBox(width: 12),
           BookBasicDetails(book: book),
         ],
       ),

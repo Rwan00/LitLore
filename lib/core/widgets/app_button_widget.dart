@@ -21,20 +21,12 @@ class AppButtonWidget extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onPressed,
         style: ButtonStyle(
-          foregroundColor: WidgetStateProperty.all(
-            Colors.white,
-          ),
-          textStyle: WidgetStateProperty.all(
-            MyFonts.titleMediumStyle18,
-          ),
+          foregroundColor: WidgetStateProperty.all(Colors.white),
+          textStyle: WidgetStateProperty.all(MyFonts.titleMediumStyle18),
           shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16.0),
-            ),
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
           ),
-          backgroundColor: WidgetStateProperty.all(
-            MyColors.kPrimaryColor,
-          ),
+          backgroundColor: WidgetStateProperty.all(MyColors.kPrimaryColor),
         ),
         child: Text(label),
       ),

@@ -35,9 +35,7 @@ class BookItem extends StatelessWidget {
           children: [
             Hero(
               tag: book.id,
-              child: BookImage(
-                book:book ,
-              ),
+              child: BookImage(book: book),
             ),
             const SizedBox(width: 8),
             Expanded(

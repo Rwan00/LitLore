@@ -7,11 +7,7 @@ import '../../../../core/theme/fonts.dart';
 class BookActionSection extends StatelessWidget {
   final String price;
   final String url;
-  const BookActionSection({
-    super.key,
-    required this.price,
-    required this.url,
-  });
+  const BookActionSection({super.key, required this.price, required this.url});
 
   @override
   Widget build(BuildContext context) {
@@ -30,14 +26,9 @@ class BookActionSection extends StatelessWidget {
               ),
             ),
           ),
-          child: Text(
-            price,
-            style: MyFonts.subTiltleStyle14,
-          ),
+          child: Text(price, style: MyFonts.subTiltleStyle14),
         ),
-        const SizedBox(
-          width: 2,
-        ),
+        const SizedBox(width: 2),
         ElevatedButton(
           onPressed: () async {
             Uri uri = Uri.parse(url);

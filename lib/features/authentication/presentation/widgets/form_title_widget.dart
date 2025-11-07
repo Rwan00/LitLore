@@ -16,12 +16,7 @@ class FormTitleWidget extends StatelessWidget {
           style: MyFonts.headingStyle,
           textAlign: TextAlign.start,
         ),
-        Image(
-          image: AssetImage(
-            AppAssets.logoRight,
-          ),
-          width: 80,
-        ),
+        Image(image: AssetImage(AppAssets.logoRight), width: 80),
       ],
     );
   }

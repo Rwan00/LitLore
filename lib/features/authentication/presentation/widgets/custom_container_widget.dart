@@ -5,8 +5,11 @@ import 'package:litlore/features/authentication/presentation/widgets/background_
 class CustomContainerWidget extends StatelessWidget {
   final double containerHeight;
   final Widget child;
-  const CustomContainerWidget(
-      {super.key, required this.containerHeight, required this.child});
+  const CustomContainerWidget({
+    super.key,
+    required this.containerHeight,
+    required this.child,
+  });
 
   @override
   Widget build(BuildContext context) {

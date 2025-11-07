@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-
 import 'package:litlore/features/authentication/data/repos/authentication_repo_impl.dart';
 import 'package:litlore/features/authentication/manager/onpage_change_cubit/onpage_change_cubit.dart';
 import 'package:litlore/features/authentication/presentation/widgets/onboarding_view_body.dart';
 
 import '../../../../core/utils/service_locator.dart';
-
-
 
 class OnBoardingScreen extends StatelessWidget {
   static const routeName = "/onboardingView";
@@ -19,9 +16,7 @@ class OnBoardingScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) =>
           OnpageChangeCubit(ServiceLocator.getIt<AuthenticationRepoImpl>()),
-      child: const Scaffold(
-        body: OnboardingViewBody(),
-      ),
+      child: const Scaffold(body: OnboardingViewBody()),
     );
   }
 }

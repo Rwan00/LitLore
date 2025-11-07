@@ -89,9 +89,7 @@ class FilterSection extends StatelessWidget {
                         boxShadow: isSelected
                             ? [
                                 BoxShadow(
-                                  color: MyColors.kPrimaryColor.withAlpha(
-                                    40,
-                                  ),
+                                  color: MyColors.kPrimaryColor.withAlpha(40),
                                   blurRadius: 12,
                                   spreadRadius: 1,
                                   offset: const Offset(0, 4),
