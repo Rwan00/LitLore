@@ -167,4 +167,23 @@ class HomeRepoImpl implements HomeRepo {
       return left(ServerFailure(errorMsg: error.toString()));
     }
   }
+  @override
+  Future<Either<Failures, String>> addToMyLibrary(
+    int shelfId,
+    String bookId,
+  ) async {
+    try {
+      await apiService.post(
+        path: Urls.addToMyLibraryBooks(shelfId,bookId),
+        
+      );
+      
+      return right("Poof! The book has appeared in your magical Library.");
+    } on DioException catch (error) {
+      log(error.message ?? "");
+      return left(ServerFailure.fromDioError(error));
+    } catch (error) {
+      return left(ServerFailure(errorMsg: error.toString()));
+    }
+  }
 }

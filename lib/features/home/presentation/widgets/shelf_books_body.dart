@@ -106,9 +106,9 @@ class BooksGrid extends StatelessWidget {
         GridView.builder(
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3, // Number of columns
-            childAspectRatio: 0.3, // Adjust based on your book item design
+            childAspectRatio: 0.5, // Adjust based on your book item design
             crossAxisSpacing: 12,
-            mainAxisSpacing: 12,
+            mainAxisSpacing: 4,
           ),
           itemCount: books.length,
           shrinkWrap: true,
@@ -130,6 +130,7 @@ class BooksGrid extends StatelessWidget {
                       );
                     },
                     child: Column(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         Hero(
                           tag: book.id,

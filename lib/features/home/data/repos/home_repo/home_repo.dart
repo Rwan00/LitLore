@@ -15,4 +15,8 @@ abstract class HomeRepo {
     int shelf,
     int startIndex,
   );
+  Future<Either<Failures, String>> addToMyLibrary(
+    int shelfId,
+    String bookId,
+  );
 }

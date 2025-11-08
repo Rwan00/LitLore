@@ -35,6 +35,30 @@ class BookShelvesCubit extends Cubit<BookShelvesState> {
       },
     );
   }
+  Future<void> addToMyLibrary(int shelfId,String bookId) async {
+   
+    emit(state.copyWith(status: BookShelvesStatus.loading));
+    var result = await homeRepo.addToMyLibrary(shelfId,bookId);
+    result.fold(
+      (failure) {
+        emit(
+          state.copyWith(
+            errorMessage: failure.errorMsg,
+            status: BookShelvesStatus.failure,
+          ),
+        );
+      },
+      (success) {
+        emit(
+          state.copyWith(
+            status: BookShelvesStatus.success,
+          
+           successMessage: success,
+          ),
+        );
+      },
+    );
+  }
 
 
 }

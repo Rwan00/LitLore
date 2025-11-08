@@ -24,4 +24,5 @@ class AppAssets {
   static const book = "assets/images/book.png";
   static const filter = "assets/images/filter.png";
   static const arrow = "assets/images/arrow.png";
+  static const add = "assets/images/add.png";
 }

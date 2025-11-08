@@ -61,6 +61,9 @@ class Urls {
   static String myLibraryBooks(int shelfId) =>
       "mylibrary/bookshelves/$shelfId/volumes";
 
+  static String addToMyLibraryBooks(int shelfId,String bookId) =>
+      "mylibrary/bookshelves/$shelfId/addVolume?volumeId=$bookId";
+
   // 📘 Get Volume annotations (requires OAuth)
   // Example: mylibrary/annotations
   static const String myLibraryAnnotations = "mylibrary/annotations";

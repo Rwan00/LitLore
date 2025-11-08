@@ -13,6 +13,7 @@ enum BookShelvesStatus {
 class BookShelvesState extends Equatable {
   final BookShelvesStatus status;
   final String? errorMessage;
+  final String? successMessage;
 
   final List<ShelfItem>? shelves;
   
@@ -20,7 +21,7 @@ class BookShelvesState extends Equatable {
   const BookShelvesState({
     this.status = BookShelvesStatus.initial,
     this.errorMessage,
-
+this.successMessage,
     this.shelves,
     
   });
@@ -32,6 +33,7 @@ class BookShelvesState extends Equatable {
   BookShelvesState copyWith({
     BookShelvesStatus? status,
     String? errorMessage,
+    String? successMessage,
 
     List<ShelfItem>? shelves,
    
@@ -39,6 +41,7 @@ class BookShelvesState extends Equatable {
     return BookShelvesState(
       status: status ?? this.status,
       errorMessage: errorMessage ?? this.errorMessage,
+      successMessage: successMessage ?? this.successMessage,
 
       shelves: shelves ?? this.shelves,
      
@@ -49,7 +52,7 @@ class BookShelvesState extends Equatable {
   List<Object?> get props => [
     status,
     errorMessage,
-
+successMessage,
     shelves,
    
   ];
