@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:litlore/core/functions/size_functions.dart';
+import 'package:litlore/core/theme/fonts.dart';
 
 import 'package:litlore/core/widgets/custom_error_widget.dart';
 import 'package:litlore/core/widgets/flapping_owl_loading.dart';
 
 import 'package:litlore/features/home/manager/shelf_books_cubit.dart/shelf_books_cubit.dart';
 import 'package:litlore/features/home/manager/shelf_books_cubit.dart/shelf_books_state.dart';
-import 'package:litlore/features/home/presentation/widgets/book_item.dart';
+import 'package:litlore/features/home/presentation/widgets/book_image.dart';
+
 import 'package:litlore/features/search/presentation/widgets/empty_search_widget.dart';
 
 class ShelfBooksBody extends StatefulWidget {
@@ -24,15 +27,15 @@ class _ShelfBooksBodyState extends State<ShelfBooksBody> {
   @override
   void initState() {
     super.initState();
-    // ✅ Add listener directly in initState
     _scrollController.addListener(_onScroll);
   }
 
-  // ✅ Fixed scroll listener
   void _onScroll() {
-    if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent) {
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent) {
       final cubit = context.read<ShelfBooksCubit>();
-      if (!cubit.state.hadReachedMax && cubit.state.status != ShelfBooksStatus.loadingMore) {
+      if (!cubit.state.hadReachedMax &&
+          cubit.state.status != ShelfBooksStatus.loadingMore) {
         cubit.loadMore(widget.shelfId);
       }
     }
@@ -56,9 +59,9 @@ class _ShelfBooksBodyState extends State<ShelfBooksBody> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              if (state.status == ShelfBooksStatus.success || 
+              if (state.status == ShelfBooksStatus.success ||
                   state.status == ShelfBooksStatus.loadingMore)
-                _buildBooksList(state),
+                BooksGrid(state: state),
               const SizedBox(height: 16),
               if (state.status == ShelfBooksStatus.loading)
                 Center(child: FlappingOwlLoading()),
@@ -67,7 +70,9 @@ class _ShelfBooksBodyState extends State<ShelfBooksBody> {
                   child: CustomErrorWidget(
                     error: state.errorMessage!,
                     retryFunction: () async {
-                      context.read<ShelfBooksCubit>().fetchShelfBooks(widget.shelfId);
+                      context.read<ShelfBooksCubit>().fetchShelfBooks(
+                        widget.shelfId,
+                      );
                     },
                   ),
                 ),
@@ -77,10 +82,16 @@ class _ShelfBooksBodyState extends State<ShelfBooksBody> {
       },
     );
   }
+}
 
-  Widget _buildBooksList(ShelfBooksState state) {
+class BooksGrid extends StatelessWidget {
+  final ShelfBooksState state;
+  const BooksGrid({super.key, required this.state});
+
+  @override
+  Widget build(BuildContext context) {
     final books = state.books?.books ?? [];
-    
+
     if (books.isEmpty) {
       return EmptySearchWidget(
         title: "Nothing Found",
@@ -88,35 +99,59 @@ class _ShelfBooksBodyState extends State<ShelfBooksBody> {
       );
     }
 
-    // ✅ Fixed itemCount - add parentheses and show loader when loading more
-    final itemCount = state.hadReachedMax ? books.length : books.length + 1;
-
-    return ListView.builder(
-      itemCount: itemCount,
-      shrinkWrap: true,
-      physics: const ClampingScrollPhysics(),
-      itemBuilder: (BuildContext context, int index) {
-        // ✅ Show loading indicator at the end when loading more
-        if (index == books.length) {
-          return Center(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: FlappingOwlLoading(),
-            ),
-          );
-        }
-
-        return AnimationConfiguration.staggeredList(
-          duration: const Duration(milliseconds: 500),
-          position: index,
-          child: SlideAnimation(
-            horizontalOffset: 100,
-            child: FadeInAnimation(
-              child: BookItem(book: books[index]),
-            ),
+    return Column(
+      children: [
+        GridView.builder(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3, // Number of columns
+            childAspectRatio: 0.3, // Adjust based on your book item design
+            crossAxisSpacing: 12,
+            mainAxisSpacing: 12,
           ),
-        );
-      },
+          itemCount: books.length,
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          padding: const EdgeInsets.all(16),
+          itemBuilder: (BuildContext context, int index) {
+            final book = books[index];
+            return AnimationConfiguration.staggeredGrid(
+              duration: const Duration(milliseconds: 500),
+              position: index,
+              columnCount: 3,
+              child: ScaleAnimation(
+                child: FadeInAnimation(
+                  child: Column(
+                    children: [
+                      Hero(
+                        tag: book.id,
+                        child: BookImage(book: book),
+                      ),
+                      SizedBox(height: height(context) * 0.01),
+                      SizedBox(
+                        width: width(context) * 0.54,
+                        child: Text(
+                          book.volumeInfo?.title ??
+                              "Nameless, but still legendary.",
+                          style: MyFonts.textStyleStyle16,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
+        // Show loading indicator when loading more
+        if (!state.hadReachedMax &&
+            state.status == ShelfBooksStatus.loadingMore)
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Center(child: FlappingOwlLoading()),
+          ),
+      ],
     );
   }
 }
