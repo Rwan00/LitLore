@@ -148,4 +148,23 @@ class HomeRepoImpl implements HomeRepo {
       return left(ServerFailure(errorMsg: error.toString()));
     }
   }
+  @override
+  Future<Either<Failures, BooksResponse>> fetchShelfBooks(
+    int shelf,
+    int startIndex,
+  ) async {
+    try {
+      var response = await apiService.get(
+        path: Urls.myLibraryBooks(shelf),
+        queryParams: {"startIndex": startIndex},
+      );
+      BooksResponse booksResponse = BooksResponse.fromJson(response.data);
+      return right(booksResponse);
+    } on DioException catch (error) {
+      log(error.message ?? "");
+      return left(ServerFailure.fromDioError(error));
+    } catch (error) {
+      return left(ServerFailure(errorMsg: error.toString()));
+    }
+  }
 }

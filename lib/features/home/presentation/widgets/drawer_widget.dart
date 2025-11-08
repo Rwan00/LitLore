@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:litlore/core/theme/colors.dart';
 import 'package:litlore/core/theme/fonts.dart';
 import 'package:litlore/core/utils/app_assets.dart';
@@ -9,6 +10,7 @@ import 'package:litlore/core/widgets/flapping_owl_loading.dart';
 import 'package:litlore/features/home/data/repos/home_repo/home_repo_impl.dart';
 import 'package:litlore/features/home/manager/book_shelves_cubit/book_shelves_cubit.dart';
 import 'package:litlore/features/home/manager/book_shelves_cubit/book_shelves_state.dart';
+import 'package:litlore/features/home/presentation/views/shelf_books_view.dart';
 import 'package:litlore/features/home/presentation/widgets/drawer_item.dart';
 
 class DrawerWidget extends StatelessWidget {
@@ -87,9 +89,14 @@ class DrawerWidget extends StatelessWidget {
                         children: state.shelves!
                             .map(
                               (shelf) => DrawerItem(
-                                icon: Icons.abc,
+                                count: shelf.volumeCount??0,
                                 title: shelf.title ?? "",
-                                onTap: () {},
+                                onTap: () {
+                                  context.push(
+                    ShelfBooksView.routeName,
+                    extra: {"title": shelf.title??"","shelfId":shelf.id,},
+                  );
+                                },
                               ),
                             )
                             .toList(),

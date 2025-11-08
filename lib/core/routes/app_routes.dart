@@ -9,6 +9,7 @@ import 'package:litlore/features/home/data/models/book_model/book_model.dart';
 import 'package:litlore/features/home/presentation/views/book_details_view.dart';
 import 'package:litlore/features/home/presentation/views/category_books_view.dart';
 import 'package:litlore/features/home/presentation/views/home_view.dart';
+import 'package:litlore/features/home/presentation/views/shelf_books_view.dart';
 import 'package:litlore/features/search/presentation/views/search_view.dart';
 import 'package:litlore/features/authentication/presentation/views/splash_view.dart';
 import 'package:nb_utils/nb_utils.dart';
@@ -168,6 +169,19 @@ class AppRouter {
 
           return _animateRouteBuilder(
             CategoryBooksView(title: args['title']),
+            pageRouteAnimation:
+                args['pageAnimation'] ?? PageRouteAnimation.Fade,
+          );
+        },
+      ),
+      GoRoute(
+        path: ShelfBooksView.routeName,
+        pageBuilder: (context, state) {
+          final Map<String, dynamic> args =
+              state.extra as Map<String, dynamic>? ?? {};
+
+          return _animateRouteBuilder(
+            ShelfBooksView(title: args['title'],shelfId:  args["shelfId"]),
             pageRouteAnimation:
                 args['pageAnimation'] ?? PageRouteAnimation.Fade,
           );

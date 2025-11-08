@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:litlore/core/theme/colors.dart';
 
 class DrawerItem extends StatelessWidget {
-  final IconData icon;
+  final int count;
   final String title;
   final VoidCallback onTap;
 
   const DrawerItem({
-    required this.icon,
+    required this.count,
     required this.title,
     required this.onTap,
     super.key,
@@ -22,7 +22,7 @@ class DrawerItem extends StatelessWidget {
           color: MyColors.kPrimaryColor.withAlpha(30),
           borderRadius: BorderRadius.circular(8),
         ),
-        child: Icon(Icons.book_online, color: MyColors.kPrimaryColor, size: 20),
+        child: Text(count.toString()),
       ),
       title: Text(
         title,

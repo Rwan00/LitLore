@@ -11,4 +11,8 @@ abstract class HomeRepo {
     String category,
     int startIndex,
   );
+  Future<Either<Failures, BooksResponse>> fetchShelfBooks(
+    int shelf,
+    int startIndex,
+  );
 }

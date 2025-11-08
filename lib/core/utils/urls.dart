@@ -58,7 +58,7 @@ class Urls {
 
   // 📚 Get Books in a specific bookshelf
   // Example: mylibrary/bookshelves/{shelfId}/volumes
-  static String myLibraryBooks(String shelfId) =>
+  static String myLibraryBooks(int shelfId) =>
       "mylibrary/bookshelves/$shelfId/volumes";
 
   // 📘 Get Volume annotations (requires OAuth)
