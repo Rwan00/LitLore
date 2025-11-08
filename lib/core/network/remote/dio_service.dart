@@ -62,7 +62,7 @@ class DioService {
       InterceptorsWrapper(
         onError: (DioException e, ErrorInterceptorHandler handler) async {
           if (e.response?.statusCode == 401) {
-            final newToken = await refreshFirebaseToken();
+            /* final newToken = await refreshFirebaseToken();
             if (newToken != null) {
               // Retry the original request with the new token
               final options = e.requestOptions;
@@ -82,13 +82,13 @@ class DioService {
               } catch (retryError) {
                 return handler.reject(e);
               }
-            } else {
+            } else { */
               // Token refresh failed, logout user
               await _handleAuthenticationFailure();
               'You are not logged in, please login again'.toastString();
               NavigationService.goTo(RegisterView.routeName);
               return handler.reject(e);
-            }
+          //}
           }
           return handler.next(e);
         },

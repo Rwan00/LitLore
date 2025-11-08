@@ -10,8 +10,15 @@ import 'package:litlore/features/home/manager/newest_books_cubit/newest_books_cu
 import '../../../../core/widgets/flapping_owl_loading.dart';
 import 'book_image.dart';
 
-class NewestBooksSlider extends StatelessWidget {
+class NewestBooksSlider extends StatefulWidget {
   const NewestBooksSlider({super.key});
+
+  @override
+  State<NewestBooksSlider> createState() => _NewestBooksSliderState();
+}
+
+class _NewestBooksSliderState extends State<NewestBooksSlider> {
+  int _currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -23,43 +30,132 @@ class NewestBooksSlider extends StatelessWidget {
         builder: (context, state) {
           if (state is NewestBooksSuccess) {
             return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 CarouselSlider(
-                  items: state.books.map((book) {
-                    return Transform(
-                      transform: Matrix4.identity()
-                        ..setEntry(3, 2, 0.001), // perspective
-                      alignment: Alignment.center,
-                      child: Container(
-                        margin: const EdgeInsets.symmetric(vertical: 10),
+                  items: state.books.asMap().entries.map((entry) {
+                    final book = entry.value;
+                    return GestureDetector(
+                      onTap: () {
+                        // Navigate to book details
+                      },
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 300),
+                        margin: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 20,
+                        ),
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
+                          borderRadius: BorderRadius.circular(24),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withAlpha(30),
-                              blurRadius: 20,
-                              spreadRadius: 2,
+                              color: Theme.of(context).primaryColor.withOpacity(0.3),
+                              blurRadius: 25,
+                              spreadRadius: 0,
+                              offset: const Offset(0, 15),
+                            ),
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              blurRadius: 15,
+                              spreadRadius: -5,
                               offset: const Offset(0, 10),
                             ),
                           ],
                         ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: BookImage(book: book),
+                        child: Stack(
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(24),
+                              child: BookImage(book: book),
+                            ),
+                            // Gradient overlay
+                            Positioned.fill(
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(24),
+                                  gradient: LinearGradient(
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: [
+                                      Colors.transparent,
+                                      Colors.black.withOpacity(0.7),
+                                    ],
+                                    stops: const [0.6, 1.0],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            // "NEW" badge
+                            Positioned(
+                              top: 12,
+                              right: 12,
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                  vertical: 6,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.red,
+                                  borderRadius: BorderRadius.circular(20),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.red.withOpacity(0.3),
+                                      blurRadius: 8,
+                                      spreadRadius: 2,
+                                    ),
+                                  ],
+                                ),
+                                child: const Text(
+                                  'NEW',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 10,
+                                    letterSpacing: 1,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     );
                   }).toList(),
                   options: CarouselOptions(
-                    //height: 280,
-                    viewportFraction: 0.4,
+                    height: 320,
+                    viewportFraction: 0.5,
                     enlargeCenterPage: true,
-                    enlargeFactor: 0.25,
+                    enlargeFactor: 0.3,
                     autoPlay: true,
-                    autoPlayInterval: const Duration(seconds: 5),
+                    autoPlayInterval: const Duration(seconds: 4),
+                    autoPlayAnimationDuration: const Duration(milliseconds: 800),
+                    autoPlayCurve: Curves.easeInOutCubic,
                     pauseAutoPlayOnTouch: true,
+                    onPageChanged: (index, reason) {
+                      setState(() {
+                        _currentIndex = index;
+                      });
+                    },
                   ),
+                ),
+                const SizedBox(height: 20),
+                // Carousel indicators
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: state.books.asMap().entries.map((entry) {
+                    return AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      width: _currentIndex == entry.key ? 24 : 8,
+                      height: 8,
+                      margin: const EdgeInsets.symmetric(horizontal: 4),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(4),
+                        color: _currentIndex == entry.key
+                            ? Theme.of(context).primaryColor
+                            : Colors.grey.withOpacity(0.3),
+                      ),
+                    );
+                  }).toList(),
                 ),
               ],
             );
@@ -71,7 +167,10 @@ class NewestBooksSlider extends StatelessWidget {
               },
             );
           } else {
-            return const FlappingOwlLoading();
+            return const SizedBox(
+              height: 360,
+              child: Center(child: FlappingOwlLoading()),
+            );
           }
         },
       ),
