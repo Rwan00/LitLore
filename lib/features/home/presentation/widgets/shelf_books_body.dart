@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:go_router/go_router.dart';
 import 'package:litlore/core/functions/size_functions.dart';
 import 'package:litlore/core/theme/fonts.dart';
 
@@ -9,6 +10,7 @@ import 'package:litlore/core/widgets/flapping_owl_loading.dart';
 
 import 'package:litlore/features/home/manager/shelf_books_cubit.dart/shelf_books_cubit.dart';
 import 'package:litlore/features/home/manager/shelf_books_cubit.dart/shelf_books_state.dart';
+import 'package:litlore/features/home/presentation/views/book_details_view.dart';
 import 'package:litlore/features/home/presentation/widgets/book_image.dart';
 
 import 'package:litlore/features/search/presentation/widgets/empty_search_widget.dart';
@@ -120,24 +122,32 @@ class BooksGrid extends StatelessWidget {
               columnCount: 3,
               child: ScaleAnimation(
                 child: FadeInAnimation(
-                  child: Column(
-                    children: [
-                      Hero(
-                        tag: book.id,
-                        child: BookImage(book: book),
-                      ),
-                      SizedBox(height: height(context) * 0.01),
-                      SizedBox(
-                        width: width(context) * 0.54,
-                        child: Text(
-                          book.volumeInfo?.title ??
-                              "Nameless, but still legendary.",
-                          style: MyFonts.textStyleStyle16,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
+                  child: GestureDetector(
+                    onTap: () {
+                      context.push(
+                        BookDetailsView.routeName,
+                        extra: {"book": book},
+                      );
+                    },
+                    child: Column(
+                      children: [
+                        Hero(
+                          tag: book.id,
+                          child: BookImage(book: book),
                         ),
-                      ),
-                    ],
+                        SizedBox(height: height(context) * 0.01),
+                        SizedBox(
+                          width: width(context) * 0.54,
+                          child: Text(
+                            book.volumeInfo?.title ??
+                                "Nameless, but still legendary.",
+                            style: MyFonts.textStyleStyle16,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
